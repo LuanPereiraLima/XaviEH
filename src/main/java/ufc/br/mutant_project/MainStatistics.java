@@ -4,6 +4,7 @@ import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
 import ufc.br.mutant_project.exceptions.InicializerException;
 import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
 import ufc.br.mutant_project.exceptions.NotURLsException;
+import ufc.br.mutant_project.executers.ExecuterCloneAndRunTestsWithJaCoCo;
 import ufc.br.mutant_project.executers.ExecuterEstatisticsCoverageEH;
 
 public class MainStatistics {

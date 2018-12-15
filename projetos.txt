@@ -19,4 +19,6 @@
 -https://github.com/apache/commons-digester.git -v 3.3.2 -c ec75748096c8639be7b4998d99c37bb2e3a9c206
 -https://github.com/apache/commons-dbcp.git -v 2.5 -c 334784e3043cadaeaa626f792c3f62ac7b697927
 -https://github.com/apache/commons-dbutils.git -v 1.7 -c 77faa3caefc24697b00bf370111f7307dae339b0
-https://github.com/google/gson.git -v 2.8.5 -c f649e051411e092f0123878e16c5132500a2d01e -m gson
+-https://github.com/google/gson.git -v 2.8.5 -c f649e051411e092f0123878e16c5132500a2d01e -m gson
+-https://github.com/jhy/jsoup.git -v 1.11.3 -c 2b1ea0633ff5d4cba5db0e202a4ce0fbdccc19db
+https://github.com/x-stream/xstream.git -v 1.4.11.1 -c 54529d8561c7fc959c8c394c0526bf45cc0c1528 -m xstream
