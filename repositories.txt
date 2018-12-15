@@ -1,0 +1,69 @@
+- Use - for to comment
+-
+-PROJECTS LIBS APACHE 97
+-BCEL
+https://github.com/apache/commons-bcel.git -c 647c723ba1262e1ffce520524692b366a7fde45a -v 6.0.0
+-Beanutils
+https://github.com/apache/commons-beanutils.git -v 1.9.3 -c a83c1eae04c9c99360c3ba4e6a46fd89dc5407ef
+-Commons Cli
+https://github.com/apache/commons-cli.git -v 1.3.1 -c 41d3dbf00f3e2041f5e407b9b96d8f048ab388d9
+-Commons Codec
+https://github.com/apache/commons-codec.git -v 1.10.0 -c e9da3d16ae67f2940a0bbdf982ecec19a0481981
+-Collections
+https://github.com/apache/commons-collections.git -v 4.0.0 -c db189926f7415b9866e76cd8123e40c09c1cc67e
+-Compres
+https://github.com/apache/commons-compress.git -v 1.14.0 -c dd7c7702bf51886aa8bd88b24d98619f310fbeda
+-configuration
+https://github.com/apache/commons-configuration.git -c e814fe00bb51256386dd78f3f926aa30d8de6a7c -v 2.1.0
+-DBCP
+-https://github.com/apache/commons-dbcp.git
+-DB UTILS
+https://github.com/apache/commons-dbutils.git -c 1919bb3ac5ed5b5d4e38e8f64e6b77aeb66c231c -v 1.5
+-DISCOVERY
+-https://github.com/dnydoney/commons-discovery.git -v 0.5.0 -c 3991b1c3dab8890a8084082d9ea0982153244fb6
+-EMAIL
+https://github.com/apache/commons-email.git -c 38233b1089a9c89211cea88eb9e144a061b0d60b -v 1.3.3
+-EXEC
+https://github.com/apache/commons-exec.git -c d9f216768f796b5b26972fb3897c8ebfd6385a59 -v 1.1.0
+-FILE UPLOAD
+https://github.com/apache/commons-fileupload.git -c 88e7fca87fcd194cbe88276be867aedab08b8e30 -v 1.3.0
+-IO
+https://github.com/apache/commons-io.git -c c5ef3334e968c2492a10a00bbba4186ba864c37c -v 2.5.0
+-LANG
+https://github.com/apache/commons-lang.git -c 36f98d87b24c2f542b02abbf6ec1ee742f1b158b -v 3.5.0
+-Logging
+-https://github.com/apache/commons-logging.git
+-Math
+https://github.com/apache/commons-math.git -c 95a9d35e77f70ffc9bd5143880c236a760b42005 -v 3.6.0
+-NET
+https://github.com/apache/commons-net.git -c f8c2dabb0e8cb62c86912dc61fe2f68106d8b917 -v 3.3.0
+-POOL
+-https://github.com/apache/commons-pool.git
+-VALIDATOR
+-https://github.com/apache/commons-validator.git
+-LOG4J
+-https://github.com/apache/log4j.git
+-HttpComponents Client
+-https://github.com/apache/httpcomponents-client.git httpclient5
+-Http Core
+-https://github.com/apache/httpcomponents-core.git httpcore5
+-Mahout
+-https://github.com/apache/mahout.git math
+-Bval
+-https://github.com/apache/bval.git bval-core
+-JCI
+-https://github.com/apache/commons-jci.git core
+-RNG
+-https://github.com/apache/commons-rng.git commons-rng-core
+-CXF
+-https://github.com/apache/cxf.git core
+-Metamodel
+-https://github.com/apache/metamodel.git core
+-JACKRABBIT
+-https://github.com/apache/jackrabbit.git jackrabbit-core
+-jscloud
+-https://github.com/apache/jclouds.git core
+-directory-kerby
+-https://github.com/apache/directory-kerby.git kerby-pkix
+-openjpa
+-https://github.com/apache/openjpa.git

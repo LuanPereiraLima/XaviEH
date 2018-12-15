@@ -1,0 +1,127 @@
+package ufc.br.mutant_project.runners;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.thoughtworks.xstream.XStream;
+
+import ufc.br.mutant_project.constants.PathProject;
+import ufc.br.mutant_project.exceptions.PomException;
+import ufc.br.mutant_project.models.FinalResultSavedByProject;
+import ufc.br.mutant_project.models.ParameterProcessor;
+import ufc.br.mutant_project.models.ResultSavedByMutant;
+import ufc.br.mutant_project.processors.AbstractorProcessor;
+import ufc.br.mutant_project.util.Util;
+
+public abstract class AbstractRunner {
+
+	protected int numberMutant = 0;
+	protected int qtdMutantDead = 0;
+	public static Map<String, List<FinalResultSavedByProject>> listSaveMutantResultType;
+	
+	protected String uriName;
+	protected String subModule;
+	
+	public AbstractRunner(String uriName, String subModule) {
+		this.uriName = uriName;
+		this.subModule = subModule;
+		if(listSaveMutantResultType==null)
+			listSaveMutantResultType = new HashMap<String, List<FinalResultSavedByProject>>();
+	}
+
+	public abstract void processor(AbstractorProcessor<?> myAbstractorProcessor) throws PomException;
+
+	protected void resetResults() {
+		qtdMutantDead = 0;
+		numberMutant = 0;
+	}
+	
+	public void resetListSaveMutantResultType() {
+		listSaveMutantResultType.clear();
+	}
+	
+	//SALVANDO MUTANT NA SUA DEVIDA PASTA
+	protected void saveMutant(File f, AbstractorProcessor<?> myAbstractorProcessor) throws PomException {
+		
+		numberMutant++;
+		
+		String mutantPath = PathProject.makePathToProject(uriName) + myAbstractorProcessor.pathIdentification() + (File.separator) + (numberMutant);
+
+		Util.createACopyMutantTest(mutantPath, PathProject.makePathToProjectMaven(uriName, null));
+		System.out.println("Copy Mutant Test: " + mutantPath);
+	
+		Util.copyOutputSpoonToProject(mutantPath + (File.separator) + PathProject.makePathToPathFiles(uriName, subModule));
+
+		System.out.println("-Verificando se o mutant: ( "+mutantPath+" ) passa ou não nos testes.");
+		
+		List<String> submodules = null;
+		
+		if(this.subModule!=null)
+			submodules = Collections.singletonList(this.subModule);
+		
+		int result = Util.invoker(mutantPath, submodules, true);
+		
+		System.out.println("--OK! Morto? Result: "+(result!=0));
+		
+		createResult(f.getAbsolutePath(), result, myAbstractorProcessor.getParameterVisitor(), myAbstractorProcessor.pathIdentification());
+	}
+
+	// PRINTANDO E SALVANDO O RESULTADO NO ARQUIVO
+	protected void finalResult(AbstractorProcessor<?> myAbstractorProcessor) {
+	
+		double resultFrac = Double.parseDouble(qtdMutantDead + "") / Double.parseDouble(numberMutant + "");
+		
+		System.out.println("----------------");
+		System.out.println("Quantidade de Mutants: " + numberMutant);
+		System.out.println("Quantidade de Mutants Mortos: " + qtdMutantDead);
+		System.out.println("Quantidade de Mutants Vivos: " + (numberMutant - qtdMutantDead));
+		System.out.println("Fração de Mutants / Mutants Mortos: " + resultFrac);
+		System.out.println("----------------");
+
+		String pathResultFile = PathProject.makePathToProject(uriName) + myAbstractorProcessor.pathIdentification()
+				+ (File.separator) + "finalResult.xml";
+
+		FinalResultSavedByProject fr = new FinalResultSavedByProject(myAbstractorProcessor.name(), myAbstractorProcessor.pathIdentification(),
+				numberMutant, numberMutant - qtdMutantDead, qtdMutantDead, resultFrac);
+		
+		
+		if(!listSaveMutantResultType.containsKey(uriName))
+			listSaveMutantResultType.put(uriName, new ArrayList<FinalResultSavedByProject>());
+		
+		listSaveMutantResultType.get(uriName).add(fr);
+		
+		XStream xstream = new XStream();
+
+		try {
+			xstream.toXML(fr, new FileOutputStream(new File(pathResultFile)));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// SALVANDO O RESULTADO INDIVIDUAL PARA CADA PROJETO DE MUTANTE
+	protected void createResult(String pathFile, int result, ParameterProcessor parameter, String namePath) {
+		
+		String pathResultFile = PathProject.makePathToProject(uriName) + namePath + (File.separator) + (numberMutant)
+				+ (File.separator) + "result.xml";
+		
+		if(result!=0)
+			qtdMutantDead++;
+		
+		ResultSavedByMutant rsbm = new ResultSavedByMutant(result != 0, pathFile, parameter.getBeginLine(), parameter.getEndLine(), parameter.getBefore(), parameter.getAfter());
+
+		XStream xstream = new XStream();
+
+		try {
+			xstream.toXML(rsbm, new FileOutputStream(new File(pathResultFile)));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+}
