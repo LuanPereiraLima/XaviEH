@@ -82,7 +82,7 @@ public class XmlJacoco {
 		}
 	}
 	
-public static TotalCoveredStatus listaClassCoverageFromXMLJaCoCoTotalCoveredStatus(String pathXML){
+	public static TotalCoveredStatus listaClassCoverageFromXMLJaCoCoTotalCoveredStatus(String pathXML){
 		
 		try {
 			File fXmlFile = new File(pathXML);//PathProject.USER_REFERENCE_TO_PROJECT+"jacoco.xml");
@@ -132,61 +132,61 @@ public static TotalCoveredStatus listaClassCoverageFromXMLJaCoCoTotalCoveredStat
 		}
 	}
 
-public static TotalCoveredStatus listaClassCoverageFromXMLJaCoCoTotalCoveredStatusTotal(String pathXML){
+	public static TotalCoveredStatus listaClassCoverageFromXMLJaCoCoTotalCoveredStatusTotal(String pathXML){
 	
-	try {
-		File fXmlFile = new File(pathXML);//PathProject.USER_REFERENCE_TO_PROJECT+"jacoco.xml");
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder;
-		dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
-		dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-		dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse(fXmlFile);
-		doc.getDocumentElement().normalize();
-
-		TotalCoveredStatus tcs = new TotalCoveredStatus();
-		
-		NodeList report = doc.getElementsByTagName("report");
-		
-		for(int i=0; i < report.getLength(); i++) {
+		try {
+			File fXmlFile = new File(pathXML);//PathProject.USER_REFERENCE_TO_PROJECT+"jacoco.xml");
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder;
+			dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+			dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(fXmlFile);
+			doc.getDocumentElement().normalize();
+	
+			TotalCoveredStatus tcs = new TotalCoveredStatus();
 			
-			for(int j=0; j < report.item(i).getChildNodes().getLength(); j++) {
-				NodeList lista = report.item(i).getChildNodes();
-				if(lista.item(j).getNodeName().equals("counter")) {
-					System.out.println("Opa Opa: ");
-					if(lista.item(j).getAttributes().getNamedItem("type").getNodeValue().equals("INSTRUCTION")){
-						tcs.setMI_TotalMissedInstructions(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("missed").getNodeValue()));
-						tcs.setCI_TotalCoveredInstructions(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("covered").getNodeValue()));
-					}else if(lista.item(j).getAttributes().getNamedItem("type").getNodeValue().equals("BRANCH")){
-						tcs.setMB_TotalMissedBraches(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("missed").getNodeValue()));
-						tcs.setCB_TotalCoveredBraches(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("covered").getNodeValue()));
-					}else if(lista.item(j).getAttributes().getNamedItem("type").getNodeValue().equals("METHOD")){
-						tcs.setMM_TotalMissedMethods(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("missed").getNodeValue()));
-						tcs.setCM_TotalCoveredMethods(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("covered").getNodeValue()));
-					}else if(lista.item(j).getAttributes().getNamedItem("type").getNodeValue().equals("CLASS")){
-						tcs.setMC_TotalMissedClasses(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("missed").getNodeValue()));
-						tcs.setCC_TotalCoveredClasses(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("covered").getNodeValue()));
+			NodeList report = doc.getElementsByTagName("report");
+			
+			for(int i=0; i < report.getLength(); i++) {
+				
+				for(int j=0; j < report.item(i).getChildNodes().getLength(); j++) {
+					NodeList lista = report.item(i).getChildNodes();
+					if(lista.item(j).getNodeName().equals("counter")) {
+						System.out.println("Opa Opa: ");
+						if(lista.item(j).getAttributes().getNamedItem("type").getNodeValue().equals("INSTRUCTION")){
+							tcs.setMI_TotalMissedInstructions(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("missed").getNodeValue()));
+							tcs.setCI_TotalCoveredInstructions(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("covered").getNodeValue()));
+						}else if(lista.item(j).getAttributes().getNamedItem("type").getNodeValue().equals("BRANCH")){
+							tcs.setMB_TotalMissedBraches(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("missed").getNodeValue()));
+							tcs.setCB_TotalCoveredBraches(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("covered").getNodeValue()));
+						}else if(lista.item(j).getAttributes().getNamedItem("type").getNodeValue().equals("METHOD")){
+							tcs.setMM_TotalMissedMethods(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("missed").getNodeValue()));
+							tcs.setCM_TotalCoveredMethods(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("covered").getNodeValue()));
+						}else if(lista.item(j).getAttributes().getNamedItem("type").getNodeValue().equals("CLASS")){
+							tcs.setMC_TotalMissedClasses(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("missed").getNodeValue()));
+							tcs.setCC_TotalCoveredClasses(Integer.parseInt(lista.item(j).getAttributes().getNamedItem("covered").getNodeValue()));
+						}
 					}
 				}
 			}
-		}
-		
-		return tcs;
-		
-	}catch (SAXException e) {
-		e.printStackTrace();
-		return null;
-	}catch (ParserConfigurationException e) {
-		e.printStackTrace();
-		return null;
-	}catch (IOException e) {
-		e.printStackTrace();
-		return null;
+			
+				return tcs;
+				
+			}catch (SAXException e) {
+				e.printStackTrace();
+				return null;
+			}catch (ParserConfigurationException e) {
+				e.printStackTrace();
+				return null;
+			}catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
 	}
-}
 
 
-public static List<ClassXMLCoverage> listaClassCoverageFromXMLJaCoCoMethods(String pathXML){
+	public static List<ClassXMLCoverage> listaClassCoverageFromXMLJaCoCoMethods(String pathXML){
 		
 		try {
 			File fXmlFile = new File(pathXML);//PathProject.USER_REFERENCE_TO_PROJECT+"jacoco.xml");
@@ -251,18 +251,18 @@ public static List<ClassXMLCoverage> listaClassCoverageFromXMLJaCoCoMethods(Stri
 						listaDeClasses.add(cc);					}
 				}
 			}
-			
-			return listaDeClasses;
-			
-		}catch (SAXException e) {
-			e.printStackTrace();
-			return null;
-		}catch (ParserConfigurationException e) {
-			e.printStackTrace();
-			return null;
-		}catch (IOException e) {
-			e.printStackTrace();
-			return null;
+				
+				return listaDeClasses;
+				
+			}catch (SAXException e) {
+				e.printStackTrace();
+				return null;
+			}catch (ParserConfigurationException e) {
+				e.printStackTrace();
+				return null;
+			}catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
 	}
-}

@@ -23,16 +23,19 @@ public abstract class AbstractRunner {
 
 	protected int numberMutant = 0;
 	protected int qtdMutantDead = 0;
-	public static Map<String, List<FinalResultSavedByProject>> listSaveMutantResultType;
+	public static Map<String, List<FinalResultSavedByProject>> listSavedMutantResultType;
 	
 	protected String uriName;
 	protected String subModule;
+	protected boolean isMavenProject;
 	
-	public AbstractRunner(String uriName, String subModule) {
+	public AbstractRunner(String uriName, String subModule, boolean isMavenProject) {
 		this.uriName = uriName;
 		this.subModule = subModule;
-		if(listSaveMutantResultType==null)
-			listSaveMutantResultType = new HashMap<String, List<FinalResultSavedByProject>>();
+		if(listSavedMutantResultType==null)
+			listSavedMutantResultType = new HashMap<String, List<FinalResultSavedByProject>>();
+		
+		this.isMavenProject = isMavenProject;
 	}
 
 	public abstract void processor(AbstractorProcessor<?> myAbstractorProcessor) throws PomException;
@@ -43,7 +46,7 @@ public abstract class AbstractRunner {
 	}
 	
 	public void resetListSaveMutantResultType() {
-		listSaveMutantResultType.clear();
+		listSavedMutantResultType.clear();
 	}
 	
 	//SALVANDO MUTANT NA SUA DEVIDA PASTA
@@ -91,10 +94,10 @@ public abstract class AbstractRunner {
 				numberMutant, numberMutant - qtdMutantDead, qtdMutantDead, resultFrac);
 		
 		
-		if(!listSaveMutantResultType.containsKey(uriName))
-			listSaveMutantResultType.put(uriName, new ArrayList<FinalResultSavedByProject>());
+		if(!listSavedMutantResultType.containsKey(uriName))
+			listSavedMutantResultType.put(uriName, new ArrayList<FinalResultSavedByProject>());
 		
-		listSaveMutantResultType.get(uriName).add(fr);
+		listSavedMutantResultType.get(uriName).add(fr);
 		
 		XStream xstream = new XStream();
 

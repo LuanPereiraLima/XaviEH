@@ -14,6 +14,7 @@ public abstract class AbstractorProcessor<A extends CtElement> extends AbstractP
 	private ParameterProcessor parameterVisitor;
 	private String uriName;
 	private String subModule;
+	private boolean mavenProject = true;
 	
 	public abstract String pathIdentification();
 	public abstract String name();
@@ -64,5 +65,11 @@ public abstract class AbstractorProcessor<A extends CtElement> extends AbstractP
 	 
 	public void incrementPosition() {
 		this.position++;
+	}
+	public boolean isMavenProject() {
+		return mavenProject;
+	}
+	public void setMavenProject(boolean mavenProject) {
+		this.mavenProject = mavenProject;
 	}
 }

@@ -39,21 +39,21 @@ import ufc.br.mutant_project.models.FinalResultSavedByProject;
 public class TesteInvokr {
 	
 	public static void main(String[] args) {
-		invokerOthers("/home/luan/httpcomponents-client", Collections.singletonList("test"), Collections.singletonList("httpclient5-osgi"));
+		invokerOthers("/media/loopback/C4DAE5FEDAE5EC9C/Users/luan_/mutationsTests/junit4-4.12/junit4-4.12", Collections.singletonList("test"), Collections.singletonList("httpclient5-osgi"));
 	}
 	
 	public static int invokerOthers(String copyProjectPath, List<String> goals, List<String> projects) {
     	try {
 			Invoker invoker = new DefaultInvoker();
 			
-			invoker.setMavenHome( new File( "/usr" ) );
-			
+			invoker.setMavenHome( new File( "/opt/apache-maven" ) );
 			
 			InvocationRequest request = new DefaultInvocationRequest();
-			request.setPomFile( new File( copyProjectPath ) );
+			request.setBaseDirectory( new File(copyProjectPath) );
+			//request.setPomFile( new File( copyProjectPath ) );
 			request.setGoals( goals );
-			request.setLocalRepositoryDirectory(new File(copyProjectPath));
-			request.setProjects( projects );
+			//request.setLocalRepositoryDirectory(new File(copyProjectPath));
+			//request.setProjects( projects );
 			//request.setDebug(true);
 			
 			InvocationResult result = invoker.execute( request );

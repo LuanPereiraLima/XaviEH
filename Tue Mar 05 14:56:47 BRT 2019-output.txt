@@ -1,0 +1,62 @@
+  _ __ ___  _   _| |_ __ _ _ __ | |_  | |_ ___ ___| |_    __ _  ___ _ __   ___ _ __ __ _| |_ ___  _ __ 
+ | '_ ` _ \| | | | __/ _` | '_ \| __| | __/ _ \ __| __|  / _` |/ _ \ '_ \ / _ \ '__/ _` | __/ _ \| '__|
+ | | | | | | |_| | |_ (_| | | | | |_  | |_  __\__ \ |_  | (_| |  __/ | | |  __/ | | (_| | |_ (_) | |   
+ |_| |_| |_|\__,_|\__\__,_|_| |_|\__|  \__\___|___/\__|  \__, |\___|_| |_|\___|_|  \__,_|\__\___/|_|   
+                                                         |___/                                         
+Jumping URL: -https://github.com/apache/commons-bcel.git -v 6.2 -c 893d9bbcdbd5ce764db1a38eccd73af150e5d34d By signal - .
+Jumping URL: -https://github.com/apache/commons-beanutils.git -v 1.9.3 -c a83c1eae04c9c99360c3ba4e6a46fd89dc5407ef By signal - .
+Jumping URL: -https://github.com/apache/commons-exec.git -v 1.3 -c 0b1c1ff0cba7145d396ace37805f0b59b3d52a9c By signal - .
+Jumping URL: -https://github.com/apache/commons-codec.git -v 1.11 -c 9ceef2231549e95f7868266f38b0c7e1a0a40ed4 By signal - .
+Jumping URL: -https://github.com/apache/commons-collections.git -v 4.2 -c 483cbbbf5a8b3c14edf3e6563e8f8ba380966d47 By signal - .
+Jumping URL: -https://github.com/apache/commons-compress.git -v 1.18 -c b95d5cde4c68640f886e3c6802384fae47408a37 By signal - .
+Jumping URL: -https://github.com/apache/commons-configuration.git -v 2.4 -c 6543cb0b6c283c0d4331dc0baee269b01db00622 By signal - .
+Jumping URL: -https://github.com/apache/commons-email.git -v 1.5 -c 5516c487a5d03df520480d47f5c5ae5a3b3341d4 By signal - .
+Jumping URL: -https://github.com/apache/commons-fileupload.git -v 1.3.3 -c 18734e9f77a267ebc82ff2ffce6d96e82a34260f By signal - .
+Jumping URL: -https://github.com/apache/commons-math.git -v 3.6.1 -c 16abfe5de688cc52fb0396e0609cb33044b15653 By signal - .
+Jumping URL: -https://github.com/apache/commons-net.git -v 3.6 -c 163fe46c019f5184016207c247cdff30ee740ecc By signal - .
+Jumping URL: -https://github.com/apache/commons-pool.git -v 2.6.1 -c 87c5dc14a967a70dd6e640395d4e842b021cdb8f By signal - .
+Jumping URL: -https://github.com/apache/commons-validator.git -v 1.6 -c c4b93a7275b1172f69e53cd8cec7fc27c954a5be By signal - .
+Jumping URL: -https://github.com/apache/commons-io.git -v 2.6 -c 2ae025fe5c4a7d2046c53072b0898e37a079fe62 By signal - .
+Jumping URL: -https://github.com/apache/commons-lang.git -v 3.8.1 -c eb5b11a25c9e61f9b25a540682816ebb103b735c By signal - .
+Jumping URL: -https://github.com/apache/commons-cli.git -v 1.4 -c f7153c3c10cc8060d3858a6a90d7ddccd0b3533e By signal - .
+Jumping URL: -https://github.com/apache/commons-functor.git -v 1 -c 62cd20998e706eafb48b35774aca7b6e1c657386 By signal - .
+Jumping URL: -https://github.com/apache/commons-proxy.git -v 1.0 -c f6e58dbc601f0e6d522a4f4cad5d7c8f9259c83e By signal - .
+Jumping URL: -https://github.com/apache/commons-digester.git -v 3.3.2 -c ec75748096c8639be7b4998d99c37bb2e3a9c206 By signal - .
+Jumping URL: -https://github.com/apache/commons-dbcp.git -v 2.5 -c 334784e3043cadaeaa626f792c3f62ac7b697927 By signal - .
+Jumping URL: -https://github.com/apache/commons-dbutils.git -v 1.7 -c 77faa3caefc24697b00bf370111f7307dae339b0 By signal - .
+Jumping URL: - By signal - .
+Jumping URL: -https://github.com/google/gson.git -v 2.8.5 -c f649e051411e092f0123878e16c5132500a2d01e -m gson By signal - .
+Jumping URL: -https://github.com/jhy/jsoup.git -v 1.11.3 -c 2b1ea0633ff5d4cba5db0e202a4ce0fbdccc19db By signal - .
+-Verificando se o projeto já foi rodado...
+--OK!
+-O projeto junit4-4.12 já possui resultados já rodados, o mesmo será pulado...
+Jumping URL: - By signal - .
+Jumping URL: --https://github.com/x-stream/xstream.git -v 1.4.11.1 -c 54529d8561c7fc959c8c394c0526bf45cc0c1528 -m xstream [projeto com problema no spoon, talvez usar sem maven build] By signal - .
+Jumping URL: --https://github.com/google/guava.git -v 27.0.1 -c 777f0f939dda3feb36263315da5bc39516a076a1 -m guava [os testes são separados, então precisamos saber como testar] By signal - .
+Jumping URL: --https://github.com/qos-ch/slf4j.git -v 1.8.0 -c 26731d281940483d8777a8a7a4146329a28496aa -m slf4j-api precisa da versão 1.6 do jdk By signal - .
+Jumping URL: -https://github.com/mockito/mockito.git -v 2.23.11 -c 0c4e494a16141a65f22605a57382a222040f340b -p g By signal - .
+Jumping URL: -https://github.com/hamcrest/JavaHamcrest.git -v 2.1 -c cf6796e1b3745a188cf4548cb585482543ad1de6 -p g -m hamcrest By signal - .
+-Gerando CSV para todos os projetos
+Projeto commons-dbutils-1.7 não tem processado o mutant: CBI
+Projeto commons-dbutils-1.7 não tem processado o mutant: CBR
+Projeto commons-exec-1.3 não tem processado o mutant: PTL
+Projeto commons-cli-1.4 não tem processado o mutant: CBI
+Projeto commons-cli-1.4 não tem processado o mutant: PTL
+Projeto commons-cli-1.4 não tem processado o mutant: CBR
+Projeto commons-proxy-1.0 não tem processado o mutant: CBI
+Projeto commons-proxy-1.0 não tem processado o mutant: FBD
+Projeto commons-proxy-1.0 não tem processado o mutant: PTL
+Projeto commons-proxy-1.0 não tem processado o mutant: CBR
+Projeto jsoup-1.11.3 não tem processado o mutant: CBI
+Projeto jsoup-1.11.3 não tem processado o mutant: CBR
+Projeto commons-codec-1.11 não tem processado o mutant: CBI
+Projeto commons-codec-1.11 não tem processado o mutant: PTL
+Projeto commons-codec-1.11 não tem processado o mutant: CBR
+Projeto commons-collections-4.2 não tem processado o mutant: CBI
+Projeto commons-collections-4.2 não tem processado o mutant: CBR
+Projeto commons-beanutils-1.9.3 não tem processado o mutant: FBD
+Projeto commons-fileupload-1.3.3 não tem processado o mutant: CBI
+Projeto commons-fileupload-1.3.3 não tem processado o mutant: PTL
+Projeto commons-fileupload-1.3.3 não tem processado o mutant: CBR
+CSV file to all project was created successfully !!!
+--OK!

@@ -2,11 +2,8 @@ package ufc.br.mutant_project.executers;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,37 +15,28 @@ import spoon.reflect.code.CtIf;
 import spoon.reflect.code.CtLoop;
 import spoon.reflect.code.CtStatement;
 import spoon.reflect.code.CtThrow;
-import spoon.reflect.code.CtTry;
-import spoon.reflect.declaration.CtClass;
-import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.Filter;
-import ufc.br.mutant_project.constants.ConfigPropierties;
+import spoon.reflect.visitor.filter.TypeFilter;
 import ufc.br.mutant_project.constants.PathProject;
-import ufc.br.mutant_project.exceptions.CloneRepositoryException;
 import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
 import ufc.br.mutant_project.exceptions.InicializerException;
-import ufc.br.mutant_project.exceptions.JacocoException;
 import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
 import ufc.br.mutant_project.exceptions.NotURLsException;
-import ufc.br.mutant_project.exceptions.PomException;
-import ufc.br.mutant_project.exceptions.TestFailMavenInvokerException;
 import ufc.br.mutant_project.models.ClassXMLCoverage;
 import ufc.br.mutant_project.models.ClassXMLCoverageLine;
-import ufc.br.mutant_project.models.ClassXMLCoverageLineMethod;
 import ufc.br.mutant_project.models.ClassXMLCoverageLineNormal;
 import ufc.br.mutant_project.models.CoverageResult;
-import ufc.br.mutant_project.models.Properties;
 import ufc.br.mutant_project.models.TotalCoveredStatus;
 import ufc.br.mutant_project.runners.AbstractRunner;
 import ufc.br.mutant_project.util.Util;
+import ufc.br.mutant_project.util.UtilWriteReader;
 import ufc.br.mutant_project.util.XmlJacoco;
 
 public class ExecuterEstatisticsCoverageEH extends Executer{
 	
 	private ClassXMLCoverage cc = null;
-	private ClassXMLCoverage ccMethod = null;
 	private String path = null;
 	
 	public ExecuterEstatisticsCoverageEH() {
@@ -56,49 +44,10 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 	}
 	
 	public void execute() throws InicializerException, ListProjectsNotFoundException, NotURLsException, ConfigPropertiesNotFoundException {
-		String fields = "";
-		for(String f: ConfigPropierties.fields)
-			fields += f+"\n";
-		try {
-			Properties p = Util.getProperties();
-			if(p.getHomeMaven()==null) {
-				throw new ConfigPropertiesNotFoundException("Alguma propriedade do arquivo 'config.propierties' necessária não foi encontrado (Para resolver o problema, adiciona as propriedades necessárias para o projeto do projeto \n[ propriedades disponíveis: \n"+fields+" ]).");
-			}
-		} catch (IOException e1) {
-			throw new ConfigPropertiesNotFoundException("Nenhum arquivo de propriedades foi encontrado (Para resolver o problema, crie um arquivo 'config.properties' com as propriedades necessárias para o projeto do projeto \n[ propriedades dispníveis: \n"+fields+" ]).");
-		}
-		
-		if(this.saveOutputInFile) {
-			try {
-				System.setOut(new PrintStream(new FileOutputStream(new Date()+"-output.txt")));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
 
-		System.out.println("  _ __ ___  _   _| |_ __ _ _ __ | |_  | |_ ___ ___| |_    __ _  ___ _ __   ___ _ __ __ _| |_ ___  _ __ \n" + 
-				" | '_ ` _ \\| | | | __/ _` | '_ \\| __| | __/ _ \\ __| __|  / _` |/ _ \\ '_ \\ / _ \\ '__/ _` | __/ _ \\| '__|\n" + 
-				" | | | | | | |_| | |_ (_| | | | | |_  | |_  __\\__ \\ |_  | (_| |  __/ | | |  __/ | | (_| | |_ (_) | |   \n" + 
-				" |_| |_| |_|\\__,_|\\__\\__,_|_| |_|\\__|  \\__\\___|___/\\__|  \\__, |\\___|_| |_|\\___|_|  \\__,_|\\__\\___/|_|   \n" + 
-				"                                                         |___/                                         ");
+		inicializer();
 		
-		if(!Util.preparePathInit()) {
-			throw new InicializerException("Projeto não pode ser iniciado, falha na criação da pasta 'mutations', ela é necessária para a criação dos mutantes.");
-		}
-		
-		List<String> list = null;
-		try {
-			list = Util.listProjects("projetos.txt");
-		} catch (FileNotFoundException e) {
-			throw new ListProjectsNotFoundException("Nenhum arquivo de lista de url de repositório foi encontrado (Para resolver o problema, crie um arquivo 'repositories.txt' com as URLs do GIT na raiz do projeto).");
-		}
-		
-		if(list.isEmpty()) {
-			throw new NotURLsException("Não existe URLs de projetos no arquivo 'repositories.txt' (Para resolver o problema, edite o arquivo, adicionando as URLs do GIT dos projetos).");
-		}
-		
-		AbstractRunner.listSaveMutantResultType = Util.getListSaveMutantResultTypeFromXml(PathProject.USER_REFERENCE_TO_PROJECT);
-		
+		List<String> list = listProjects;
 		List<CoverageResult> resultCoverageTotal = new ArrayList<CoverageResult>();
 		Map<String, TotalCoveredStatus> tcs = new HashMap<>();
 		
@@ -114,16 +63,17 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 			String version = getItemByUrl(linha, VERSION_URL);
 			String commit = getItemByUrl(linha, COMMIT_URL);
 			String submodule = getItemByUrl(linha, MODULE_URL);
+			String build = getItemByUrl(linha, BUILD_URL);
 			
 			path = Util.validateAndGetNameRepository(linha[0]);
 			
 			if(version!=null)
 				path=path+"-"+version;
 			
-			if(AbstractRunner.listSaveMutantResultType!=null) {
+			if(AbstractRunner.listSavedMutantResultType!=null) {
 				System.out.println("-Verificando se o projeto já foi rodado...");
 				boolean projectAlreadyRunned = false;
-				for(String projeto : AbstractRunner.listSaveMutantResultType.keySet()) {
+				for(String projeto : AbstractRunner.listSavedMutantResultType.keySet()) {
 					if(path.equals(projeto)) {
 						projectAlreadyRunned = true;
 						break;
@@ -191,7 +141,12 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 			
 			System.out.println(PathProject.makePathToProjectMaven(path, submodule));
 			
-			model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
+			if(build != null && build.equals("g"))
+				model = Util.getModelNoMaven(PathProject.makePathToProjectMaven(path, submodule)+"src/main/java");
+			else
+				model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
+				
+			System.out.println();
 			
 			System.out.println("-----------------");
 			System.out.println("Projeto: "+path);
@@ -212,21 +167,23 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 //			}
 //			
 			List<ClassXMLCoverage> listaxml = null;
-			List<ClassXMLCoverage>  listaxmlMethods = null;
+		//	List<ClassXMLCoverage>  listaxmlMethods = null;
 			TotalCoveredStatus totalCoveredStatus = null;
 			
 			listaxml = XmlJacoco.listaClassCoverageFromXMLJaCoCo(PathProject.makePathToProjectMavenToJacoco(path, submodule));
-			listaxmlMethods = XmlJacoco.listaClassCoverageFromXMLJaCoCoMethods(PathProject.makePathToProjectMavenToJacoco(path, submodule));
+			//listaxmlMethods = XmlJacoco.listaClassCoverageFromXMLJaCoCoMethods(PathProject.makePathToProjectMavenToJacoco(path, submodule));
 			totalCoveredStatus = XmlJacoco.listaClassCoverageFromXMLJaCoCoTotalCoveredStatus(PathProject.makePathToProjectMavenToJacoco(path, submodule));
 			
-			System.out.println("quantidade: "+model.getAllTypes().size());
 			for(CtType<?> tp : model.getAllTypes()) {
-				System.out.println("Analisando "+tp+" do "+path);
+			
+				System.out.println("Analisando a classe: "+tp.getQualifiedName()+" do "+path);
+				
 				if(tp.isClass()) {
-					
+			
 					List<CoverageResult> resultCoverage = new ArrayList<CoverageResult>();
-					//Obtendo a linha correspondente
+					//Obtendo a linha correspondente no jacoco
 					boolean encontrada = false;
+					
 					for(ClassXMLCoverage cx : listaxml) {
 						//System.out.println("ali: "+cx.getFullName());
 //						System.out.println("L: "+tp.isTopLevel());
@@ -238,7 +195,7 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 					}
 					
 					if(!encontrada) {
-						System.out.println("Uma classe não foi encontrada.");
+						System.out.println("Uma classe não foi encontrada na cobertura do jacoco.");
 						System.out.println("nome: "+tp.getQualifiedName());
 						
 						continue;
@@ -252,176 +209,143 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 //							System.out.println(cx.getFullName());
 //						}	
 //						System.exit(0);
-						
 					}
 					
-					System.out.println("Nome da classe: "+tp.getQualifiedName());
-					System.out.println("Nome da classe pareada: "+cc.getFullName());
-					
-					//OBTENDO METODOS DA CLASSE
-					List<CtTry> listTrys = tp.getElements(new Filter<CtTry>() {
-						
-						public boolean matches(CtTry element) {
-							
-//							System.out.println("Metodo: "+element.getSimpleName());
-							
-//							System.out.println("CLASSE: "+tp.getSimpleName());
-							
-							if(!element.getParent(new Filter<CtClass<?>>() {
-								@Override
-								public boolean matches(CtClass<?> element) {
-//									System.out.println("PARENT: "+element.getSimpleName());
-									return true;
-								}	
-							}).getSimpleName().equals(tp.getSimpleName())) {
-//								System.out.println("COMPARAÇÃO VERDADEIRA");
-								return false;
-							}
-							
-							return true;
-						}
-					});
+					System.out.println("Nome da classe do Model: "+tp.getQualifiedName());
+					System.out.println("Nome da classe pareada no jacoco: "+cc.getFullName());
 					
 					
-					//OBTENDO INFORMAÇÕES DO TRY E SUAS LINHAS INTERNAS
-					for(CtTry element: listTrys) {
-						
-						//OBTENDO O CORPO DO TRY
-						element.getBody().getElements(new Filter<CtBlock<?>>() {
+					//All Raisings
+					
+					List<CtThrow> raisers = tp.getElements(new TypeFilter<CtThrow>(CtThrow.class));
 
-							@Override
-							public boolean matches(CtBlock<?> element) {
-								// TODO Auto-generated method stub
-								//System.out.println(element);
-								//System.out.println("--");
-								
-								for(CtStatement st: element.getStatements()) {
-									
-									if(st.isImplicit())
-										continue;
-									
-									if(st instanceof CtThrow)
-										continue;
-									
-									System.out.println("OPA OPA: "+st.isImplicit());
-									
-									CoverageResult cr = new CoverageResult();
-									cr.setClassName(tp.getQualifiedName());
-									cr.setLineCode(st.getPosition().getLine());
-									cr.setProject(path);
-									cr.setCoveraged(false);
-									cr.setType("TRY");
-								
-									if(st instanceof CtLoop) {
-										CtLoop p = (CtLoop)st;
-									//	System.out.println("QQQ: "+p.toString().replace(p.getBody().toString(), ""));
-										cr.setLineContent(p.toString().replace(p.getBody().toString(), ""));
-									}
-									else if(st instanceof CtIf) {
-										CtIf i = (CtIf) st;
-//											System.out.println(st.toString().replace(i.getThenStatement().toString(), ""));
-//											System.out.println("EEE: "+i.getThenStatement());
-										if(i.getElseStatement()==null) {
-											cr.setLineContent(st.toString().replace(i.getThenStatement().toString(), ""));
-										}else {
-											cr.setLineContent(st.toString().replace(i.getThenStatement().toString(), "").replace(i.getElseStatement().toString(), "").replace("else", ""));
-										}
-									}else {
-//											System.out.println("item: "+st);
-//											System.out.println("line: "+st.getPosition().getLine());
-										cr.setLineContent(st.toString());
-									}
-									
-									for(ClassXMLCoverageLine cl: cc.getLineDetails()) {
-										if(cl.getNumberLine() == st.getPosition().getLine()) {
-											cr.setCoveraged((cl.verifyCoverage()));
-											cr.setCoverageLine(cl);
-										}
-									}
-									
-									if(cr.getCoverageLine()==null)
-										continue;
-									
-									System.out.println(cr);
-									resultCoverage.add(cr);
+					if (!raisers.isEmpty()) {
+						for (CtThrow raiser : raisers) {
+							//System.out.println(
+								//	"-- Throws [" + raiser.getPosition().getLine() + "," + raiser.getPosition().getEndLine()
+									//		+ "]: " + raiser.getThrownExpression().getType().getQualifiedName());
+							
+							CoverageResult cr = new CoverageResult();
+							cr.setCoveraged(false);
+							cr.setClassName(tp.getQualifiedName());
+							cr.setLineCode(raiser.getPosition().getLine());
+							cr.setLineContent(raiser.toString());
+							cr.setProject(path);
+							cr.setTypeCode(CoverageResult.ALL_RASINGS);
+							cr.setType(CoverageResult.THROW);
+							
+							boolean entrou = false;
+							for(ClassXMLCoverageLine cl: cc.getLineDetails()) {
+								if(cl.getNumberLine() == raiser.getPosition().getLine()) {
+									cr.setCoveraged(cl.verifyCoverage());
+									cr.setCoverageLine(cl);
+									entrou = true;
 								}
-								return false;
 							}
 							
-						});
+							if(cr.getCoverageLine()==null) {
+								System.out.println("Coverage liene null");
+							}
 							
-						//OBTENDO O CORPO DO FINALLY
-						if(element.getFinalizer()!=null) {
-							element.getFinalizer().getElements(new Filter<CtBlock<?>>() {
+							if(entrou)
+								resultCoverage.add(cr);
+						}
+					}
+					
+					//Raisings of Programmer Defined Exception
+					
+					System.out.println("Raisings of Programmer Defined Exception");
+					List<CtThrow> raisers2 = findRaisers(true, tp);
+
+					if (!raisers2.isEmpty()) {
+						for (CtThrow raiser : raisers2) {
+							//System.out.println(
+								//	"-- Throws [" + raiser.getPosition().getLine() + "," + raiser.getPosition().getEndLine()
+//											+ "]: " + raiser.getThrownExpression().getType().getQualifiedName());
+							
+							CoverageResult cr = new CoverageResult();
+							cr.setCoveraged(false);
+							cr.setClassName(tp.getQualifiedName());
+							cr.setLineCode(raiser.getPosition().getLine());
+							cr.setLineContent(raiser.toString());
+							cr.setProject(path);
+							cr.setTypeCode(CoverageResult.RAISINGS_PROGRAMMER_DEFINED);
+							cr.setType(CoverageResult.THROW);
+							
+							boolean entrou = false;
+							for(ClassXMLCoverageLine cl: cc.getLineDetails()) {
+								if(cl.getNumberLine() == raiser.getPosition().getLine()) {
+									cr.setCoveraged(cl.verifyCoverage());
+									cr.setCoverageLine(cl);
+									entrou = true;
+								}
+							}
+							
+							if(cr.getCoverageLine()==null) {
+								System.out.println("Coverage liene null");
+							}
+							if(entrou) {
+								resultCoverage.add(cr);
+								System.out.println("ADDD Raisings of Programmer Defined Exception");
+							}else {
+								System.out.println("Não entrou");
+							}
+						}
+					}
+					
+					//Raisings of Non Programmer Defined Exception
+					
+					List<CtThrow> raisers3 = findRaisers(false, tp);
+
+					if (!raisers3.isEmpty()) {
+						for (CtThrow raiser : raisers3) {
+//							System.out.println(
+	//								"-- Throws [" + raiser.getPosition().getLine() + "," + raiser.getPosition().getEndLine()
+//
+	//										+ "]: " + raiser.getThrownExpression().getType().getQualifiedName());
+							
+							CoverageResult cr = new CoverageResult();
+							cr.setCoveraged(false);
+							cr.setClassName(tp.getQualifiedName());
+							cr.setLineCode(raiser.getPosition().getLine());
+							cr.setLineContent(raiser.toString());
+							cr.setProject(path);
+							cr.setTypeCode(CoverageResult.RAISINGS_NON_PROGRAMMER_DEFINED);
+							cr.setType(CoverageResult.THROW);
+							
+							boolean entrou = false;
+							for(ClassXMLCoverageLine cl: cc.getLineDetails()) {
+								if(cl.getNumberLine() == raiser.getPosition().getLine()) {
+									cr.setCoveraged(cl.verifyCoverage());
+									cr.setCoverageLine(cl);
+									entrou = true;
+								}
+							}
+							
+							if(cr.getCoverageLine()==null) {
+								System.out.println("Coverage liene null");
+							}
+							if(entrou) {
+								resultCoverage.add(cr);
+								System.out.println("NON Raisings of Programmer Defined Exception");
+							}
+						}
+					}
+					
+					//All Handlings
+					List<CtCatch> catchers = tp.getElements(new TypeFilter<CtCatch>(CtCatch.class));
+
+					if (!catchers.isEmpty()) {
+						for(CtCatch handler : catchers) {
+							//System.out.println(
+							//		"-- Catch [" + handler.getPosition().getLine() + "," + handler.getPosition().getEndLine()
+								//			+ "]: " + handler.getParameter().getMultiTypes().toString());
+							
+							handler.getBody().getElements(new Filter<CtBlock<?>>() {
 
 								@Override
 								public boolean matches(CtBlock<?> element) {
-									// TODO Auto-generated method stub
-									//System.out.println(element);
-									//System.out.println("--");
-									
-									for(CtStatement st: element.getStatements()) {
-										
-										if(st instanceof CtThrow)
-											continue;
-										
-										CoverageResult cr = new CoverageResult();
-										cr.setClassName(tp.getQualifiedName());
-										cr.setLineCode(st.getPosition().getLine());
-										cr.setProject(path);
-										cr.setCoveraged(false);
-										cr.setType("FINALLY");
-									
-										if(st instanceof CtLoop) {
-											CtLoop p = (CtLoop)st;
-										//	System.out.println("QQQ: "+p.toString().replace(p.getBody().toString(), ""));
-											cr.setLineContent(p.toString().replace(p.getBody().toString(), ""));
-										}
-										else if(st instanceof CtIf) {
-											CtIf i = (CtIf) st;
-//											System.out.println(st.toString().replace(i.getThenStatement().toString(), ""));
-//											System.out.println("EEE: "+i.getThenStatement());
-											if(i.getElseStatement()==null) {
-												cr.setLineContent(st.toString().replace(i.getThenStatement().toString(), ""));
-											}else {
-												cr.setLineContent(st.toString().replace(i.getThenStatement().toString(), "").replace(i.getElseStatement().toString(), "").replace("else", ""));
-											}
-										}else {
-//											System.out.println("item: "+st);
-//											System.out.println("line: "+st.getPosition().getLine());
-											cr.setLineContent(st.toString());
-										}
-										
-										for(ClassXMLCoverageLine cl: cc.getLineDetails()) {
-											if(cl.getNumberLine() == st.getPosition().getLine()) {
-												cr.setCoveraged(cl.verifyCoverage());
-												cr.setCoverageLine(cl);
-											}
-										}
-										
-										if(cr.getCoverageLine()==null)
-											continue;
-										
-										System.out.println(cr);
-										resultCoverage.add(cr);
-									}
-									return false;
-								}
-							
-							});
-						}
-						
-						//OBTENDO O CORPO DOS CATCHS
-						for(CtCatch elementCatch: element.getCatchers()) {
-							
-							elementCatch.getBody().getElements(new Filter<CtBlock<?>>() {
 
-								@Override
-								public boolean matches(CtBlock<?> element) {
-									// TODO Auto-generated method stub
-									//System.out.println(element);
-									//System.out.println("--");
-									
 									for(CtStatement st: element.getStatements()) {
 										
 										if(st instanceof CtThrow)
@@ -435,25 +359,21 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 										cr.setLineCode(st.getPosition().getLine());
 										cr.setProject(path);
 										cr.setCoveraged(false);
-										cr.setType("CATCH");
+										cr.setTypeCode(CoverageResult.ALL_HANDLINGS);
+										cr.setType(CoverageResult.CATCH);
 									
 										if(st instanceof CtLoop) {
 											CtLoop p = (CtLoop)st;
-										//	System.out.println("QQQ: "+p.toString().replace(p.getBody().toString(), ""));
 											cr.setLineContent(p.toString().replace(p.getBody().toString(), ""));
 										}
 										else if(st instanceof CtIf) {
 											CtIf i = (CtIf) st;
-//												System.out.println(st.toString().replace(i.getThenStatement().toString(), ""));
-//												System.out.println("EEE: "+i.getThenStatement());
 											if(i.getElseStatement()==null) {
 												cr.setLineContent(st.toString().replace(i.getThenStatement().toString(), ""));
 											}else {
 												cr.setLineContent(st.toString().replace(i.getThenStatement().toString(), "").replace(i.getElseStatement().toString(), "").replace("else", ""));
 											}
 										}else {
-//												System.out.println("item: "+st);
-//												System.out.println("line: "+st.getPosition().getLine());
 											cr.setLineContent(st.toString());
 										}
 										
@@ -467,286 +387,146 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 										if(cr.getCoverageLine()==null)
 											continue;
 										
-										System.out.println(cr);
+										//System.out.println(cr);
 										resultCoverage.add(cr);
 									}
 									return false;
 								}
-								
 							});
-						
-						}
-					 }
-					
-					//break;
-					
-			
-					//OBTENDO METODOS DA CLASSE
-					List<CtThrow> listThrows = tp.getElements(new Filter<CtThrow>() {
-						
-						public boolean matches(CtThrow element) {
-							
-//							System.out.println("Metodo: "+element.getSimpleName());
-							
-//							System.out.println("CLASSE: "+tp.getSimpleName());
-							
-							if(!element.getParent(new Filter<CtClass<?>>() {
-								@Override
-								public boolean matches(CtClass<?> element) {
-//									System.out.println("PARENT: "+element.getSimpleName());
-									return true;
-								}	
-							}).getSimpleName().equals(tp.getSimpleName())) {
-//								System.out.println("COMPARAÇÃO VERDADEIRA");
-								return false;
-							}
-							
-							return true;
-						}
-					});
-					
-					//Obtendo os Throw
-					for(CtThrow element: listThrows) {
-						CoverageResult cr = new CoverageResult();
-						cr.setCoveraged(false);
-						cr.setClassName(tp.getQualifiedName());
-						cr.setLineCode(element.getPosition().getLine());
-						cr.setLineContent(element.toString());
-						cr.setProject(path);
-						cr.setType("THROW");
-						
-						boolean entrou = false;
-						for(ClassXMLCoverageLine cl: cc.getLineDetails()) {
-							if(cl.getNumberLine() == element.getPosition().getLine()) {
-								cr.setCoveraged(cl.verifyCoverage());
-								cr.setCoverageLine(cl);
-								entrou = true;
-							}
-						}
-						
-						if(!entrou) {
-							System.out.println("classe atual: "+tp.getQualifiedName());
-							System.out.println("classe: "+cc.getFullName());
-							System.out.println("element.toString() "+element.toString());
-							System.out.println("linha: "+element.getPosition().getLine());
-							System.out.println("é implicito: "+element.isImplicit());
-							System.out.println("linhas:");
-							
-							for(ClassXMLCoverageLine cl: cc.getLineDetails()) {
-								System.out.println("----");
-								ClassXMLCoverageLineNormal nr = (ClassXMLCoverageLineNormal) cl;
-								System.out.println(cl.getNumberLine());
-							}
-							
-							//System.exit(0);
-						}
-						
-						if(cr.getCoverageLine()==null) {
-							System.out.println("OPAAAA");
-						}
-						if(entrou)
-						resultCoverage.add(cr);
-					}
-					
-					//Obtendo a linha correspondente
-					for(ClassXMLCoverage cx : listaxmlMethods) {
-					//	System.out.println("cdc: "+cx.getFullName());
-						//System.out.println("cew: "+tp.getQualifiedName());
-						if(cx.getFullName().replace(".java", "").equals(tp.getQualifiedName())) {
-							ccMethod = cx;
-							break;
 						}
 					}
 					
-//					System.out.println("classe: "+ccMethod);
-//					for(ClassXMLCoverageLine cl: ccMethod.getLineDetails()) {
-//						System.out.println("lines: "+cl);
-//					}
-//				//	System.out.println("Interno: "+tp);
+					//Handlings of Programmer Defined Exception
 					
-					
-					//OBTENDO METODOS DA CLASSE
-					List<CtMethod<?>> listMethods = tp.getElements(new Filter<CtMethod<?>>() {
+					List<CtCatch> catchers2 = findHandlers(true, tp);
 
-						@Override
-						public boolean matches(CtMethod<?> element) {
-							
-//							System.out.println("Metodo: "+element.getSimpleName());
-							
-//							System.out.println("CLASSE: "+tp.getSimpleName());
-							
-							if(!element.getParent(new Filter<CtClass<?>>() {
-								@Override
-								public boolean matches(CtClass<?> element) {
-//									System.out.println("PARENT: "+element.getSimpleName());
-									return true;
-								}	
-							}).getSimpleName().equals(tp.getSimpleName())) {
-//								System.out.println("COMPARAÇÃO VERDADEIRA");
-								return false;
-							}
-							
-							if(element.getThrownTypes()==null)
-								return false;
-							
-							if(element.getThrownTypes().size() == 0)
-								return false;
-							
-							if(element.isAbstract())
-								return false;
-							
-							return true;
-						}
-					});
-					
-					System.out.println("--");
-					for(CtMethod<?> me : listMethods) {
-//						System.out.println("externo: "+me.getSimpleName());
-//						boolean colou = false;
-//						for(ClassXMLCoverageLine cl: ccMethod.getLineDetails()) {
-//							ClassXMLCoverageLineMethod clm = (ClassXMLCoverageLineMethod) cl;
-//							//System.out.println(clm.getMethodName());
-//							if(me.getSimpleName().equals(clm.getMethodName())) {
-//								System.out.println("Colou: ");
-//								colou=true;
-//							}
-//						}
-//						if(!colou) {
-//							System.out.println("Metodos analisados:");
-//							for(ClassXMLCoverageLine cl: ccMethod.getLineDetails()) {
-//								ClassXMLCoverageLineMethod clm = (ClassXMLCoverageLineMethod) cl;
-//								System.out.println(clm.getMethodName());
-//							}
-//							System.exit(0);
-//						}
-						
-						String nome = me.getSignature()+" throws ";
-					
-						for(CtTypeReference<? extends Throwable> ee : me.getThrownTypes()) {
-							nome+=ee.getQualifiedName()+", ";
-						}
-					
-						//System.out.println("opaaaaaaaaa-: "+nome.substring(0, nome.length()-2));
-						
-						CoverageResult cr = new CoverageResult();
-						cr.setClassName(tp.getQualifiedName());
-						cr.setLineCode(me.getPosition().getLine());
-						cr.setProject(path);
-						cr.setCoveraged(false);
-						cr.setLineContent(nome);
-						cr.setType("THROWS");
-						
-						boolean entrou = false;
-						for(ClassXMLCoverageLine cl: ccMethod.getLineDetails()) {
-							ClassXMLCoverageLineMethod clm = (ClassXMLCoverageLineMethod) cl;
-							if(me.getSimpleName().equals(clm.getMethodName())){
-//								System.out.println("nome da classe: "+tp.getQualifiedName());
-//								System.out.println("nome do método: "+me.getSimpleName());
-//								System.out.println("corpo: "+me.getBody());
-//								System.out.println("linha do primeiro: "+line);
-//								System.out.println("linha do number: "+clm.getNumberLine());
-//								System.out.println("primeira linha: "+me.getPosition().getLine());
-//								System.out.println("linha do elemento: "+clm.getNumberLine());
-//								System.out.println("ultima linha: "+me.getPosition().getEndLine());
-								if(me.getPosition().getLine() <= clm.getNumberLine() && clm.getNumberLine() <= me.getPosition().getEndLine()) {
-									cr.setCoveraged(clm.verifyCoverage());
-									cr.setCoverageLine(clm);
-									entrou = true;
-									break;
-								}else {
-									System.out.println("O IF da linha n entrou");
-								}
-							}
-						}
-						if(!entrou) {
-							System.out.println("--");
-							System.out.println("WAU "+ me.getSimpleName());
-							System.out.println("-Nome da classe: "+tp.getQualifiedName());
-							System.out.println("-Nome da classe do ccMethod: "+ccMethod.getFullName());
-							System.out.println("-");
-							for(ClassXMLCoverageLine cl: ccMethod.getLineDetails()) {
-								ClassXMLCoverageLineMethod clm = (ClassXMLCoverageLineMethod) cl;
-								System.out.println(clm.getMethodName());
-							}
-							System.out.println("-");
-							System.out.println(cr);
-							System.out.println("--");
-						}
-						resultCoverage.add(cr);
-					}
-					
-					
-					//OBTENDO THROWS
-					/*tp.getElements(new Filter<CtMethod<?>>() {
+					if (!catchers2.isEmpty()) {
+						for(CtCatch handler : catchers2) {
+							//System.out.println(
+								//	"-- Catch [" + handler.getPosition().getLine() + "," + handler.getPosition().getEndLine()
+									//		+ "]: " + handler.getParameter().getMultiTypes().toString());
+							//passando por cada elemento do catch
+							handler.getBody().getElements(new Filter<CtBlock<?>>() {
 
-						@Override
-						public boolean matches(CtMethod<?> element) {
-							
-							if(!element.getParent(new Filter<CtClass<?>>() {
 								@Override
-								public boolean matches(CtClass<?> element) {
-									System.out.println("PARENT: "+element.getSimpleName());
-									return true;
-								}	
-							}).getSimpleName().equals(tp.getSimpleName())) {
-								System.out.println("COMPARAÇÃO VERDADEIRA");
-								return false;
-							}
+								public boolean matches(CtBlock<?> element) {
+
+									for(CtStatement st: element.getStatements()) {
+										
+										if(st instanceof CtThrow)
+											continue;
+										
+										if(st.isImplicit())
+											continue;
+										
+										CoverageResult cr = new CoverageResult();
+										cr.setClassName(tp.getQualifiedName());
+										cr.setLineCode(st.getPosition().getLine());
+										cr.setProject(path);
+										cr.setCoveraged(false);
+										cr.setTypeCode(CoverageResult.HANDLINGS_PROGRAMMER_DEFINED);
+										cr.setType(CoverageResult.CATCH);
 									
-
-							for(CtTypeReference<? extends Throwable> e : element.getThrownTypes()) {
-								//System.out.println(element.getPosition().getLine());
-								String nome = element.getSignature()+" throws ";
-								for(CtTypeReference<? extends Throwable> ee : element.getThrownTypes()) {
-									nome+=ee.getQualifiedName()+", ";
-								}
-							
-								//System.out.println("opaaaaaaaaa-: "+nome.substring(0, nome.length()-2));
-								
-								CoverageResult cr = new CoverageResult();
-								cr.setClassName(tp.getQualifiedName());
-								cr.setLineCode(element.getPosition().getLine());
-								cr.setProject(path);
-								cr.setCoveraged(false);
-								cr.setLineContent(nome);
-								cr.setType("THROWS");
-								
-								boolean entrou = false;
-								for(ClassXMLCoverageLine cl: ccMethod.getLineDetails()) {
-									ClassXMLCoverageLineMethod clm = (ClassXMLCoverageLineMethod) cl;
-									if(element.getSimpleName().equals(clm.getMethodName())){
-										cr.setCoveraged(clm.verifyCoverage());
-										cr.setCoverageLine(clm);
-										entrou = true;
-										break;
+										if(st instanceof CtLoop) {
+											CtLoop p = (CtLoop)st;
+											cr.setLineContent(p.toString().replace(p.getBody().toString(), ""));
+										}
+										else if(st instanceof CtIf) {
+											CtIf i = (CtIf) st;
+											if(i.getElseStatement()==null) {
+												cr.setLineContent(st.toString().replace(i.getThenStatement().toString(), ""));
+											}else {
+												cr.setLineContent(st.toString().replace(i.getThenStatement().toString(), "").replace(i.getElseStatement().toString(), "").replace("else", ""));
+											}
+										}else {
+											cr.setLineContent(st.toString());
+										}
+										
+										for(ClassXMLCoverageLine cl: cc.getLineDetails()) {
+											if(cl.getNumberLine() == st.getPosition().getLine()) {
+												cr.setCoveraged(cl.verifyCoverage());
+												cr.setCoverageLine(cl);
+											}
+										}
+										
+										if(cr.getCoverageLine()==null)
+											continue;
+										
+										//System.out.println(cr);
+										resultCoverage.add(cr);
 									}
-									//cl.getMethodName()
-								//	if(cl.getNumberLine() == element.getPosition().getLine()) {
-										//cr.setCoveraged(cl.verifyCoverage());
-									//}
-									
+									return false;
 								}
-								if(!entrou) {
-									System.out.println("--");
-									System.out.println("WAU "+ element.getSimpleName());
-									System.out.println("-Nome da classe: "+tp.getQualifiedName());
-									System.out.println("-Nome da classe do ccMethod: "+ccMethod.getFullName());
-									System.out.println("-");
-									for(ClassXMLCoverageLine cl: ccMethod.getLineDetails()) {
-										ClassXMLCoverageLineMethod clm = (ClassXMLCoverageLineMethod) cl;
-										System.out.println(clm.getMethodName());
-									}
-									System.out.println("-");
-									System.out.println(cr);
-									System.out.println("--");
-								}
-								resultCoverage.add(cr);
-							}
-							return false;
+							});
 						}
-					});*/
+					}
 					
+					//Handlings of Non Programmer Defined Exception
+					
+					List<CtCatch> catchers3 = findHandlers(false, tp);
+					
+					if (!catchers3.isEmpty()) {
+						for(CtCatch handler : catchers3) {
+							//System.out.println(
+								//	"-- Catch [" + handler.getPosition().getLine() + "," + handler.getPosition().getEndLine()
+									//		+ "]: " + handler.getParameter().getMultiTypes().toString());
+							
+							//passando por cada elemento do catch
+							handler.getBody().getElements(new Filter<CtBlock<?>>() {
 
+								@Override
+								public boolean matches(CtBlock<?> element) {
+
+									for(CtStatement st: element.getStatements()) {
+										
+										if(st instanceof CtThrow)
+											continue;
+										
+										if(st.isImplicit())
+											continue;
+										
+										CoverageResult cr = new CoverageResult();
+										cr.setClassName(tp.getQualifiedName());
+										cr.setLineCode(st.getPosition().getLine());
+										cr.setProject(path);
+										cr.setCoveraged(false);
+										cr.setTypeCode(CoverageResult.HANDLINGS_NON_PROGRAMMER_DEFINED);
+										cr.setType(CoverageResult.CATCH);
+									
+										if(st instanceof CtLoop) {
+											CtLoop p = (CtLoop)st;
+											cr.setLineContent(p.toString().replace(p.getBody().toString(), ""));
+										}
+										else if(st instanceof CtIf) {
+											CtIf i = (CtIf) st;
+											if(i.getElseStatement()==null) {
+												cr.setLineContent(st.toString().replace(i.getThenStatement().toString(), ""));
+											}else {
+												cr.setLineContent(st.toString().replace(i.getThenStatement().toString(), "").replace(i.getElseStatement().toString(), "").replace("else", ""));
+											}
+										}else {
+											cr.setLineContent(st.toString());
+										}
+										
+										for(ClassXMLCoverageLine cl: cc.getLineDetails()) {
+											if(cl.getNumberLine() == st.getPosition().getLine()) {
+												cr.setCoveraged(cl.verifyCoverage());
+												cr.setCoverageLine(cl);
+											}
+										}
+										
+										if(cr.getCoverageLine()==null)
+											continue;
+										
+										//System.out.println(cr);
+										resultCoverage.add(cr);
+									}
+									return false;
+								}
+							});
+						}
+					}
+					
 					resultCoverageTotal.addAll(resultCoverage);
 					
 					System.out.println("analisando "+path);
@@ -757,17 +537,50 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 					
 					for(CoverageResult rc: resultCoverage) {
 						
-						if(rc.getType().equals("THROW")) {
-							
+						if(rc.getType().equals(CoverageResult.THROW) && rc.getTypeCode().equals(CoverageResult.ALL_RASINGS)) {
 							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
 								ClassXMLCoverageLineNormal cn = (ClassXMLCoverageLineNormal) rc.getCoverageLine();
-								tcs.get(path).setTHROW_CI_TotalCoveredInstructionsThrowStatements(tcs.get(path).getTHROW_CI_TotalCoveredInstructionsThrowStatements()+cn.getCi());
-								tcs.get(path).setTHROW_MI_TotalMissedInstructionsThrowStatements(tcs.get(path).getTHROW_MI_TotalMissedInstructionsThrowStatements()+cn.getMi());
+								if(rc.isCoveraged()) {
+									tcs.get(path).setTHROW_CI_TotalCoveredInstructionsThrowStatements(tcs.get(path).getTHROW_CI_TotalCoveredInstructionsThrowStatements()+2);
+									tcs.get(path).setTHROW_MI_TotalMissedInstructionsThrowStatements(tcs.get(path).getTHROW_MI_TotalMissedInstructionsThrowStatements()+0);
+								}else {
+									tcs.get(path).setTHROW_CI_TotalCoveredInstructionsThrowStatements(tcs.get(path).getTHROW_CI_TotalCoveredInstructionsThrowStatements()+0);
+									tcs.get(path).setTHROW_MI_TotalMissedInstructionsThrowStatements(tcs.get(path).getTHROW_MI_TotalMissedInstructionsThrowStatements()+2);
+								}
 							}else {
 								System.out.println("NÃO ENTROU THROW");
 							}
 							
-						}else if(rc.getType().equals("THROWS")) {
+						}else if(rc.getType().equals(CoverageResult.THROW) && rc.getTypeCode().equals(CoverageResult.RAISINGS_PROGRAMMER_DEFINED)) {
+							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
+								ClassXMLCoverageLineNormal cn = (ClassXMLCoverageLineNormal) rc.getCoverageLine();
+								if(rc.isCoveraged()) {
+									tcs.get(path).setTHROW_I_CI_TotalCoveredInstructionsThrowStatements(tcs.get(path).getTHROW_I_CI_TotalCoveredInstructionsThrowStatements()+2);
+									tcs.get(path).setTHROW_I_MI_TotalMissedInstructionsThrowStatements(tcs.get(path).getTHROW_I_MI_TotalMissedInstructionsThrowStatements()+0);
+								}else {
+									tcs.get(path).setTHROW_I_CI_TotalCoveredInstructionsThrowStatements(tcs.get(path).getTHROW_I_CI_TotalCoveredInstructionsThrowStatements()+0);
+									tcs.get(path).setTHROW_I_MI_TotalMissedInstructionsThrowStatements(tcs.get(path).getTHROW_I_MI_TotalMissedInstructionsThrowStatements()+2);
+								}	
+							}else {
+								System.out.println("NÃO ENTROU THROW");
+							}
+							
+						}else if(rc.getType().equals(CoverageResult.THROW) && rc.getTypeCode().equals(CoverageResult.RAISINGS_NON_PROGRAMMER_DEFINED)) {
+							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
+								ClassXMLCoverageLineNormal cn = (ClassXMLCoverageLineNormal) rc.getCoverageLine();
+								if(rc.isCoveraged()) {
+									tcs.get(path).setTHROW_E_CI_TotalCoveredInstructionsThrowStatements(tcs.get(path).getTHROW_E_CI_TotalCoveredInstructionsThrowStatements()+2);
+									tcs.get(path).setTHROW_E_MI_TotalMissedInstructionsThrowStatements(tcs.get(path).getTHROW_E_MI_TotalMissedInstructionsThrowStatements()+0);
+								}else {
+									tcs.get(path).setTHROW_E_CI_TotalCoveredInstructionsThrowStatements(tcs.get(path).getTHROW_E_CI_TotalCoveredInstructionsThrowStatements()+0);
+									tcs.get(path).setTHROW_E_MI_TotalMissedInstructionsThrowStatements(tcs.get(path).getTHROW_E_MI_TotalMissedInstructionsThrowStatements()+2);
+								}		
+							}else {
+								System.out.println("NÃO ENTROU THROW");
+							}
+							
+						}
+						/*else if(rc.getType().equals("THROWS")) {
 							
 							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineMethod) {
 								ClassXMLCoverageLineMethod cm = (ClassXMLCoverageLineMethod) rc.getCoverageLine();
@@ -789,7 +602,7 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 								System.out.println("NÃO ENTROU TRY");
 							}
 							
-						}else if(rc.getType().equals("CATCH")) {
+						}*/else if(rc.getType().equals(CoverageResult.CATCH) && rc.getTypeCode().equals(CoverageResult.ALL_HANDLINGS)) {
 
 							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
 								ClassXMLCoverageLineNormal cn = (ClassXMLCoverageLineNormal) rc.getCoverageLine();
@@ -799,7 +612,24 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 								tcs.get(path).setCATCH_CB_TotalCoveredBrachesCatchBlocks(tcs.get(path).getCATCH_CB_TotalCoveredBrachesCatchBlocks()+cn.getCb());
 							}
 							
-						}else if(rc.getType().equals("FINALLY")) {
+						}else if(rc.getType().equals(CoverageResult.CATCH) && rc.getTypeCode().equals(CoverageResult.HANDLINGS_PROGRAMMER_DEFINED)) {
+							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
+								ClassXMLCoverageLineNormal cn = (ClassXMLCoverageLineNormal) rc.getCoverageLine();
+								tcs.get(path).setCATCH_I_MI_TotalMissedInstructionsCatchBlocks(tcs.get(path).getCATCH_I_MI_TotalMissedInstructionsCatchBlocks()+cn.getMi());
+								tcs.get(path).setCATCH_I_CI_TotalCoveredInstructionsCatchBlocks(tcs.get(path).getCATCH_I_CI_TotalCoveredInstructionsCatchBlocks()+cn.getCi());
+								tcs.get(path).setCATCH_I_MB_TotalMissedBrachesCatchBlocks(tcs.get(path).getCATCH_I_MB_TotalMissedBrachesCatchBlocks()+cn.getMb());
+								tcs.get(path).setCATCH_I_CB_TotalCoveredBrachesCatchBlocks(tcs.get(path).getCATCH_I_CB_TotalCoveredBrachesCatchBlocks()+cn.getCb());
+							}
+						}else if(rc.getType().equals(CoverageResult.CATCH) && rc.getTypeCode().equals(CoverageResult.HANDLINGS_NON_PROGRAMMER_DEFINED)) {
+							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
+								ClassXMLCoverageLineNormal cn = (ClassXMLCoverageLineNormal) rc.getCoverageLine();
+								tcs.get(path).setCATCH_E_MI_TotalMissedInstructionsCatchBlocks(tcs.get(path).getCATCH_E_MI_TotalMissedInstructionsCatchBlocks()+cn.getMi());
+								tcs.get(path).setCATCH_E_CI_TotalCoveredInstructionsCatchBlocks(tcs.get(path).getCATCH_E_CI_TotalCoveredInstructionsCatchBlocks()+cn.getCi());
+								tcs.get(path).setCATCH_E_MB_TotalMissedBrachesCatchBlocks(tcs.get(path).getCATCH_E_MB_TotalMissedBrachesCatchBlocks()+cn.getMb());
+								tcs.get(path).setCATCH_E_CB_TotalCoveredBrachesCatchBlocks(tcs.get(path).getCATCH_E_CB_TotalCoveredBrachesCatchBlocks()+cn.getCb());
+							}
+						}
+						/*else if(rc.getType().equals("FINALLY")) {
 							
 							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
 								ClassXMLCoverageLineNormal cn = (ClassXMLCoverageLineNormal) rc.getCoverageLine();
@@ -811,23 +641,7 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 								System.out.println("NÃO ENTROU FINNALY");
 							}
 							
-						}
-						
-						/*if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
-							ClassXMLCoverageLineNormal cn = (ClassXMLCoverageLineNormal) rc.getCoverageLine();
-							tcs.get(path).setMI_TotalMissedInstructions(tcs.get(path).getMI_TotalMissedInstructions()+cn.getMi());
-							tcs.get(path).setCI_TotalCoveredInstructions(tcs.get(path).getCI_TotalCoveredInstructions()+cn.getCi());
-							tcs.get(path).setMB_TotalMissedBraches(tcs.get(path).getMB_TotalMissedBraches()+cn.getMb());
-							tcs.get(path).setCB_TotalCoveredBraches(tcs.get(path).getCB_TotalCoveredBraches()+cn.getMb());
-						}else {
-							ClassXMLCoverageLineMethod cm = (ClassXMLCoverageLineMethod) rc.getCoverageLine();
-							tcs.get(path).setMM_TotalMissedMethods(tcs.get(path).getMM_TotalMissedMethods()+cm.getMm());
-							tcs.get(path).setCM_TotalCoveredMethods(tcs.get(path).getCM_TotalCoveredMethods()+cm.getCm());
 						}*/
-						
-						//System.out.println("---");
-						//System.out.println(rc);
-					//	System.out.println("---");
 					}
 				}
 			}
@@ -868,10 +682,54 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 		
 		System.out.close();
 				
-		Util.writeCsvFileEstatistics2(resultCoverageTotal);
-		Util.writeCsvFileEstatistics2(tcs);
+		//Util.writeCsvFileEstatistics2(resultCoverageTotal);
+		UtilWriteReader.writeCsvFileEstatisticsCoveraveTypeCode(tcs);
 		
 		if(saveOutputInFile)	
 			System.out.close();
+	}
+
+
+	private static List<CtThrow> findRaisers(boolean isProgramerDefined, CtType<?> element) {
+
+		List<CtThrow> result = new ArrayList<CtThrow>();
+		for (CtThrow raiser : element.getElements(new TypeFilter<CtThrow>(CtThrow.class))) {
+			CtType<?> declaredType = raiser.getThrownExpression().getType().getTypeDeclaration();
+
+			if (isProgramerDefined) {
+				if (declaredType != null && !declaredType.isShadow()) {
+					result.add(raiser);
+				}
+			} else {
+				if (declaredType == null || declaredType.isShadow()) {
+					result.add(raiser);
+				}
+			}
+		}
+		return result;
+	}
+
+
+	private static List<CtCatch> findHandlers(boolean isProgramerDefined, CtType<?> element) {
+
+		List<CtCatch> result = new ArrayList<CtCatch>();
+		for (CtCatch handler : element.getElements(new TypeFilter<CtCatch>(CtCatch.class))) {
+			for (CtTypeReference<?> exceptionType : handler.getParameter().getMultiTypes()) {
+				CtType<?> declaredType = exceptionType.getTypeDeclaration();
+
+				if (isProgramerDefined) {
+					if (declaredType != null && !declaredType.isShadow()) {
+						result.add(handler);
+						break;
+					}
+				} else {
+					if (declaredType == null || declaredType.isShadow()) {
+						result.add(handler);
+						break;
+					}
+				}
+			}
+		}
+		return result;
 	}
 }

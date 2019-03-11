@@ -21,4 +21,11 @@
 -https://github.com/apache/commons-dbutils.git -v 1.7 -c 77faa3caefc24697b00bf370111f7307dae339b0
 -https://github.com/google/gson.git -v 2.8.5 -c f649e051411e092f0123878e16c5132500a2d01e -m gson
 -https://github.com/jhy/jsoup.git -v 1.11.3 -c 2b1ea0633ff5d4cba5db0e202a4ce0fbdccc19db
-https://github.com/x-stream/xstream.git -v 1.4.11.1 -c 54529d8561c7fc959c8c394c0526bf45cc0c1528 -m xstream
+-https://github.com/junit-team/junit4.git -v 4.12 -c 64155f8a9babcfcf4263cf4d08253a1556e75481
+-
+https://github.com/x-stream/xstream.git -v 1.4.11.1 -c 54529d8561c7fc959c8c394c0526bf45cc0c1528 -m xstream -p g
+- [projeto com problema no spoon, talvez usar sem maven build]
+--https://github.com/google/guava.git -v 27.0.1 -c 777f0f939dda3feb36263315da5bc39516a076a1 -m guava [os testes são separados, então precisamos saber como testar]
+--https://github.com/qos-ch/slf4j.git -v 1.8.0 -c 26731d281940483d8777a8a7a4146329a28496aa -m slf4j-api precisa da versão 1.6 do jdk
+-https://github.com/mockito/mockito.git -v 2.23.11 -c 0c4e494a16141a65f22605a57382a222040f340b -p g
+-https://github.com/hamcrest/JavaHamcrest.git -v 2.1 -c cf6796e1b3745a188cf4548cb585482543ad1de6 -p g -m hamcrest

@@ -4,13 +4,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.lang.reflect.Array;
-import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import edu.emory.mathcs.backport.java.util.Collections;
+import spoon.reflect.CtModel;
 import ufc.br.mutant_project.constants.ConfigPropierties;
 import ufc.br.mutant_project.constants.PathProject;
 import ufc.br.mutant_project.exceptions.CloneRepositoryException;
@@ -32,27 +31,38 @@ import ufc.br.mutant_project.runners.AbstractRunner;
 import ufc.br.mutant_project.runners.Runner;
 import ufc.br.mutant_project.runners.RunnerSubProcessCatch;
 import ufc.br.mutant_project.util.Util;
+import ufc.br.mutant_project.util.UtilWriteReader;
 
 public class Executer {
 	
 	protected boolean saveOutputInFile = true;
-	public static final String VERSION_URL = "-v";
-	public static final String COMMIT_URL = "-c";
-	public static final String	MODULE_URL = "-m";
+	
+	protected static final String VERSION_URL = "-v";
+	protected static final String COMMIT_URL = "-c";
+	protected static final String MODULE_URL = "-m";
+	protected static final String BUILD_URL = "-p";
+	
+	protected boolean isProjectMaven = true;
+	protected List<String> listProjects = null;
 	
 	public Executer(boolean saveInFile) {
 		this.saveOutputInFile = saveInFile;
 	}
 	
-	public void execute() throws InicializerException, ListProjectsNotFoundException, NotURLsException, ConfigPropertiesNotFoundException {
+	protected void inicializer() throws ConfigPropertiesNotFoundException, InicializerException, NotURLsException, ListProjectsNotFoundException{
+		
 		String fields = "";
+		
+		Properties p = null;
+		
 		for(String f: ConfigPropierties.fields)
 			fields += f+"\n";
+		
 		try {
-			Properties p = Util.getProperties();
-			if(p.getHomeMaven()==null) {
-				throw new ConfigPropertiesNotFoundException("Alguma propriedade do arquivo 'config.propierties' necessária não foi encontrado (Para resolver o problema, adiciona as propriedades necessárias para o projeto do projeto \n[ propriedades disponíveis: \n"+fields+" ]).");
-			}
+			p = Util.getProperties();
+			if(p.getHomeMaven() == null || p.getProjectsFile() == null || p.getUrlMutations() == null)
+				throw new ConfigPropertiesNotFoundException("Alguma propriedade do arquivo 'config.properties' necessária não foi encontrado (Para resolver o problema, adiciona as propriedades necessárias para o projeto do projeto \n[ propriedades disponíveis: \n\n"+fields+"\n\n].");
+
 		} catch (IOException e1) {
 			throw new ConfigPropertiesNotFoundException("Nenhum arquivo de propriedades foi encontrado (Para resolver o problema, crie um arquivo 'config.properties' com as propriedades necessárias para o projeto do projeto \n[ propriedades dispníveis: \n"+fields+" ]).");
 		}
@@ -64,52 +74,55 @@ public class Executer {
 				e.printStackTrace();
 			}
 		}
-
-		System.out.println("  _ __ ___  _   _| |_ __ _ _ __ | |_  | |_ ___ ___| |_    __ _  ___ _ __   ___ _ __ __ _| |_ ___  _ __ \n" + 
-				" | '_ ` _ \\| | | | __/ _` | '_ \\| __| | __/ _ \\ __| __|  / _` |/ _ \\ '_ \\ / _ \\ '__/ _` | __/ _ \\| '__|\n" + 
-				" | | | | | | |_| | |_ (_| | | | | |_  | |_  __\\__ \\ |_  | (_| |  __/ | | |  __/ | | (_| | |_ (_) | |   \n" + 
-				" |_| |_| |_|\\__,_|\\__\\__,_|_| |_|\\__|  \\__\\___|___/\\__|  \\__, |\\___|_| |_|\\___|_|  \\__,_|\\__\\___/|_|   \n" + 
-				"                                                         |___/                                         ");
 		
+		PathProject.USER_REFERENCE_TO_PROJECT = p.getUrlMutations();
+		
+		showName();
+
 		if(!Util.preparePathInit()) {
 			throw new InicializerException("Projeto não pode ser iniciado, falha na criação da pasta 'mutations', ela é necessária para a criação dos mutantes.");
 		}
 		
-		List<String> list = null;
 		try {
-			list = Util.listProjects("repositoriesNew.txt");
+			listProjects = Util.listProjects(p.getProjectsFile());
 		} catch (FileNotFoundException e) {
-			throw new ListProjectsNotFoundException("Nenhum arquivo de lista de url de repositório foi encontrado (Para resolver o problema, crie um arquivo 'repositories.txt' com as URLs do GIT na raiz do projeto).");
+			throw new ListProjectsNotFoundException("Nenhum arquivo de lista de url de repositório foi encontrado (Para resolver o problema, crie um arquivo '.txt' com as URLs do GIT na raiz do projeto).");
 		}
 		
-		if(list.isEmpty()) {
-			throw new NotURLsException("Não existe URLs de projetos no arquivo 'repositories.txt' (Para resolver o problema, edite o arquivo, adicionando as URLs do GIT dos projetos).");
+		if(listProjects.isEmpty()) {
+			throw new NotURLsException("Não existe URLs de projetos no arquivo '.txt' (Para resolver o problema, edite o arquivo, adicionando as URLs do GIT dos projetos).");
 		}
+
+		AbstractRunner.listSavedMutantResultType = Util.getListSaveMutantResultTypeFromXml(PathProject.USER_REFERENCE_TO_PROJECT);
+	}
+	
+	public void execute() throws InicializerException, ListProjectsNotFoundException, NotURLsException, ConfigPropertiesNotFoundException {
+
+		inicializer();
 		
-		AbstractRunner.listSaveMutantResultType = Util.getListSaveMutantResultTypeFromXml(PathProject.USER_REFERENCE_TO_PROJECT);
-		
-		for(int i=0; i < list.size(); i++) {
+		for(int i=0; i < listProjects.size(); i++) {
 			
-			if(list.get(i).startsWith("-")) {
-				System.out.println("Jumping URL: "+list.get(i)+" By signal - .");
+			if(listProjects.get(i).startsWith("-")) {
+				System.out.println("Jumping URL: "+listProjects.get(i)+" By signal - .");
 				continue;
 			}
 			
-			String[] linha = list.get(i).split(" ");
+			String[] linha = listProjects.get(i).split(" ");
 			
 			String version = getItemByUrl(linha, VERSION_URL);
 			String commit = getItemByUrl(linha, COMMIT_URL);
 			String submodule = getItemByUrl(linha, MODULE_URL);
+			String build = getItemByUrl(linha, BUILD_URL);
 			
 			String path = Util.validateAndGetNameRepository(linha[0]);
 			
 			if(version!=null)
 				path=path+"-"+version;
 			
-			if(AbstractRunner.listSaveMutantResultType!=null) {
+			if(AbstractRunner.listSavedMutantResultType!=null) {
 				System.out.println("-Verificando se o projeto já foi rodado...");
 				boolean projectAlreadyRunned = false;
-				for(String projeto : AbstractRunner.listSaveMutantResultType.keySet()) {
+				for(String projeto : AbstractRunner.listSavedMutantResultType.keySet()) {
 					if(path.equals(projeto)) {
 						projectAlreadyRunned = true;
 						break;
@@ -123,7 +136,7 @@ public class Executer {
 			}
 			
 			if(!(path!=null && !path.trim().isEmpty())) {
-				System.out.println("Incorrect GIT URL: "+list.get(i)+" (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt')");
+				System.out.println("Incorrect GIT URL: "+listProjects.get(i)+" (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt')");
 				continue;
 			}
 
@@ -133,11 +146,14 @@ public class Executer {
 			try {
 				Util.cloneRepository(linha[0], path, commit);
 			} catch (CloneRepositoryException e) {
-				System.out.println("-Não foi possível clonar a URL GIT: "+list.get(i)+" O projeto será ignorado. (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt', ou verifique a conexão com a internet)");
+				System.out.println("-Não foi possível clonar a URL GIT: "+listProjects.get(i)+" O projeto será ignorado. (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt', ou verifique a conexão com a internet)");
 				e.printStackTrace();
-				continue;
+			 continue;
 			}
+			
 			System.out.println("--Ok!");
+			
+			System.out.println("Existe Submodulo? :"+submodule);
 			
 			System.out.println("-Verificanndo se o projeto está passando nos testes inicialmente.");
 			int result = 0;
@@ -167,11 +183,18 @@ public class Executer {
 			}
 			System.out.println("--OK!");
 			
-			
 			System.out.println("-Verificando se o projeto é compatível com o SPOON para a criação de modelos.");
 			
 			try {
-				if(Util.getModel(PathProject.makePathToProjectMaven(path, submodule)).getAllTypes().size() == 0){
+				
+				CtModel model = null;
+				if(build != null && build.equals("g")) {
+					model = Util.getModelNoMaven(PathProject.makePathToProjectMaven(path, submodule)+Util.getSourceDirectory(PathProject.makePathToProjectMaven(path, submodule)));
+					isProjectMaven = false;
+				}else {
+					model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
+				}
+				if(model.getAllTypes().size() == 0){
 					System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
 					continue;
 				}
@@ -184,7 +207,7 @@ public class Executer {
 			
 			try {
 				System.out.println("-Iniciando Mutações para o projeto");
-				AbstractRunner abs = new Runner(path, submodule);
+				AbstractRunner abs = new Runner(path, submodule, isProjectMaven);
 				
 				System.out.println("--Iniciando Mutações CBD para o projeto");
 				abs.processor(new ProcessorCBD());
@@ -202,7 +225,7 @@ public class Executer {
 				abs.processor(new ProcessorPTL());
 				System.out.println("---OK!");
 				
-				abs = new RunnerSubProcessCatch(path, submodule);
+				abs = new RunnerSubProcessCatch(path, submodule, isProjectMaven);
 				System.out.println("--Iniciando Mutações CBR para o projeto");
 				abs.processor(new ProcessorCBR());
 				System.out.println("---OK!");
@@ -212,11 +235,11 @@ public class Executer {
 			}
 			
 			System.out.println("-Gerando CSV para o projeto em específico");
-			Util.writeCsvFileByProject(path, AbstractRunner.listSaveMutantResultType);
+			UtilWriteReader.writeCsvFileByProject(path, AbstractRunner.listSavedMutantResultType);
 			System.out.println("--OK!");
 			
 			System.out.println("-Gerando arquivo xml para se for preciso continuar depois...");
-			Util.createXmlListSaveMutantResultType(PathProject.USER_REFERENCE_TO_PROJECT, AbstractRunner.listSaveMutantResultType);
+			Util.createXmlListSaveMutantResultType(PathProject.USER_REFERENCE_TO_PROJECT, AbstractRunner.listSavedMutantResultType);
 			System.out.println("-OK!");
 			
 			try {
@@ -236,7 +259,7 @@ public class Executer {
 		}
 
 		System.out.println("-Gerando CSV para todos os projetos");
-		Util.writeCsvFileByAllProjects(AbstractRunner.listSaveMutantResultType);
+		UtilWriteReader.writeCsvFileByAllProjects(AbstractRunner.listSavedMutantResultType);
 		System.out.println("--OK!");
 		
 		if(saveOutputInFile)
@@ -257,5 +280,13 @@ public class Executer {
 
 	public void setSaveOutputInFile(boolean saveOutputInFile) {
 		this.saveOutputInFile = saveOutputInFile;
+	}
+	
+	protected void showName() {
+		System.out.println("  _ __ ___  _   _| |_ __ _ _ __ | |_  | |_ ___ ___| |_    __ _  ___ _ __   ___ _ __ __ _| |_ ___  _ __ \n" + 
+				" | '_ ` _ \\| | | | __/ _` | '_ \\| __| | __/ _ \\ __| __|  / _` |/ _ \\ '_ \\ / _ \\ '__/ _` | __/ _ \\| '__|\n" + 
+				" | | | | | | |_| | |_ (_| | | | | |_  | |_  __\\__ \\ |_  | (_| |  __/ | | |  __/ | | (_| | |_ (_) | |   \n" + 
+				" |_| |_| |_|\\__,_|\\__\\__,_|_| |_|\\__|  \\__\\___|___/\\__|  \\__, |\\___|_| |_|\\___|_|  \\__,_|\\__\\___/|_|   \n" + 
+				"                                                         |___/                                         ");
 	}
 }

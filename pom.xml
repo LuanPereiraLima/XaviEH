@@ -8,7 +8,9 @@
   <name>Mutante Project - Creating Mutants and Coverage Projects EH</name>
   <url></url>
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<maven.compiler.source>1.8</maven.compiler.source>
+	<maven.compiler.target>1.8</maven.compiler.target>
   </properties>
   <dependencies>
     <dependency>
@@ -25,7 +27,7 @@
     <dependency>
       <groupId>fr.inria.gforge.spoon</groupId>
       <artifactId>spoon-core</artifactId>
-      <version>7.2.0</version>
+      <version>7.3.0</version>
     </dependency>
     <dependency>
       <groupId>xstream</groupId>
@@ -87,5 +89,16 @@
         </configuration>
       </plugin>
     </plugins>
+    <resources>
+    <resource>
+      <filtering>true</filtering><!-- if it is neccessary -->
+      <directory>${project.basedir}</directory><!-- from -->
+      <targetPath>${project.build.directory}/FilesNeedToRun</targetPath><!-- to -->
+      <includes><!-- what -->
+        <include>projetos.txt</include>
+        <include>config.properties</include>
+      </includes>
+    </resource>
+  </resources>
   </build>
 </project>

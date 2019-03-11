@@ -1,6 +1,5 @@
 package ufc.br.mutant_project.util;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -39,7 +38,9 @@ import org.eclipse.jgit.api.errors.TransportException;
 import com.thoughtworks.xstream.XStream;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
+import spoon.Launcher;
 import spoon.MavenLauncher;
+import spoon.SpoonAPI;
 import spoon.reflect.CtModel;
 import spoon.reflect.code.CtCatch;
 import spoon.reflect.code.CtInvocation;
@@ -50,25 +51,19 @@ import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.Filter;
 import ufc.br.mutant_project.constants.Jacoco;
+import ufc.br.mutant_project.constants.Maven;
 import ufc.br.mutant_project.constants.PathProject;
-import ufc.br.mutant_project.constants.Processors;
 import ufc.br.mutant_project.exceptions.CloneRepositoryException;
 import ufc.br.mutant_project.exceptions.JacocoException;
 import ufc.br.mutant_project.exceptions.PomException;
 import ufc.br.mutant_project.exceptions.TestFailMavenInvokerException;
 import ufc.br.mutant_project.models.CHE;
-import ufc.br.mutant_project.models.CoverageResult;
 import ufc.br.mutant_project.models.FinalResultSavedByProject;
 import ufc.br.mutant_project.models.Properties;
-import ufc.br.mutant_project.models.ResultsStatisticsLength;
-import ufc.br.mutant_project.models.TesteProject;
-import ufc.br.mutant_project.models.TotalCoveredStatus;
 
 public class Util {
 
 	private static MavenLauncher launcher;
-    private static final String COMMA_DELIMITER = ",";
-	private static final String NEW_LINE_SEPARATOR = "\n";
 	private static InvocationResult result;
 	private static Properties properties;
 
@@ -92,8 +87,8 @@ public class Util {
 				});
 			
 			final InvocationRequest request = new DefaultInvocationRequest();
-			request.setPomFile( new File( copyProjectPath ) );
-			request.setGoals( Arrays.asList(new String[] {"test", "-Dcheckstyle.skip"}) );
+			request.setBaseDirectory( new File( copyProjectPath ) );
+			request.setGoals( Maven.GOALS_PROJECT_DISABLE_CHECK );
 			request.setDebug(false);
 			
 			if(submodules!=null)
@@ -161,12 +156,12 @@ public class Util {
 				});
 			
 			InvocationRequest request = new DefaultInvocationRequest();
-			request.setPomFile( new File( copyProjectPath ) );
+			request.setBaseDirectory( new File( copyProjectPath ) );
 			request.setGoals( goals );
 //			request.setLocalRepositoryDirectory(new File(copyProjectPath));
 			
 			if(submodules!=null)
-			request.setProjects(submodules);
+				request.setProjects(submodules);
 			
 			InvocationResult result = invoker.execute( request );
 			return result.getExitCode();
@@ -294,9 +289,38 @@ public class Util {
     	}
 	}
     
-    //OBTENDO CLASSE PROCESSADA DO PROJETO COMPILADA COM O MAVEN LAUNCHER
-    public static CtType<?> getClassByModel(String name, String projectPath){
-    	for(CtType<?> ty : getModel(projectPath).getAllTypes()) {
+  //MODELO DO PROJETO SEM A UTILIZAÇÃO DO MAVEN
+    public static CtModel getModelNoMaven(String projectPath) {
+    	try {
+			SpoonAPI spoon = new Launcher();
+			spoon = new Launcher();
+			spoon.getEnvironment().setNoClasspath(true);
+			spoon.getEnvironment().setPreserveLineNumbers(true);
+			spoon.getEnvironment().setSourceClasspath(new String[] { projectPath });
+			spoon.addInputResource(projectPath);
+			spoon.buildModel();
+			return spoon.getModel();
+    	}catch(Exception e) {
+    		return null;
+    	}
+	}
+    
+    //OBTENDO CLASSE PROCESSADA DO PROJETO COMPILADA 
+    public static CtType<?> getClassByModel(String name, String projectPath, boolean isMavenProject){
+    	CtModel model = null;
+    	
+    	if(isMavenProject)
+    		model = getModel(projectPath);
+		else {
+			try {
+				model = getModelNoMaven(projectPath+getSourceDirectory(projectPath));
+			} catch (PomException e) {
+				System.out.println("BIBIIIII");
+				return null;
+			}
+		}
+        		
+    	for(CtType<?> ty : model.getAllTypes()) {
     		if(ty instanceof CtClass<?>) {
     			CtClass<?> ctc = (CtClass<?>) ty;
 	    		//System.out.println("OPA: "+ctc.getQualifiedName());
@@ -337,21 +361,6 @@ public class Util {
 			if(inv.getExecutable()!=null && inv.getExecutable().getDeclaration()!=null && inv.getExecutable().getDeclaration().getBody()!=null)
 				for(CtThrow cf : inv.getExecutable().getDeclaration().getBody().getElements(new Filter<CtThrow>() {
 					public boolean matches(CtThrow element) {
-						/*System.out.println("----------------------------");
-						System.out.println("Elemento: "+element);
-						System.out.println("Pai de cima: " + inv.getExecutable().getDeclaration());
-						System.out.println("Pai: " + element.getParent(new Filter<CtInvocation<?>>() {
-							public boolean matches(CtInvocation<?> element) {
-								return true;
-							}
-						}));
-						System.out.println("----------------------------");
-						return element.getParent(new Filter<CtInvocation<?>>() {
-							public boolean matches(CtInvocation<?> element) {
-								return true;
-							}
-						}).equals(inv.getExecutable().getDeclaration());
-						*/
 						return true;
 					}
 				})) {
@@ -409,471 +418,16 @@ public class Util {
     	return lista;
     }
 	
-    //MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
-	private static String createFileHeaderByProject() {
-		return "typeMutation,nameMutation,numberOfMutants,amountOfLiveMutants,amountOfDeadMutants,"
-				+ "fractionOfMutantsKilledByNumberOfMutants,"
-				+ ""
-				+ "numberOfMutantsOfProject,amountOfLiveMutantsOfProject,amountOfDeadMutantsOfProject,fractionOfMutantsKilledByNumberOfMutantsOfProject";
-		
-	}
-	
-	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
-	private static String createFileHeaderStatistic2() {
-		return "PROJECT,CLASS NAME,LINE NUMBER,TYPE,COVERAGED,MI,CI,MB,CB,MM,CM,BRANCH OR NSTRUCTION";
-	}
-	
-	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA STATISTICS LENGTH
-		private static String createFileHeaderStatisticLength() {
-			return "nameProject^numTryBlock^numCatchBlock^numFinallyBlock^numClass^numLineCode";
-		}
-	
-	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
-		private static String createFileHeaderTestsProjects() {
-			return "NAME URL COMMIT PASS_TESTS JACOCO_GENERATE";
-		}
-	
-	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
-	private static String createFileHeaderStatistic2Status() {
-		return    "PROJECT,MI,CI,MB,CB,MM,CM,"
-				+ "TRY_MI,TRY_CI,TRY_MB,TRY_CB,"
-				+ "CATCH_MI,CATCH_CI,CATCH_MB,CATCH_CB,"
-				+ "FINALLY_MI,FINALLY_CI,FINALLY_MB,FINALLY_CB,"
-				+ "THROW_MI,THROW_CI,"
-				+ "THROWS_MM,THROWS_CM";
-	}
-	
-	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
-		private static String createFileHeaderStatistic2StatusTotal() {
-			return    "PROJECT^MI^CI^MB^CB^MM^CM^MC^CC";
-		}
-	
-	public static void writeCsvFileEstatistics2Total(Map<String, TotalCoveredStatus> totalCoveredStatus) {
-		FileWriter fileWriter = null;
-		
-		try {
-			fileWriter = new FileWriter(PathProject.USER_REFERENCE_TO_PROJECT+"finalResultForProjectStatusOnlyTotalStatus.csv");
-
-			fileWriter.append(createFileHeaderStatistic2StatusTotal());
-			fileWriter.append(NEW_LINE_SEPARATOR);
-			
-			for(String project: totalCoveredStatus.keySet()) {
-				fileWriter.append(project+"^");
-				
-				fileWriter.append(totalCoveredStatus.get(project).getMI_TotalMissedInstructions()+"^");
-				fileWriter.append(totalCoveredStatus.get(project).getCI_TotalCoveredInstructions()+"^");
-				fileWriter.append(totalCoveredStatus.get(project).getMB_TotalMissedBraches()+"^");
-				fileWriter.append(totalCoveredStatus.get(project).getCB_TotalCoveredBraches()+"^");
-				fileWriter.append(totalCoveredStatus.get(project).getMM_TotalMissedMethods()+"^");
-				fileWriter.append(totalCoveredStatus.get(project).getCM_TotalCoveredMethods()+"^");
-				fileWriter.append(totalCoveredStatus.get(project).getMC_TotalMissedClasses()+"^");
-				fileWriter.append(totalCoveredStatus.get(project).getCC_TotalCoveredClasses()+"^");
-				
-				fileWriter.append(NEW_LINE_SEPARATOR);
-			}
-		} catch (Exception e) {
-			System.out.println("Error in CsvFileWriter !!!");
-			e.printStackTrace();
-		} finally {
-			try {
-				fileWriter.flush();
-				fileWriter.close();
-			} catch (IOException e) {
-				System.out.println("Error while flushing/closing fileWriter !!!");
-                e.printStackTrace();
-			}
-			
-		}
-	}
-
-	public static void writeCsvFileEstatistics2(Map<String, TotalCoveredStatus> totalCoveredStatus) {
-		FileWriter fileWriter = null;
-		
-		try {
-			fileWriter = new FileWriter(PathProject.USER_REFERENCE_TO_PROJECT+"finalResultForProjectStatus.csv");
-
-			fileWriter.append(createFileHeaderStatistic2Status());
-			fileWriter.append(NEW_LINE_SEPARATOR);
-			
-			for(String project: totalCoveredStatus.keySet()) {
-				fileWriter.append(project+",");
-				
-				fileWriter.append(totalCoveredStatus.get(project).getMI_TotalMissedInstructions()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getCI_TotalCoveredInstructions()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getMB_TotalMissedBraches()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getCB_TotalCoveredBraches()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getMM_TotalMissedMethods()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getCM_TotalCoveredMethods()+",");
-				
-				fileWriter.append(totalCoveredStatus.get(project).getTRY_MI_TotalMissedInstructionsTryBlocks()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getTRY_CI_TotalCoveredInstructionsTryBlocks()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getTRY_MB_TotalMissedBrachesTryBlocks()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getTRY_CB_TotalCoveredBrachesTryBlocks()+",");
-				
-				fileWriter.append(totalCoveredStatus.get(project).getCATCH_MI_TotalMissedInstructionsCatchBlocks()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getCATCH_CI_TotalCoveredInstructionsCatchBlocks()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getCATCH_MB_TotalMissedBrachesCatchBlocks()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getCATCH_CB_TotalCoveredBrachesCatchBlocks()+",");
-				
-				fileWriter.append(totalCoveredStatus.get(project).getFINALLY_MI_TotalMissedInstructionsFinallyBlocks()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getFINALLY_CI_TotalCoveredInstructionsFinallyBlocks()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getFINALLY_MB_TotalMissedBrachesFinallyBlocks()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getFINALLY_CB_TotalCoveredBrachesFinallyBlocks()+",");
-				
-				fileWriter.append(totalCoveredStatus.get(project).getTHROW_MI_TotalMissedInstructionsThrowStatements()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getTHROW_CI_TotalCoveredInstructionsThrowStatements()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getTHROWS_MM_TotalMissedMethodsWithThrows()+",");
-				fileWriter.append(totalCoveredStatus.get(project).getTHROWS_CM_TotalCoveredMethodsWithThrows()+",");
-
-				fileWriter.append(NEW_LINE_SEPARATOR);
-			}
-		} catch (Exception e) {
-			System.out.println("Error in CsvFileWriter !!!");
-			e.printStackTrace();
-		} finally {
-			try {
-				fileWriter.flush();
-				fileWriter.close();
-			} catch (IOException e) {
-				System.out.println("Error while flushing/closing fileWriter !!!");
-                e.printStackTrace();
-			}
-			
-		}
-	}
-	
-	public static void writeCsvFileEstatisticsLength(List<ResultsStatisticsLength> listResultsStatisticsLength) {
-		FileWriter fileWriter = null;
-		
-		try {
-			fileWriter = new FileWriter(PathProject.USER_REFERENCE_TO_PROJECT+"ResultsStatisticsLength.csv");
-
-			fileWriter.append(createFileHeaderStatisticLength());
-			fileWriter.append(NEW_LINE_SEPARATOR);
-			
-			for(ResultsStatisticsLength cr: listResultsStatisticsLength) {
-				fileWriter.append(cr.toStringCSV());
-				fileWriter.append(NEW_LINE_SEPARATOR);
-			}
-			
-		} catch (Exception e) {
-			System.out.println("Error in CsvFileWriter !!!");
-			e.printStackTrace();
-		} finally {
-			try {
-				fileWriter.flush();
-				fileWriter.close();
-			} catch (IOException e) {
-				System.out.println("Error while flushing/closing fileWriter !!!");
-                e.printStackTrace();
-			}
-			
-		}
-	}
-	
-	public static void writeCsvFileEstatistics2(List<CoverageResult> resultCoverage) {
-		FileWriter fileWriter = null;
-		
-		try {
-			fileWriter = new FileWriter(PathProject.USER_REFERENCE_TO_PROJECT+"finalResultForProject.csv");
-
-			fileWriter.append(createFileHeaderStatistic2());
-			fileWriter.append(NEW_LINE_SEPARATOR);
-			
-			for(CoverageResult cr: resultCoverage) {
-				fileWriter.append(cr.toStringCSV());
-				fileWriter.append(NEW_LINE_SEPARATOR);
-			}
-			
-		} catch (Exception e) {
-			System.out.println("Error in CsvFileWriter !!!");
-			e.printStackTrace();
-		} finally {
-			try {
-				fileWriter.flush();
-				fileWriter.close();
-			} catch (IOException e) {
-				System.out.println("Error while flushing/closing fileWriter !!!");
-                e.printStackTrace();
-			}
-			
-		}
-	}
-	
-	public static void writeCsvFileTests(List<TesteProject> testsProjects) {
-		FileWriter fileWriter = null;
-		
-		try {
-			fileWriter = new FileWriter(PathProject.USER_REFERENCE_TO_PROJECT+"result.csv");
-
-			fileWriter.append(createFileHeaderTestsProjects());
-			fileWriter.append(NEW_LINE_SEPARATOR);
-			
-			for(TesteProject cr: testsProjects) {
-				fileWriter.append(cr.toCSV());
-				fileWriter.append(NEW_LINE_SEPARATOR);
-			}
-			
-		} catch (Exception e) {
-			System.out.println("Error in CsvFileWriter !!!");
-			e.printStackTrace();
-		} finally {
-			try {
-				fileWriter.flush();
-				fileWriter.close();
-			} catch (IOException e) {
-				System.out.println("Error while flushing/closing fileWriter !!!");
-                e.printStackTrace();
-			}
-			
-		}
-	}
-	
-	public static List<TesteProject> readerCsvFileTests() {
-		FileReader fileReader = null;
-		
-		try {
-			fileReader = new FileReader(PathProject.USER_REFERENCE_TO_PROJECT+"result.csv");
-			
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			List<String> linhas = new ArrayList<>();
-			
-			
-			bufferedReader.readLine();
-			String linha = bufferedReader.readLine();
-			while(linha != null) {
-				linhas.add(linha);
-				linha = bufferedReader.readLine();
-			}
-			
-			List<TesteProject> listaProjetosAnalisados = new ArrayList<>();
-			
-			for(int i=0; i < linhas.size(); i++) {
-				String[] divisoes = linhas.get(i).split(" ");
-				boolean test = false;
-				boolean jacoco = false;
-				
-				if(divisoes[3].equals("true"))
-					test = true;
-				
-				if(divisoes[4].equals("true"))
-					jacoco = true;
-				
-				listaProjetosAnalisados.add(new TesteProject(test, jacoco, divisoes[0], divisoes[1], divisoes[2]));
-				System.out.println("Mee: " + listaProjetosAnalisados.get(listaProjetosAnalisados.size()-1));
-			}
-			bufferedReader.close();
-			return listaProjetosAnalisados;
-			
-		} catch (Exception e) {
-			System.out.println("Error in CsvFileWriter !!!");
-			e.printStackTrace();
-			return new ArrayList<>();
-		}
-	}
-    
-	public static void writeCsvFileByProject(String uriName, Map<String, List<FinalResultSavedByProject>> map) {
-		FileWriter fileWriter = null;
-				
-		try {
-			fileWriter = new FileWriter(PathProject.makePathToProject(uriName)+"finalResultForProject.csv");
-
-			fileWriter.append(createFileHeaderByProject());
-			fileWriter.append(NEW_LINE_SEPARATOR);
-			
-			List<FinalResultSavedByProject> list = map.get(uriName);
-			
-			int numberOftotalMutants = 0;
-			int amountOfLiveMutants = 0;
-			int amountOfDeadMutants = 0;
-			
-			for (FinalResultSavedByProject finalr : list) {
-				numberOftotalMutants += finalr.getNumberOfMutants();
-				amountOfLiveMutants += finalr.getAmountOfLiveMutants();
-				amountOfDeadMutants += finalr.getAmountOfDeadMutants();
-			}
-			
-			boolean ft = true;
-			
-			Double fractionOfMutantsKilledByNumberOfMutants = Double.parseDouble(amountOfDeadMutants+"") / Double.parseDouble(numberOftotalMutants+"");
-			
-			for (FinalResultSavedByProject finalr : list) {
-				fileWriter.append(finalr.getAbbreviationMutationType());
-				fileWriter.append(COMMA_DELIMITER);
-				fileWriter.append(finalr.getMutationType());
-				fileWriter.append(COMMA_DELIMITER);
-				fileWriter.append(String.valueOf(finalr.getNumberOfMutants()));
-				fileWriter.append(COMMA_DELIMITER);
-				fileWriter.append(String.valueOf(finalr.getAmountOfLiveMutants()));
-				fileWriter.append(COMMA_DELIMITER);
-				fileWriter.append(String.valueOf(finalr.getAmountOfDeadMutants()));
-				fileWriter.append(COMMA_DELIMITER);
-				fileWriter.append(String.valueOf(finalr.getFractionOfMutantsKilledByNumberOfMutants()));
-				
-				if(ft) {
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(String.valueOf(numberOftotalMutants));
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(String.valueOf(amountOfLiveMutants));
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(String.valueOf(amountOfDeadMutants));
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(fractionOfMutantsKilledByNumberOfMutants+"");
-					ft = false;
-				}
-				
-				fileWriter.append(NEW_LINE_SEPARATOR);
-			}
-			
-			System.out.println("CSV file was created successfully !!!");
-			
-		} catch (Exception e) {
-			System.out.println("Error in CsvFileWriter !!!");
-			e.printStackTrace();
-		} finally {
-			try {
-				fileWriter.flush();
-				fileWriter.close();
-			} catch (IOException e) {
-				System.out.println("Error while flushing/closing fileWriter !!!");
-                e.printStackTrace();
-			}
-			
-		}
-	}
-	
-	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
-	public static String createFileHeaderByAllProjects() {
-		
-		String header = "project,";
-		
-		for(String name: Processors.typeProcessors)
-			header += "numberOfMutants ("+name+"),amountOfLiveMutants ("+name+"),amountOfDeadMutants ("+name+"),fractionOfMutantsKilledByNumberOfMutants ("+name+"),";
-					
-		header += "numberOfMutantsTotal,amountOfLiveMutantsTotal,amountOfDeadMutantsTotal,totalfractionOfMutantsKilledByNumberOfMutantsThisProject";
-		header += ",numberOfMutantsOfAllProjects,amountOfLiveMutantsOfAllProjects,amountOfDeadMutantsOfAllProjects,fractionOfMutantsKilledByNumberOfMutantsOfAllProjects";
-		return header;
-	}
-	
-	public static void writeCsvFileByAllProjects(Map<String, List<FinalResultSavedByProject>> map) {
-		FileWriter fileWriter = null;
-				
-		try {
-			fileWriter = new FileWriter(PathProject.USER_REFERENCE_TO_PROJECT+"finalResult.csv");
-
-			fileWriter.append(createFileHeaderByAllProjects());
-			fileWriter.append(NEW_LINE_SEPARATOR);
-			
-			int numberOftotalMutantsAllprojects = 0;
-			int amountOfLiveMutantsAllprojects = 0;
-			int amountOfDeadMutantsAllprojects = 0;
-			
-			for(String key : map.keySet()) {
-				for (FinalResultSavedByProject finalr : map.get(key)) {
-					numberOftotalMutantsAllprojects += finalr.getNumberOfMutants();
-					amountOfLiveMutantsAllprojects += finalr.getAmountOfLiveMutants();
-					amountOfDeadMutantsAllprojects += finalr.getAmountOfDeadMutants();
-				}
-			}
-			
-			boolean ft = true;
-			
-			Double fractionOfMutantsKilledByNumberOfMutantsAllprojects = Double.parseDouble(amountOfDeadMutantsAllprojects+"") / Double.parseDouble(numberOftotalMutantsAllprojects+"");
-			
-			for(String key: map.keySet()) {
-				List<FinalResultSavedByProject> list = map.get(key);
-				fileWriter.append(key);
-				int numberMutantsTotal = 0;
-				int amountOfLiveMutantsTotal = 0;
-				int amountOfDeadMutantsTotal = 0;
-				boolean allMutantsProcess = true;
-				for (String ty : Processors.typeProcessors) {
-					FinalResultSavedByProject finalr = getFinalResultSavedByProjectByTypeMutant(ty, list);
-					if(finalr==null) {
-						System.out.println("Projeto "+key+" não tem processado o mutant: "+ty);
-						
-						fileWriter.append(COMMA_DELIMITER);
-						fileWriter.append("0");
-						fileWriter.append(COMMA_DELIMITER);
-						fileWriter.append("0");
-						fileWriter.append(COMMA_DELIMITER);
-						fileWriter.append("0");
-						fileWriter.append(COMMA_DELIMITER);
-						fileWriter.append("0");
-						continue;
-					}
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(String.valueOf(finalr.getNumberOfMutants()));
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(String.valueOf(finalr.getAmountOfLiveMutants()));
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(String.valueOf(finalr.getAmountOfDeadMutants()));
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(String.valueOf(finalr.getFractionOfMutantsKilledByNumberOfMutants()));
-					numberMutantsTotal+=finalr.getNumberOfMutants();
-					amountOfLiveMutantsTotal+=finalr.getAmountOfLiveMutants();
-					amountOfDeadMutantsTotal+=finalr.getAmountOfDeadMutants();
-					
-				}
-				if(allMutantsProcess) {
-					Double fractionOfMutantsKilledByNumberOfMutantsTotal = Double.parseDouble(amountOfDeadMutantsTotal+"") / Double.parseDouble(numberMutantsTotal+"");
-					
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(String.valueOf(numberMutantsTotal));
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(String.valueOf(amountOfLiveMutantsTotal));
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(String.valueOf(amountOfDeadMutantsTotal));
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(fractionOfMutantsKilledByNumberOfMutantsTotal+"");
-				}
-				if(ft && allMutantsProcess) {
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(String.valueOf(numberOftotalMutantsAllprojects));
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(String.valueOf(amountOfLiveMutantsAllprojects));
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(String.valueOf(amountOfDeadMutantsAllprojects));
-					fileWriter.append(COMMA_DELIMITER);
-					fileWriter.append(fractionOfMutantsKilledByNumberOfMutantsAllprojects+"");
-					ft = false;
-					fileWriter.append(NEW_LINE_SEPARATOR);
-					continue;
-				}
-				fileWriter.append(NEW_LINE_SEPARATOR);
-			}
-			
-			System.out.println("CSV file to all project was created successfully !!!");
-			
-		} catch (Exception e) {
-			System.out.println("Error in CsvFileWriter to all project !!!");
-			e.printStackTrace();
-		} finally {
-			try {
-				fileWriter.flush();
-				fileWriter.close();
-			} catch (IOException e) {
-				System.out.println("Error while flushing/closing fileWriter to all project !!!");
-                e.printStackTrace();
-			}
-			
-		}
-	}
-	
-	public static FinalResultSavedByProject getFinalResultSavedByProjectByTypeMutant(String type, List<FinalResultSavedByProject> list) {
-		for(FinalResultSavedByProject fr: list) {
-			if(fr.getAbbreviationMutationType().equals(type))
-				return fr;
-		}
-		return null;
-	}
-	
 	public static Properties getProperties() throws IOException {
 		if(properties!=null)
 			return properties;
 		java.util.Properties prop = geFileProp();
+		
 		properties = new Properties();
 		properties.setHomeMaven(prop.getProperty("homeMaven", null));
+		properties.setUrlMutations(prop.getProperty("urlMutations", null));
+		properties.setProjectsFile(prop.getProperty("projectsFile", null));
+	
 		return properties;
 	}
 	
@@ -916,6 +470,7 @@ public class Util {
 	}
 	
 	public static String getSourceDirectory(String pathToProject) throws PomException {
+		System.out.println("Eita: "+pathToProject);
 	    MavenXpp3Reader reader = new MavenXpp3Reader();
 	    Model model;
 	    File f = new File(pathToProject+"pom.xml");
@@ -983,6 +538,7 @@ public class Util {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static Map<String, List<FinalResultSavedByProject>> getListSaveMutantResultTypeFromXml(String projectPath) {
 		XStream xs = new XStream();
 		try {

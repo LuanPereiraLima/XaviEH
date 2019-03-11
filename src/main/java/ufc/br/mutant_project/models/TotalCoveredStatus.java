@@ -11,24 +11,39 @@ public class TotalCoveredStatus {
 	private int MC_TotalMissedClasses;
 	private int CC_TotalCoveredClasses;
 	
-	
 	private int TRY_MI_TotalMissedInstructionsTryBlocks;
 	private int TRY_CI_TotalCoveredInstructionsTryBlocks;
 	private int TRY_MB_TotalMissedBrachesTryBlocks;
 	private int TRY_CB_TotalCoveredBrachesTryBlocks;
+	
 	private int CATCH_MI_TotalMissedInstructionsCatchBlocks;
 	private int CATCH_CI_TotalCoveredInstructionsCatchBlocks;
 	private int CATCH_MB_TotalMissedBrachesCatchBlocks;
 	private int CATCH_CB_TotalCoveredBrachesCatchBlocks;
+	private int CATCH_I_MI_TotalMissedInstructionsCatchBlocks;
+	private int CATCH_I_CI_TotalCoveredInstructionsCatchBlocks;
+	private int CATCH_I_MB_TotalMissedBrachesCatchBlocks;
+	private int CATCH_I_CB_TotalCoveredBrachesCatchBlocks;
+	private int CATCH_E_MI_TotalMissedInstructionsCatchBlocks;
+	private int CATCH_E_CI_TotalCoveredInstructionsCatchBlocks;
+	private int CATCH_E_MB_TotalMissedBrachesCatchBlocks;
+	private int CATCH_E_CB_TotalCoveredBrachesCatchBlocks;
+	
 	private int FINALLY_MI_TotalMissedInstructionsFinallyBlocks;
 	private int FINALLY_CI_TotalCoveredInstructionsFinallyBlocks;
 	private int FINALLY_MB_TotalMissedBrachesFinallyBlocks;
 	private int FINALLY_CB_TotalCoveredBrachesFinallyBlocks; 
+	
 	private int THROW_MI_TotalMissedInstructionsThrowStatements;
 	private int THROW_CI_TotalCoveredInstructionsThrowStatements; 
+	private int THROW_I_MI_TotalMissedInstructionsThrowStatements;
+	private int THROW_I_CI_TotalCoveredInstructionsThrowStatements; 
+	private int THROW_E_MI_TotalMissedInstructionsThrowStatements;
+	private int THROW_E_CI_TotalCoveredInstructionsThrowStatements; 
+	
 	private int THROWS_MM_TotalMissedMethodsWithThrows;
 	private int THROWS_CM_TotalCoveredMethodsWithThrows;
-
+	
 	public int getMI_TotalMissedInstructions() {
 		return MI_TotalMissedInstructions;
 	}
@@ -177,4 +192,82 @@ public class TotalCoveredStatus {
 	public void setCC_TotalCoveredClasses(int cC_TotalCoveredClasses) {
 		CC_TotalCoveredClasses = cC_TotalCoveredClasses;
 	}
+	public int getCATCH_I_MI_TotalMissedInstructionsCatchBlocks() {
+		return CATCH_I_MI_TotalMissedInstructionsCatchBlocks;
+	}
+	public void setCATCH_I_MI_TotalMissedInstructionsCatchBlocks(int cATCH_I_MI_TotalMissedInstructionsCatchBlocks) {
+		CATCH_I_MI_TotalMissedInstructionsCatchBlocks = cATCH_I_MI_TotalMissedInstructionsCatchBlocks;
+	}
+	public int getCATCH_I_CI_TotalCoveredInstructionsCatchBlocks() {
+		return CATCH_I_CI_TotalCoveredInstructionsCatchBlocks;
+	}
+	public void setCATCH_I_CI_TotalCoveredInstructionsCatchBlocks(int cATCH_I_CI_TotalCoveredInstructionsCatchBlocks) {
+		CATCH_I_CI_TotalCoveredInstructionsCatchBlocks = cATCH_I_CI_TotalCoveredInstructionsCatchBlocks;
+	}
+	public int getCATCH_I_MB_TotalMissedBrachesCatchBlocks() {
+		return CATCH_I_MB_TotalMissedBrachesCatchBlocks;
+	}
+	public void setCATCH_I_MB_TotalMissedBrachesCatchBlocks(int cATCH_I_MB_TotalMissedBrachesCatchBlocks) {
+		CATCH_I_MB_TotalMissedBrachesCatchBlocks = cATCH_I_MB_TotalMissedBrachesCatchBlocks;
+	}
+	public int getCATCH_I_CB_TotalCoveredBrachesCatchBlocks() {
+		return CATCH_I_CB_TotalCoveredBrachesCatchBlocks;
+	}
+	public void setCATCH_I_CB_TotalCoveredBrachesCatchBlocks(int cATCH_I_CB_TotalCoveredBrachesCatchBlocks) {
+		CATCH_I_CB_TotalCoveredBrachesCatchBlocks = cATCH_I_CB_TotalCoveredBrachesCatchBlocks;
+	}
+	public int getCATCH_E_MI_TotalMissedInstructionsCatchBlocks() {
+		return CATCH_E_MI_TotalMissedInstructionsCatchBlocks;
+	}
+	public void setCATCH_E_MI_TotalMissedInstructionsCatchBlocks(int cATCH_E_MI_TotalMissedInstructionsCatchBlocks) {
+		CATCH_E_MI_TotalMissedInstructionsCatchBlocks = cATCH_E_MI_TotalMissedInstructionsCatchBlocks;
+	}
+	public int getCATCH_E_CI_TotalCoveredInstructionsCatchBlocks() {
+		return CATCH_E_CI_TotalCoveredInstructionsCatchBlocks;
+	}
+	public void setCATCH_E_CI_TotalCoveredInstructionsCatchBlocks(int cATCH_E_CI_TotalCoveredInstructionsCatchBlocks) {
+		CATCH_E_CI_TotalCoveredInstructionsCatchBlocks = cATCH_E_CI_TotalCoveredInstructionsCatchBlocks;
+	}
+	public int getCATCH_E_MB_TotalMissedBrachesCatchBlocks() {
+		return CATCH_E_MB_TotalMissedBrachesCatchBlocks;
+	}
+	public void setCATCH_E_MB_TotalMissedBrachesCatchBlocks(int cATCH_E_MB_TotalMissedBrachesCatchBlocks) {
+		CATCH_E_MB_TotalMissedBrachesCatchBlocks = cATCH_E_MB_TotalMissedBrachesCatchBlocks;
+	}
+	public int getCATCH_E_CB_TotalCoveredBrachesCatchBlocks() {
+		return CATCH_E_CB_TotalCoveredBrachesCatchBlocks;
+	}
+	public void setCATCH_E_CB_TotalCoveredBrachesCatchBlocks(int cATCH_E_CB_TotalCoveredBrachesCatchBlocks) {
+		CATCH_E_CB_TotalCoveredBrachesCatchBlocks = cATCH_E_CB_TotalCoveredBrachesCatchBlocks;
+	}
+	public int getTHROW_I_MI_TotalMissedInstructionsThrowStatements() {
+		return THROW_I_MI_TotalMissedInstructionsThrowStatements;
+	}
+	public void setTHROW_I_MI_TotalMissedInstructionsThrowStatements(
+			int tHROW_I_MI_TotalMissedInstructionsThrowStatements) {
+		THROW_I_MI_TotalMissedInstructionsThrowStatements = tHROW_I_MI_TotalMissedInstructionsThrowStatements;
+	}
+	public int getTHROW_I_CI_TotalCoveredInstructionsThrowStatements() {
+		return THROW_I_CI_TotalCoveredInstructionsThrowStatements;
+	}
+	public void setTHROW_I_CI_TotalCoveredInstructionsThrowStatements(
+			int tHROW_I_CI_TotalCoveredInstructionsThrowStatements) {
+		THROW_I_CI_TotalCoveredInstructionsThrowStatements = tHROW_I_CI_TotalCoveredInstructionsThrowStatements;
+	}
+	public int getTHROW_E_MI_TotalMissedInstructionsThrowStatements() {
+		return THROW_E_MI_TotalMissedInstructionsThrowStatements;
+	}
+	public void setTHROW_E_MI_TotalMissedInstructionsThrowStatements(
+			int tHROW_E_MI_TotalMissedInstructionsThrowStatements) {
+		THROW_E_MI_TotalMissedInstructionsThrowStatements = tHROW_E_MI_TotalMissedInstructionsThrowStatements;
+	}
+	public int getTHROW_E_CI_TotalCoveredInstructionsThrowStatements() {
+		return THROW_E_CI_TotalCoveredInstructionsThrowStatements;
+	}
+	public void setTHROW_E_CI_TotalCoveredInstructionsThrowStatements(
+			int tHROW_E_CI_TotalCoveredInstructionsThrowStatements) {
+		THROW_E_CI_TotalCoveredInstructionsThrowStatements = tHROW_E_CI_TotalCoveredInstructionsThrowStatements;
+	}
+	
+	
 }

@@ -15,8 +15,8 @@ import ufc.br.mutant_project.util.Util;
 
 public class Runner extends AbstractRunner{
 	
-	public Runner(String uriName, String subModule) {
-		super(uriName, subModule);
+	public Runner(String uriName, String subModule, boolean isMavenProject) {
+		super(uriName, subModule, isMavenProject);
 	}
 
 	public void processor(AbstractorProcessor<?> cp) throws PomException {
@@ -59,6 +59,11 @@ public class Runner extends AbstractRunner{
 				cp.setUriName(uriName);
 				cp.resetPosition();
 				cp.setSubModule(subModule);
+				cp.setMavenProject(isMavenProject);
+				
+				System.out.println("getAbsolutePath: "+f.getAbsolutePath());
+				System.out.println("URI: "+uriName);
+				System.out.println("Sub: "+subModule);
 
 				spoon.addProcessor(cp);
 				spoon.run();

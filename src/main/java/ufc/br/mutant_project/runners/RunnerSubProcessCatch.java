@@ -24,8 +24,8 @@ import ufc.br.mutant_project.util.Util;
 
 public class RunnerSubProcessCatch extends AbstractRunner {
 	
-	public RunnerSubProcessCatch(String uriName, String subModule) {
-		super(uriName, subModule);
+	public RunnerSubProcessCatch(String uriName, String subModule, boolean isMavenProject) {
+		super(uriName, subModule, isMavenProject);
 	}
 	
 	@Override
@@ -74,6 +74,7 @@ public class RunnerSubProcessCatch extends AbstractRunner {
 						cp.resetPositionProcess();
 						cp.setParameterVisitor(pv);
 						cp.setSubModule(subModule);
+						cp.setMavenProject(isMavenProject);
 				
 						spoon.addProcessor(cp);
 						spoon.run();
@@ -126,7 +127,7 @@ public class RunnerSubProcessCatch extends AbstractRunner {
 	        				name = c.getQualifiedName();
 	        				
 	        			Integer count = 1;
-	    				CtType<?> tipos = Util.getClassByModel(name, PathProject.makePathToProjectMaven(uriName, subModule));
+	    				CtType<?> tipos = Util.getClassByModel(name, PathProject.makePathToProjectMaven(uriName, subModule), isMavenProject);
 	        			for(CtTry tr : tipos.getElements(new Filter<CtTry>() {
 	        				public boolean matches(CtTry element) {
 	        					return true;

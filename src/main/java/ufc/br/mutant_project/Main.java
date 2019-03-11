@@ -5,13 +5,19 @@ import ufc.br.mutant_project.exceptions.InicializerException;
 import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
 import ufc.br.mutant_project.exceptions.NotURLsException;
 import ufc.br.mutant_project.executers.Executer;
-import ufc.br.mutant_project.executers.ExecuterEstatisticsOnlyTotalCoveredStatus;
 
 public class Main {
 	public static void main(String[] args){
 		
-		Executer ex = new ExecuterEstatisticsOnlyTotalCoveredStatus();
-		//Executer ex = new ExecuterTestsProjects();
+		boolean runInFile = false;
+		
+		if(args.length > 0) {
+			if(args[0].equals("runInFile")) {
+				runInFile = true;
+			}
+		}
+		
+		Executer ex = new Executer(runInFile);
 		
 		try {
 			ex.execute();
