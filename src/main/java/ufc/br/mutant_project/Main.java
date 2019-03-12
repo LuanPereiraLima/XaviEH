@@ -11,11 +11,9 @@ public class Main {
 		
 		boolean runInFile = false;
 		
-		if(args.length > 0) {
-			if(args[0].equals("runInFile")) {
+		if(args.length > 0)
+			if(args[0].equals("runInFile"))
 				runInFile = true;
-			}
-		}
 		
 		Executer ex = new Executer(runInFile);
 		
