@@ -1,2 +1,6 @@
 .settings
 /target/
+.idea
+PLIN*
+*-output.txt
+project-mutant.iml

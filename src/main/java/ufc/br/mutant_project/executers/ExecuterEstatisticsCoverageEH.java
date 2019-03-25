@@ -135,18 +135,31 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 //				System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
 //				continue;
 //			}
-			System.out.println("--OK!");
+	
 			
 			CtModel model = null;
 			
 			System.out.println(PathProject.makePathToProjectMaven(path, submodule));
+		
+			try {
 			
-			if(build != null && build.equals("g"))
-				model = Util.getModelNoMaven(PathProject.makePathToProjectMaven(path, submodule)+"src/main/java");
-			else
-				model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
+				if(build != null && build.equals("g")) {
+					model = Util.getModelNoMaven(PathProject.makePathToProjectMaven(path, submodule)+Util.getSourceDirectory(PathProject.makePathToProjectMaven(path, submodule)));
+				}else {
+					model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
+				}
 				
-			System.out.println();
+				if(model.getAllTypes().size() == 0){
+					System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
+					continue;
+				}
+			
+			}catch(Exception e) {
+				System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
+				continue;
+			}
+			
+			System.out.println("--OK!");
 			
 			System.out.println("-----------------");
 			System.out.println("Projeto: "+path);
