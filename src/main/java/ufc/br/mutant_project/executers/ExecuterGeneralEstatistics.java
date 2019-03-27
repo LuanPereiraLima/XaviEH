@@ -14,11 +14,10 @@ import ufc.br.mutant_project.exceptions.InicializerException;
 import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
 import ufc.br.mutant_project.exceptions.NotURLsException;
 import ufc.br.mutant_project.models.ResultsStatisticsLength;
-import ufc.br.mutant_project.runners.AbstractRunner;
 import ufc.br.mutant_project.util.Util;
 import ufc.br.mutant_project.util.UtilWriteReader;
 
-public class ExecuterGeneralEstatistics extends Executer{
+public class ExecuterGeneralEstatistics extends Execute {
 	
 	private boolean saveOutputInFile = true;
 	private int qtdCatchs = 0;
@@ -56,21 +55,10 @@ public class ExecuterGeneralEstatistics extends Executer{
 			if(version!=null)
 				path=path+"-"+version;
 			
-			if(AbstractRunner.listSavedMutantResultType!=null) {
-				System.out.println("-Verificando se o projeto já foi rodado...");
-				boolean projectAlreadyRunned = false;
-				for(String projeto : AbstractRunner.listSavedMutantResultType.keySet()) {
-					if(path.equals(projeto)) {
-						projectAlreadyRunned = true;
-						break;
-					}
-				}
-				System.out.println("--OK!");
-				if(projectAlreadyRunned) {
-					System.out.println("-O projeto "+path+" já possui resultados já rodados, o mesmo será pulado...");
+			if(verifyIfProjectAlreadyRun)
+				if(verifyIfProjectAlreadyRun(path))
 					continue;
-				}
-			}
+
 			
 			if(!(path!=null && !path.trim().isEmpty())) {
 				System.out.println("Incorrect GIT URL: "+list.get(i)+" (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt')");
@@ -88,23 +76,11 @@ public class ExecuterGeneralEstatistics extends Executer{
 				continue;
 			}
 			System.out.println("--Ok!");
-			
-			System.out.println("-Verificanndo se o projeto está passando nos testes inicialmente.");
-			int result = 0; //Util.invoker(PathProject.makePathToProjectMaven(path), null, true);
-			
-			if(result!=0) {
-				System.out.println("--O projeto: "+path+" está com os testes falhando, este projeto será pulado.");
-				continue;
+
+			if(testProject){
+				testProject(submodule, path);
 			}
-			System.out.println("--OK!");
-			
-			System.out.println("-Fazendo uma limpeza no projeto usando o Maven Clean.");
-			result = 0; //Util.invokerOthers(PathProject.makePathToProjectMaven(path), Arrays.asList("clean"), null, true);
-			
-			if(result!=0) {
-				System.out.println("--O projeto: "+path+" está com os clean falhando, este projeto será pulado.");
-				continue;
-			}
+
 			System.out.println("--OK!");
 			
 			

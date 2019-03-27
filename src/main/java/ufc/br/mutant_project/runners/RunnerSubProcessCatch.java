@@ -64,7 +64,7 @@ public class RunnerSubProcessCatch extends AbstractRunner {
 						spoon.getEnvironment().setNoClasspath(true);
 						spoon.getEnvironment().setCommentEnabled(true);
 						spoon.addInputResource(f.getAbsolutePath());
-						spoon.setSourceOutputDirectory(PathProject.PROJECT_PATH_TEMP);
+						spoon.setSourceOutputDirectory(PathProject.getPathTemp());
 		
 						ParameterProcessorSubProcess pv = new ParameterProcessorSubProcess();
 						pv.setPosition(i);

@@ -16,7 +16,7 @@ import ufc.br.mutant_project.util.Util;
 import ufc.br.mutant_project.util.UtilWriteReader;
 import ufc.br.mutant_project.util.XmlJacoco;
 
-public class ExecuterEstatisticsOnlyTotalCoveredStatus extends Executer{
+public class ExecuterEstatisticsOnlyTotalCoveredStatus extends Execute {
 	
 	public ExecuterEstatisticsOnlyTotalCoveredStatus() {
 		super(false);

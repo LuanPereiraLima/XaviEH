@@ -75,7 +75,7 @@ public class Util {
 			try {
 				invoker.setMavenHome( new File( getProperties().getHomeMaven() ) );
 			} catch (IOException e1) {
-				System.err.println("Não foi possível obter o arquivo propierties, tente novamente.");
+				System.err.println("Não foi possível obter o arquivo properties, tente novamente.");
 				e1.printStackTrace();
 				return -1;
 			}
@@ -252,10 +252,10 @@ public class Util {
    
     //MÉTODO UTILIZADO PARA CRIAR A CÓPIA DO PROJETO NA QUAL SERÁ O MUTANTE
     public static void copyOutputSpoonToProject(String toPath){
-    	File source = new File(PathProject.PROJECT_PATH_TEMP);
+    	File source = new File(PathProject.getPathTemp());
     	File dest = new File(toPath);
     	try {
-    		System.out.println("Gerando copia do arquivo... copyOutputSpoonToProject toPath: "+toPath+" fromPath: "+PathProject.PROJECT_PATH_TEMP);
+    		System.out.println("Gerando copia do arquivo... copyOutputSpoonToProject toPath: "+toPath+" fromPath: "+PathProject.getPathTemp());
     	    FileUtils.copyDirectory(source, dest);
     	} catch (IOException e) {
     	    e.printStackTrace();
@@ -264,7 +264,7 @@ public class Util {
     
     //MÉTODO UTILIZADO PARA CRIAR A CÓPIA DO PROJETO NA QUAL SERÁ O MUTANTE
     public static void clearOutputSpoonToProject(){
-    	File source = new File(PathProject.PROJECT_PATH_TEMP);
+    	File source = new File(PathProject.getPathTemp());
     	try {
     		System.out.println("Limpando copyOutputSpoonToProject");
     		FileUtils.deleteDirectory(source);
@@ -448,9 +448,9 @@ public class Util {
 		
 		int result = 1;
 		if(submodule!=null)
-			result = invokerOthers(pathToProject, Collections.singletonList("test"), Collections.singletonList(submodule), true);
+			result = invokerOthers(pathToProject, Collections.singletonList("testProject"), Collections.singletonList(submodule), true);
 		else
-			result = invokerOthers(pathToProject, Collections.singletonList("test"), null, true);
+			result = invokerOthers(pathToProject, Collections.singletonList("testProject"), null, true);
 		
 		if(result==0) {
 			System.out.println("Coverage JaCoCo realizado com sucesso!");
@@ -558,7 +558,7 @@ public class Util {
 		pe.addGoal("prepare-agent");
 		PluginExecution pe2 = new PluginExecution();
 		pe2.addGoal("report");
-		pe2.setPhase("test");
+		pe2.setPhase("testProject");
 		pe2.setId("report");
 		p.getExecutions().add(pe);
 		p.getExecutions().add(pe2);

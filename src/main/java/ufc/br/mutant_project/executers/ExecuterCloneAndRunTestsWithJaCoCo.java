@@ -11,15 +11,18 @@ import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
 import ufc.br.mutant_project.exceptions.NotURLsException;
 import ufc.br.mutant_project.exceptions.PomException;
 import ufc.br.mutant_project.exceptions.TestFailMavenInvokerException;
-import ufc.br.mutant_project.runners.AbstractRunner;
 import ufc.br.mutant_project.util.Util;
 
-public class ExecuterCloneAndRunTestsWithJaCoCo extends Executer{
+public class ExecuterCloneAndRunTestsWithJaCoCo extends Execute {
 	
 	private String path = null;
 	
 	public ExecuterCloneAndRunTestsWithJaCoCo() {
 		super(false);
+	}
+
+	public ExecuterCloneAndRunTestsWithJaCoCo(boolean saveInFile, boolean cloneRepository, boolean verifyIfProjectAlreadyRun, boolean testProject) {
+		super(saveInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
 	}
 	
 	public void execute() throws InicializerException, ListProjectsNotFoundException, NotURLsException, ConfigPropertiesNotFoundException {
@@ -45,21 +48,10 @@ public class ExecuterCloneAndRunTestsWithJaCoCo extends Executer{
 			
 			if(version!=null)
 				path=path+"-"+version;
-			
-			if(AbstractRunner.listSavedMutantResultType!=null) {
-				System.out.println("-Verificando se o projeto já foi rodado...");
-				boolean projectAlreadyRunned = false;
-				for(String projeto : AbstractRunner.listSavedMutantResultType.keySet()) {
-					if(path.equals(projeto)) {
-						projectAlreadyRunned = true;
-						break;
-					}
-				}
-				System.out.println("--OK!");
-				if(projectAlreadyRunned) {
-					System.out.println("-O projeto "+path+" já possui resultados já rodados, o mesmo será pulado...");
+
+			if(verifyIfProjectAlreadyRun) {
+				if(verifyIfProjectAlreadyRun(path))
 					continue;
-				}
 			}
 			
 			if(!(path!=null && !path.trim().isEmpty())) {
@@ -69,17 +61,18 @@ public class ExecuterCloneAndRunTestsWithJaCoCo extends Executer{
 
 			System.out.println("--------------------------------");
 			System.out.println("-Cloning Repository: "+path+" ...");
-			
-			
-			try {
-				Util.cloneRepository(linha[0], path, commit);
-			} catch (CloneRepositoryException e) {
-				System.out.println("-Não foi possível clonar a URL GIT: "+list.get(i)+" O projeto será ignorado. (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt', ou verifique a conexão com a internet)");
-				e.printStackTrace();
-				continue;
+
+
+			if(cloneRepository) {
+				try {
+					Util.cloneRepository(linha[0], path, commit);
+				} catch (CloneRepositoryException e) {
+					System.out.println("-Não foi possível clonar a URL GIT: " + list.get(i) + " O projeto será ignorado. (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt', ou verifique a conexão com a internet)");
+					e.printStackTrace();
+					continue;
+				}
 			}
-			
-			
+
 			try {
 				System.out.println("-Reportando a cobertura do projeto usando o JaCoCo");
 				Util.createReportJaCoCo(PathProject.makePathToProjectMaven(path, null), submodule);
@@ -95,9 +88,8 @@ public class ExecuterCloneAndRunTestsWithJaCoCo extends Executer{
 				e.printStackTrace();
 			}
 		}
-		System.out.close();
-				
-		if(saveOutputInFile)	
+
+		if(saveOutputInFile)
 			System.out.close();
 	}
 }

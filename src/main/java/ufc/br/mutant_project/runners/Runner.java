@@ -52,7 +52,7 @@ public class Runner extends AbstractRunner{
 				spoon.getEnvironment().setNoClasspath(true);
 				spoon.addInputResource(f.getAbsolutePath());
 				spoon.getEnvironment().setCommentEnabled(true);
-				spoon.setSourceOutputDirectory(PathProject.PROJECT_PATH_TEMP);
+				spoon.setSourceOutputDirectory(PathProject.getPathTemp());
 
 				cp.setParameterVisitor(new ParameterProcessor());
 				cp.getParameterVisitor().setPosition(i);

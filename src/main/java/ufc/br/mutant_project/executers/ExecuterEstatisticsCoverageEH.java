@@ -20,27 +20,27 @@ import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.Filter;
 import spoon.reflect.visitor.filter.TypeFilter;
 import ufc.br.mutant_project.constants.PathProject;
-import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
-import ufc.br.mutant_project.exceptions.InicializerException;
-import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
-import ufc.br.mutant_project.exceptions.NotURLsException;
+import ufc.br.mutant_project.exceptions.*;
 import ufc.br.mutant_project.models.ClassXMLCoverage;
 import ufc.br.mutant_project.models.ClassXMLCoverageLine;
 import ufc.br.mutant_project.models.ClassXMLCoverageLineNormal;
 import ufc.br.mutant_project.models.CoverageResult;
 import ufc.br.mutant_project.models.TotalCoveredStatus;
-import ufc.br.mutant_project.runners.AbstractRunner;
 import ufc.br.mutant_project.util.Util;
 import ufc.br.mutant_project.util.UtilWriteReader;
 import ufc.br.mutant_project.util.XmlJacoco;
 
-public class ExecuterEstatisticsCoverageEH extends Executer{
+public class ExecuterEstatisticsCoverageEH extends Execute {
 	
 	private ClassXMLCoverage cc = null;
 	private String path = null;
 	
 	public ExecuterEstatisticsCoverageEH() {
 		super(false);
+	}
+
+	public ExecuterEstatisticsCoverageEH(boolean saveInFile, boolean cloneRepository, boolean verifyIfProjectAlreadyRun, boolean testProject) {
+		super(saveInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
 	}
 	
 	public void execute() throws InicializerException, ListProjectsNotFoundException, NotURLsException, ConfigPropertiesNotFoundException {
@@ -69,23 +69,11 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 			
 			if(version!=null)
 				path=path+"-"+version;
-			
-			if(AbstractRunner.listSavedMutantResultType!=null) {
-				System.out.println("-Verificando se o projeto já foi rodado...");
-				boolean projectAlreadyRunned = false;
-				for(String projeto : AbstractRunner.listSavedMutantResultType.keySet()) {
-					if(path.equals(projeto)) {
-						projectAlreadyRunned = true;
-						break;
-					}
-				}
-				System.out.println("--OK!");
-				if(projectAlreadyRunned) {
-					System.out.println("-O projeto "+path+" já possui resultados já rodados, o mesmo será pulado...");
+
+			if(verifyIfProjectAlreadyRun)
+				if (verifyIfProjectAlreadyRun(path))
 					continue;
-				}
-			}
-			
+
 			if(!(path!=null && !path.trim().isEmpty())) {
 				System.out.println("Incorrect GIT URL: "+list.get(i)+" (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt')");
 				continue;
@@ -94,49 +82,32 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 			System.out.println("--------------------------------");
 			System.out.println("-Cloning Repository: "+path+" ...");
 			
-			
-//			try {
-//				Util.cloneRepository(linha[0], path, commit);
-//			} catch (CloneRepositoryException e) {
-//				System.out.println("-Não foi possível clonar a URL GIT: "+list.get(i)+" O projeto será ignorado. (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt', ou verifique a conexão com a internet)");
-//				e.printStackTrace();
-//				continue;
-//			}
+			if(cloneRepository){
+				try {
+					Util.cloneRepository(linha[0], path, commit);
+				} catch (CloneRepositoryException e) {
+					System.out.println("-Não foi possível clonar a URL GIT: "+list.get(i)+" O projeto será ignorado. (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt', ou verifique a conexão com a internet)");
+					e.printStackTrace();
+					continue;
+				}
+			}
 			
 			System.out.println("--Ok!");
 			
 			System.out.println("-Verificanndo se o projeto está passando nos testes inicialmente.");
-			int result = 0;//Util.invoker(PathProject.makePathToProjectMaven(path), Collections.singletonList(submodule), true);
-			
-			if(result!=0) {
-				System.out.println("--O projeto: "+path+" está com os testes falhando, este projeto será pulado.");
-				continue;
-			}
+
+			if(testProject)
+				if(this.testProject(submodule, path))
+					continue;
+
 			System.out.println("--OK!");
-			
-			System.out.println("-Fazendo uma limpeza no projeto usando o Maven Clean.");
-			//result = Util.invokerOthers(PathProject.makePathToProjectMaven(path), Arrays.asList("clean"), Collections.singletonList(submodule), true);
-			
-			if(result!=0) {
-				System.out.println("--O projeto: "+path+" está com os clean falhando, este projeto será pulado.");
-				continue;
-			}
-			System.out.println("--OK!");
-			
 			
 			System.out.println("-Verificando se o projeto é compatível com o SPOON para a criação de modelos.");
-			
-//			try {
-//				if(Util.getModel(PathProject.makePathToProjectMaven(path)).getAllTypes().size() == 0){
-//					System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
-//					continue;
-//				}
-//			}catch(Exception e) {
-//				System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
-//				continue;
-//			}
-	
-			
+
+			if(testProjectSPOONCompability)
+				if(!projectSPOONCompatibility(build, path, submodule))
+					continue;
+
 			CtModel model = null;
 			
 			System.out.println(PathProject.makePathToProjectMaven(path, submodule));
@@ -178,7 +149,7 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 //				System.out.println(e.getMessage());
 //				e.printStackTrace();
 //			}
-//			
+
 			List<ClassXMLCoverage> listaxml = null;
 		//	List<ClassXMLCoverage>  listaxmlMethods = null;
 			TotalCoveredStatus totalCoveredStatus = null;
@@ -593,6 +564,7 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 							}
 							
 						}
+						//TODO THROWS AND TRY REMOVEDS
 						/*else if(rc.getType().equals("THROWS")) {
 							
 							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineMethod) {
@@ -642,6 +614,7 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 								tcs.get(path).setCATCH_E_CB_TotalCoveredBrachesCatchBlocks(tcs.get(path).getCATCH_E_CB_TotalCoveredBrachesCatchBlocks()+cn.getCb());
 							}
 						}
+						//TODO FINALLY REMOVED
 						/*else if(rc.getType().equals("FINALLY")) {
 							
 							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
@@ -661,6 +634,7 @@ public class ExecuterEstatisticsCoverageEH extends Executer{
 			
 			
 			System.out.println("olhando este "+path);
+
 			if(tcs.get(path)==null) {
 				System.out.println("não existe este");
 				System.out.println("opa, ta nulzão");

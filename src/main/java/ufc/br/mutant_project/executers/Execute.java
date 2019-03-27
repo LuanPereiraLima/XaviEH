@@ -33,34 +33,62 @@ import ufc.br.mutant_project.runners.RunnerSubProcessCatch;
 import ufc.br.mutant_project.util.Util;
 import ufc.br.mutant_project.util.UtilWriteReader;
 
-public class Executer {
+public class Execute {
 	
 	protected boolean saveOutputInFile = true;
+	protected boolean verifyIfProjectAlreadyRun = true;
+	protected boolean cloneRepository = true;
+	protected boolean testProject = true;
+	protected boolean testProjectSPOONCompability = true;
 	
 	protected static final String VERSION_URL = "-v";
 	protected static final String COMMIT_URL = "-c";
 	protected static final String MODULE_URL = "-m";
 	protected static final String BUILD_URL = "-p";
+	protected static final String PATH_PROJECT_URL = "-pp";
 	
 	protected boolean isProjectMaven = true;
 	protected List<String> listProjects = null;
 	
-	public Executer(boolean saveInFile) {
+	public Execute(boolean saveInFile) {
 		this.saveOutputInFile = saveInFile;
 	}
-	
+
+	public Execute(boolean saveInFile, boolean cloneRepository) {
+		this.saveOutputInFile = saveInFile;
+		this.cloneRepository = cloneRepository;
+	}
+
+	public Execute(boolean saveInFile, boolean cloneRepository, boolean verifyIfProjectAlreadyRun) {
+		this.saveOutputInFile = saveInFile;
+		this.cloneRepository = cloneRepository;
+		this.verifyIfProjectAlreadyRun = verifyIfProjectAlreadyRun;
+	}
+
+	public Execute(boolean saveInFile, boolean cloneRepository, boolean verifyIfProjectAlreadyRun, boolean testProject) {
+		this.saveOutputInFile = saveInFile;
+		this.cloneRepository = cloneRepository;
+		this.verifyIfProjectAlreadyRun = verifyIfProjectAlreadyRun;
+		this.testProject = testProject;
+	}
+
+	/*
+	 *	Inicializa todos os itens antes de inicializar o projeto
+	 */
 	protected void inicializer() throws ConfigPropertiesNotFoundException, InicializerException, NotURLsException, ListProjectsNotFoundException{
-		
+
+		showName();
+
 		String fields = "";
 		
-		Properties p = null;
+		Properties properties = null;
 		
 		for(String f: ConfigPropierties.fields)
 			fields += f+"\n";
 		
 		try {
-			p = Util.getProperties();
-			if(p.getHomeMaven() == null || p.getProjectsFile() == null || p.getUrlMutations() == null)
+			properties = Util.getProperties();
+			if(properties.getHomeMaven() == null || properties.getProjectsFile() == null || properties.getUrlMutations() == null)
 				throw new ConfigPropertiesNotFoundException("Alguma propriedade do arquivo 'config.properties' necessária não foi encontrado (Para resolver o problema, adiciona as propriedades necessárias para o projeto do projeto \n[ propriedades disponíveis: \n\n"+fields+"\n\n].");
 
 		} catch (IOException e1) {
@@ -75,16 +103,14 @@ public class Executer {
 			}
 		}
 		
-		PathProject.USER_REFERENCE_TO_PROJECT = p.getUrlMutations();
-		
-		showName();
+		PathProject.USER_REFERENCE_TO_PROJECT = properties.getUrlMutations();
 
 		if(!Util.preparePathInit()) {
 			throw new InicializerException("Projeto não pode ser iniciado, falha na criação da pasta 'mutations', ela é necessária para a criação dos mutantes.");
 		}
 		
 		try {
-			listProjects = Util.listProjects(p.getProjectsFile());
+			listProjects = Util.listProjects(properties.getProjectsFile());
 		} catch (FileNotFoundException e) {
 			throw new ListProjectsNotFoundException("Nenhum arquivo de lista de url de repositório foi encontrado (Para resolver o problema, crie um arquivo '.txt' com as URLs do GIT na raiz do projeto).");
 		}
@@ -95,7 +121,86 @@ public class Executer {
 
 		AbstractRunner.listSavedMutantResultType = Util.getListSaveMutantResultTypeFromXml(PathProject.USER_REFERENCE_TO_PROJECT);
 	}
-	
+
+	/*
+	 *	retorna verdade se o projeto está com os testes passando
+	 */
+	protected boolean testProject(String submodule, String path){
+
+		System.out.println("-Verificanndo se o projeto está passando nos testes inicialmente.");
+
+		int result = 0;
+
+		if (submodule == null)
+			result = Util.invoker(PathProject.makePathToProjectMaven(path, null), null, true);
+		else
+			result = Util.invoker(PathProject.makePathToProjectMaven(path, null), Collections.singletonList(submodule), true);
+
+		if (result != 0) {
+			System.out.println("--O projeto: " + path + " está com os testes falhando, este projeto será pulado.");
+			return false;
+		}
+
+		System.out.println("--OK!");
+
+		System.out.println("-Fazendo uma limpeza no projeto usando o Maven Clean.");
+
+		if (submodule == null)
+			result = Util.invokerOthers(PathProject.makePathToProjectMaven(path, null), Arrays.asList("clean"), null, true);
+		else
+			result = Util.invokerOthers(PathProject.makePathToProjectMaven(path, null), Arrays.asList("clean"), Collections.singletonList(submodule), true);
+
+		if (result != 0) {
+			System.out.println("--O projeto: " + path + " está com os clean falhando, este projeto será pulado.");
+			return false;
+		}
+		System.out.println("--OK!");
+
+		return true;
+	}
+
+	/*
+	 *	retorna verdade se o projeto é compatível com o SPOON
+	 */
+	protected boolean projectSPOONCompatibility(String build, String path, String submodule){
+		try {
+			CtModel model = null;
+			if(build != null && build.equals("g")) {
+				model = Util.getModelNoMaven(PathProject.makePathToProjectMaven(path, submodule)+Util.getSourceDirectory(PathProject.makePathToProjectMaven(path, submodule)));
+				isProjectMaven = false;
+			}else {
+				model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
+			}
+			if(model.getAllTypes().size() == 0){
+				System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
+				return false;
+			}
+		}catch(Exception e) {
+			System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
+			return false;
+		}
+		return true;
+	}
+
+	/*
+	 *	retorna verdade se o projeto já foi rodado
+	 */
+	protected boolean verifyIfProjectAlreadyRun(String path){
+		if(AbstractRunner.listSavedMutantResultType!=null) {
+			System.out.println("-Verificando se o projeto já foi rodado...");
+			boolean projectAlreadyRunned = false;
+			for(String project : AbstractRunner.listSavedMutantResultType.keySet()) {
+				if(path.equals(project)) {
+					projectAlreadyRunned = true;
+					break;
+				}
+			}
+			System.out.println("--OK!");
+			return projectAlreadyRunned;
+		}
+		return false;
+	}
+
 	public void execute() throws InicializerException, ListProjectsNotFoundException, NotURLsException, ConfigPropertiesNotFoundException {
 
 		inicializer();
@@ -113,95 +218,53 @@ public class Executer {
 			String commit = getItemByUrl(linha, COMMIT_URL);
 			String submodule = getItemByUrl(linha, MODULE_URL);
 			String build = getItemByUrl(linha, BUILD_URL);
+			String pathProject = getItemByUrl(linha, PATH_PROJECT_URL);
+
+			if(pathProject!=null){
+				PathProject.PROJECT_PATH_FILES_DEFAULT  = pathProject;
+			}
 			
 			String path = Util.validateAndGetNameRepository(linha[0]);
 			
 			if(version!=null)
 				path=path+"-"+version;
-			
-			if(AbstractRunner.listSavedMutantResultType!=null) {
-				System.out.println("-Verificando se o projeto já foi rodado...");
-				boolean projectAlreadyRunned = false;
-				for(String projeto : AbstractRunner.listSavedMutantResultType.keySet()) {
-					if(path.equals(projeto)) {
-						projectAlreadyRunned = true;
-						break;
-					}
-				}
-				System.out.println("--OK!");
-				if(projectAlreadyRunned) {
-					System.out.println("-O projeto "+path+" já possui resultados já rodados, o mesmo será pulado...");
+
+			if(verifyIfProjectAlreadyRun)
+				if(verifyIfProjectAlreadyRun(path)) {
+					System.out.println("-O projeto já existe, então o mesmo será pulado.");
 					continue;
 				}
-			}
-			
-			if(!(path!=null && !path.trim().isEmpty())) {
+
+			if(path==null || path.trim().isEmpty()) {
 				System.out.println("Incorrect GIT URL: "+listProjects.get(i)+" (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt')");
 				continue;
 			}
 
-			System.out.println("--------------------------------");
-			System.out.println("-Cloning Repository: "+path+" ...");
-			
-			try {
-				Util.cloneRepository(linha[0], path, commit);
-			} catch (CloneRepositoryException e) {
-				System.out.println("-Não foi possível clonar a URL GIT: "+listProjects.get(i)+" O projeto será ignorado. (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt', ou verifique a conexão com a internet)");
-				e.printStackTrace();
-			 continue;
+			if(cloneRepository) {
+				System.out.println("--------------------------------");
+				System.out.println("-Cloning Repository: "+path+" ...");
+				try {
+					Util.cloneRepository(linha[0], path, commit);
+				} catch (CloneRepositoryException e) {
+					System.out.println("-Não foi possível clonar a URL GIT: " + listProjects.get(i) + " O projeto será ignorado. (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt', ou verifique a conexão com a internet)");
+					e.printStackTrace();
+					continue;
+				}
 			}
 			
 			System.out.println("--Ok!");
 			
 			System.out.println("Existe Submodulo? :"+submodule);
-			
-			System.out.println("-Verificanndo se o projeto está passando nos testes inicialmente.");
-			int result = 0;
-			
-			if(submodule == null)
-				result = Util.invoker(PathProject.makePathToProjectMaven(path, null), null, true);
-			else
-				result = Util.invoker(PathProject.makePathToProjectMaven(path, null), Collections.singletonList(submodule), true);
-			
-			
-			if(result!=0) {
-				System.out.println("--O projeto: "+path+" está com os testes falhando, este projeto será pulado.");
-				continue;
-			}
-			System.out.println("--OK!");
-			
-			System.out.println("-Fazendo uma limpeza no projeto usando o Maven Clean.");
-			
-			if(submodule == null)
-				result = Util.invokerOthers(PathProject.makePathToProjectMaven(path, null), Arrays.asList("clean"), null, true);
-			else
-				result = Util.invokerOthers(PathProject.makePathToProjectMaven(path, null), Arrays.asList("clean"), Collections.singletonList(submodule), true);
-			
-			if(result!=0) {
-				System.out.println("--O projeto: "+path+" está com os clean falhando, este projeto será pulado.");
-				continue;
-			}
-			System.out.println("--OK!");
-			
+
+			if(testProject)
+				if(!testProject(submodule, path))
+					continue;
+
 			System.out.println("-Verificando se o projeto é compatível com o SPOON para a criação de modelos.");
 			
-			try {
-				
-				CtModel model = null;
-				if(build != null && build.equals("g")) {
-					model = Util.getModelNoMaven(PathProject.makePathToProjectMaven(path, submodule)+Util.getSourceDirectory(PathProject.makePathToProjectMaven(path, submodule)));
-					isProjectMaven = false;
-				}else {
-					model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
-				}
-				if(model.getAllTypes().size() == 0){
-					System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
+			if(testProjectSPOONCompability)
+				if(!projectSPOONCompatibility(build, path, submodule))
 					continue;
-				}
-			}catch(Exception e) {
-				System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
-				continue;
-			}
 			
 			System.out.println("--OK!");
 			
@@ -276,10 +339,6 @@ public class Executer {
 			}
 		}
 		return null;
-	}
-
-	public void setSaveOutputInFile(boolean saveOutputInFile) {
-		this.saveOutputInFile = saveOutputInFile;
 	}
 	
 	protected void showName() {
