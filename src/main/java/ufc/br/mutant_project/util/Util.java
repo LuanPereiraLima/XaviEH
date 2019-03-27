@@ -273,6 +273,17 @@ public class Util {
     	    e.printStackTrace();
     	}
     }
+
+    public static void removeDirectoryAndCreate(String pathDC){
+		File source = new File(pathDC);
+		try {
+			System.out.println("APAGANDO E RECRIANDO MUTANTE");
+			FileUtils.deleteDirectory(source);
+			FileUtils.forceMkdir(source);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
     
     //MODELO DO PROJETO
     public static CtModel getModel(String projectPath) {

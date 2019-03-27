@@ -73,6 +73,20 @@ public abstract class AbstractRunner {
 		System.out.println("--OK! Morto? Result: "+(result!=0));
 		
 		createResult(f.getAbsolutePath(), result, myAbstractorProcessor.getParameterVisitor(), myAbstractorProcessor.pathIdentification());
+
+
+		//TODO ADICIONADO PARA APAGAR OS ARQUIVOS NÃO NECESSÁRIOS (NECESSÁRIOS POR FALTA DE ESPAÇO) -----------------
+
+		System.out.println("MUTANT PATH: "+mutantPath);
+
+		Util.removeDirectoryAndCreate(mutantPath);
+
+		//COPIAR NOVAMENTE OS ARQUIVOS IMPORTANTES CRIADOS
+		Util.copyOutputSpoonToProject(mutantPath + (File.separator) + PathProject.makePathToPathFiles(uriName, subModule));
+
+		//TODO ----------------------------------------
+
+		createResult(f.getAbsolutePath(), result, myAbstractorProcessor.getParameterVisitor(), myAbstractorProcessor.pathIdentification());
 	}
 
 	// PRINTANDO E SALVANDO O RESULTADO NO ARQUIVO
