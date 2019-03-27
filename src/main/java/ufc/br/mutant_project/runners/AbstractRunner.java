@@ -72,7 +72,7 @@ public abstract class AbstractRunner {
 		
 		System.out.println("--OK! Morto? Result: "+(result!=0));
 		
-		createResult(f.getAbsolutePath(), result, myAbstractorProcessor.getParameterVisitor(), myAbstractorProcessor.pathIdentification());
+		//createResult(f.getAbsolutePath(), result, myAbstractorProcessor.getParameterVisitor(), myAbstractorProcessor.pathIdentification());
 
 
 		//TODO ADICIONADO PARA APAGAR OS ARQUIVOS NÃO NECESSÁRIOS (NECESSÁRIOS POR FALTA DE ESPAÇO) -----------------
