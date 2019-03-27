@@ -22,10 +22,7 @@ import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.Filter;
 import ufc.br.mutant_project.constants.PathProject;
-import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
-import ufc.br.mutant_project.exceptions.InicializerException;
-import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
-import ufc.br.mutant_project.exceptions.NotURLsException;
+import ufc.br.mutant_project.exceptions.*;
 import ufc.br.mutant_project.models.ClassXMLCoverage;
 import ufc.br.mutant_project.models.ClassXMLCoverageLine;
 import ufc.br.mutant_project.models.ClassXMLCoverageLineMethod;
@@ -37,7 +34,7 @@ import ufc.br.mutant_project.util.Util;
 import ufc.br.mutant_project.util.UtilWriteReader;
 import ufc.br.mutant_project.util.XmlJacoco;
 
-public class ExecuterEstatisticsCoverageEHStudy2 extends Executer{
+public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 	
 	private ClassXMLCoverage cc = null;
 	private ClassXMLCoverage ccMethod = null;
@@ -46,7 +43,11 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Executer{
 	public ExecuterEstatisticsCoverageEHStudy2() {
 		super(false);
 	}
-	
+
+	public ExecuterEstatisticsCoverageEHStudy2(boolean saveInFile, boolean cloneRepository, boolean verifyIfProjectAlreadyRun, boolean testProject) {
+		super(saveInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
+	}
+
 	public void execute() throws InicializerException, ListProjectsNotFoundException, NotURLsException, ConfigPropertiesNotFoundException {
 
 		inicializer();
@@ -57,54 +58,57 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Executer{
 		Map<String, TotalCoveredStatus> tcs = new HashMap<>();
 		
 		for(int i=0; i < list.size(); i++) {
-			
-			if(list.get(i).startsWith("-")) {
-				System.out.println("Jumping URL: "+list.get(i)+" By signal - .");
+
+			if (list.get(i).startsWith("-")) {
+				System.out.println("Jumping URL: " + list.get(i) + " By signal - .");
 				continue;
 			}
-			
+
 			String[] linha = list.get(i).split(" ");
-			
+
 			String version = getItemByUrl(linha, VERSION_URL);
 			String submodule = getItemByUrl(linha, MODULE_URL);
-			
+			String commit = getItemByUrl(linha, COMMIT_URL);
+
+
 			path = Util.validateAndGetNameRepository(linha[0]);
-			
-			if(version!=null)
-				path=path+"-"+version;
-			
-			if(AbstractRunner.listSavedMutantResultType!=null) {
+
+			if (version != null)
+				path = path + "-" + version;
+
+			if (AbstractRunner.listSavedMutantResultType != null) {
 				System.out.println("-Verificando se o projeto já foi rodado...");
 				boolean projectAlreadyRunned = false;
-				for(String projeto : AbstractRunner.listSavedMutantResultType.keySet()) {
-					if(path.equals(projeto)) {
+				for (String projeto : AbstractRunner.listSavedMutantResultType.keySet()) {
+					if (path.equals(projeto)) {
 						projectAlreadyRunned = true;
 						break;
 					}
 				}
 				System.out.println("--OK!");
-				if(projectAlreadyRunned) {
-					System.out.println("-O projeto "+path+" já possui resultados já rodados, o mesmo será pulado...");
+				if (projectAlreadyRunned) {
+					System.out.println("-O projeto " + path + " já possui resultados já rodados, o mesmo será pulado...");
 					continue;
 				}
 			}
-			
-			if(!(path!=null && !path.trim().isEmpty())) {
-				System.out.println("Incorrect GIT URL: "+list.get(i)+" (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt')");
+
+			if (!(path != null && !path.trim().isEmpty())) {
+				System.out.println("Incorrect GIT URL: " + list.get(i) + " (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt')");
 				continue;
 			}
 
 			System.out.println("--------------------------------");
-			System.out.println("-Cloning Repository: "+path+" ...");
-			
-			
-//			try {
-//				Util.cloneRepository(linha[0], path, commit);
-//			} catch (CloneRepositoryException e) {
-//				System.out.println("-Não foi possível clonar a URL GIT: "+list.get(i)+" O projeto será ignorado. (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt', ou verifique a conexão com a internet)");
-//				e.printStackTrace();
-//				continue;
-//			}
+			System.out.println("-Cloning Repository: " + path + " ...");
+
+			if(cloneRepository){
+				try {
+					Util.cloneRepository(linha[0], path, commit);
+				} catch (CloneRepositoryException e) {
+					System.out.println("-Não foi possível clonar a URL GIT: " + list.get(i) + " O projeto será ignorado. (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt', ou verifique a conexão com a internet)");
+					e.printStackTrace();
+					continue;
+				}
+			}
 			
 			System.out.println("--Ok!");
 			
@@ -817,9 +821,7 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Executer{
 		}
 		
 		System.out.println(resultCoverageTotal);
-		
-		System.out.close();
-				
+
 		UtilWriteReader.writeCsvFileEstatistics2(resultCoverageTotal);
 		UtilWriteReader.writeCsvFileEstatistics2(tcs);
 		
