@@ -91,9 +91,10 @@ public class Util {
 			request.setGoals( Maven.GOALS_PROJECT_DISABLE_CHECK );
 			request.setDebug(false);
 			
-			if(submodules!=null)
+			if(submodules!=null) {
 				request.setProjects(submodules);
-			
+				System.out.println("Realizando os testes dentro dos submodulos: "+submodules);
+			}
 			Thread t = new Thread(new Runnable() {
 				public void run() {
 					try {
