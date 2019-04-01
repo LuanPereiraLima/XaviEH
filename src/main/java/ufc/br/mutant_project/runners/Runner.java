@@ -69,6 +69,7 @@ public class Runner extends AbstractRunner{
 
 				spoon.addProcessor(cp);
 				spoon.run();
+				spoon.prettyprint();
 
 				if (cp.getParameterVisitor().isNeedModification()) {
 
