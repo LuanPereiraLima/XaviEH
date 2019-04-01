@@ -41,6 +41,7 @@ import edu.emory.mathcs.backport.java.util.Arrays;
 import spoon.Launcher;
 import spoon.MavenLauncher;
 import spoon.SpoonAPI;
+import spoon.compiler.Environment;
 import spoon.reflect.CtModel;
 import spoon.reflect.code.CtCatch;
 import spoon.reflect.code.CtInvocation;
@@ -111,9 +112,9 @@ public class Util {
 				
 			    try { Thread.sleep (500); } catch (InterruptedException ex) {}
 			    
-			    if(result!=null) {
+			    if(result!=null)
 			    	return result.getExitCode();
-			    }
+
 			    if(i == ((60*10*2)-1)) {
 			    	t.interrupt();
 			    	t.stop();
@@ -290,10 +291,11 @@ public class Util {
     public static CtModel getModel(String projectPath) {
     	try {
 			launcher = new MavenLauncher(projectPath, MavenLauncher.SOURCE_TYPE.APP_SOURCE);
-			launcher.getEnvironment().setAutoImports(false);
-//			launcher.getEnvironment().setCommentEnabled(true);
-			launcher.getEnvironment().setPreserveLineNumbers(true);
-			launcher.getEnvironment().setNoClasspath(true);
+			Environment env = launcher.getEnvironment();
+			env.setAutoImports(true);
+//			env.setCommentEnabled(true);
+			env.setPreserveLineNumbers(true);
+			env.setNoClasspath(true);
 			launcher.buildModel();
 			return launcher.getModel();
     	}catch(Exception e) {
@@ -306,9 +308,10 @@ public class Util {
     	try {
 			SpoonAPI spoon = new Launcher();
 			spoon = new Launcher();
-			spoon.getEnvironment().setNoClasspath(true);
-			spoon.getEnvironment().setPreserveLineNumbers(true);
-			spoon.getEnvironment().setSourceClasspath(new String[] { projectPath });
+			Environment env = spoon.getEnvironment();
+			env.setNoClasspath(true);
+			env.setPreserveLineNumbers(true);
+			env.setSourceClasspath(new String[] { projectPath });
 			spoon.addInputResource(projectPath);
 			spoon.buildModel();
 			return spoon.getModel();

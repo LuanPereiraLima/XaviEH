@@ -37,16 +37,14 @@ public class ProcessorCBR extends AbstractorProcessorSubProcessCatch<CtTry>{
     						break;
     					
     					try {
-    						element.getCatchers().get(0).getParameter().getType().toString();
-    					}catch(Exception e) {
-    						System.out.println("Elemento não pode ser obtido, pulado.");
-    						continue;
-    					}
-    					
-    					if(element.getCatchers().get(0).getParameter().getType().toString().equals(ctr.toString())){
-    						System.out.println("Elementos iguais, mutant não será gerado");
-    						break;
-    					}
+							if(element.getCatchers().get(0).getParameter().getType().toString().equals(ctr.toString())){
+								System.out.println("Elementos iguais, mutant não será gerado");
+								break;
+							}
+						}catch(Exception e) {
+							System.out.println("Elemento não pode ser obtido, pulado.");
+							continue;
+						}
     					
 						CtCatch copy = getFactory().Core().clone(element.getCatchers().get(0));
 						element.getCatchers().clear();
@@ -61,7 +59,6 @@ public class ProcessorCBR extends AbstractorProcessorSubProcessCatch<CtTry>{
     			}
     			incrementPositionProcess();
     		}
-    		
     		getParameterVisitor().setAfter(element.toString());
     	}
     	incrementPosition();
