@@ -22,7 +22,7 @@ public class RunNew {
 		
 		String path = "/home/loopback/mutationsTests/xstream-1.4.11.1/xstream-1.4.11.1/xstream/src/java";
 
-		SpoonAPI spoon = new Launcher();
+		SpoonAPI spoon;
 
 		spoon = new Launcher();
 
