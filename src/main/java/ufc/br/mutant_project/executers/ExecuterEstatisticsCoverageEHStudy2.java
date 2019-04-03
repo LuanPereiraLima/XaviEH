@@ -250,7 +250,6 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 
 							@Override
 							public boolean matches(CtBlock<?> element) {
-								// TODO Auto-generated method stub
 								//System.out.println(element);
 								//System.out.println("--");
 								
@@ -313,7 +312,6 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 
 								@Override
 								public boolean matches(CtBlock<?> element) {
-									// TODO Auto-generated method stub
 									//System.out.println(element);
 									//System.out.println("--");
 									
@@ -375,7 +373,6 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 
 								@Override
 								public boolean matches(CtBlock<?> element) {
-									// TODO Auto-generated method stub
 									//System.out.println(element);
 									//System.out.println("--");
 									

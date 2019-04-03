@@ -33,7 +33,6 @@ public class TesteMavenTest {
 		spoo.getModel().getElements(new Filter<CtClass<?>>() {
 			@Override
 			public boolean matches(CtClass<?> element) {
-				// TODO Auto-generated method stub
 				System.out.println(element.getQualifiedName());
 				mapsss.put(element.getQualifiedName(), new ArrayList<>());
 				return false;
@@ -45,7 +44,6 @@ public class TesteMavenTest {
 		spoon.getModel().getElements(new Filter<CtClass<?>>() {
 			@Override
 			public boolean matches(CtClass<?> element) {
-				// TODO Auto-generated method stub
 				System.out.println(element.getQualifiedName());
 				
 				element.getUsedTypes(true).forEach(a -> {

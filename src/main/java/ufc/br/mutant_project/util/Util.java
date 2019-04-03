@@ -226,15 +226,12 @@ public class Util {
     			g.checkout().setCreateBranch( true ).setName( commit ).setStartPoint( commit ).call();
     		
 		} catch (InvalidRemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new CloneRepositoryException();
 		} catch (TransportException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new CloneRepositoryException();
 		} catch (GitAPIException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new CloneRepositoryException();
 		}
@@ -508,7 +505,7 @@ public class Util {
 			}
 	    }else
 	    	throw new PomException("Pom.xml não encontrado para o projeto: "+pathToProject);
-	 }
+    }
 	
 	private static void modifyPomToJaCoCo(String pathToProject) throws PomException, JacocoException {
 	    MavenXpp3Reader reader = new MavenXpp3Reader();
@@ -540,7 +537,7 @@ public class Util {
 			}
 	    }else
 	    	throw new PomException("Pom.xml não encontrado para o projeto: "+pathToProject);
-	  }
+    }
 	
 	public static boolean createXmlListSaveMutantResultType(String projectPath, Map<String, List<FinalResultSavedByProject>> listSaveMutantResultType) {
 		XStream xs = new XStream();
@@ -573,7 +570,7 @@ public class Util {
 		pe.addGoal("prepare-agent");
 		PluginExecution pe2 = new PluginExecution();
 		pe2.addGoal("report");
-		pe2.setPhase("testProject");
+		pe2.setPhase("test");
 		pe2.setId("report");
 		p.getExecutions().add(pe);
 		p.getExecutions().add(pe2);

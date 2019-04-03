@@ -11,8 +11,8 @@
 -https://github.com/apache/commons-net.git -v 3.6 -c 163fe46c019f5184016207c247cdff30ee740ecc
 -https://github.com/apache/commons-pool.git -v 2.6.1 -c 87c5dc14a967a70dd6e640395d4e842b021cdb8f
 -https://github.com/apache/commons-validator.git -v 1.6 -c c4b93a7275b1172f69e53cd8cec7fc27c954a5be
-https://github.com/apache/commons-io.git -v 2.6 -c 2ae025fe5c4a7d2046c53072b0898e37a079fe62
--https://github.com/apache/hadoop.git -v 3.1.2-5 -c 1019dde65bcf12e05ef48ac71e84550d589e5d9a -m hadoop-hdfs-project/hadoop-hdfs-nfs
+-https://github.com/apache/commons-io.git -v 2.6 -c 2ae025fe5c4a7d2046c53072b0898e37a079fe62
+https://github.com/apache/hadoop.git -v 3.1.2-13 -c 1019dde65bcf12e05ef48ac71e84550d589e5d9a -m hadoop-mapreduce-project/hadoop-mapreduce-client/hadoop-mapreduce-client-shuffle
 -https://github.com/apache/commons-lang.git -v 3.8.1 -c eb5b11a25c9e61f9b25a540682816ebb103b735c
 -https://github.com/apache/commons-cli.git -v 1.4 -c f7153c3c10cc8060d3858a6a90d7ddccd0b3533e
 -https://github.com/apache/commons-functor.git -v 1 -c 62cd20998e706eafb48b35774aca7b6e1c657386
