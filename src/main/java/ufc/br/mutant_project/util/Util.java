@@ -463,9 +463,9 @@ public class Util {
 		
 		int result = 1;
 		if(submodule!=null)
-			result = invokerOthers(pathToProject, Collections.singletonList("testProject"), Collections.singletonList(submodule), true);
+			result = invokerOthers(pathToProject, Collections.singletonList("test"), Collections.singletonList(submodule), true);
 		else
-			result = invokerOthers(pathToProject, Collections.singletonList("testProject"), null, true);
+			result = invokerOthers(pathToProject, Collections.singletonList("test"), null, true);
 		
 		if(result==0) {
 			System.out.println("Coverage JaCoCo realizado com sucesso!");
