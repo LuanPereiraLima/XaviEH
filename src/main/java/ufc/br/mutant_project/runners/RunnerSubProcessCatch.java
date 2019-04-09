@@ -64,7 +64,7 @@ public class RunnerSubProcessCatch extends AbstractRunner {
 						spoon.getEnvironment().setNoClasspath(true);
 						spoon.getEnvironment().setCommentEnabled(true);
 						spoon.getEnvironment().setPreserveLineNumbers(true);
-						spoon.getEnvironment().setAutoImports(true);
+						spoon.getEnvironment().setAutoImports(false);
 						spoon.addInputResource(f.getAbsolutePath());
 						spoon.setSourceOutputDirectory(PathProject.getPathTemp());
 		

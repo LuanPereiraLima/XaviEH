@@ -51,7 +51,7 @@ public class Runner extends AbstractRunner{
 				spoon = new Launcher();
 				spoon.getEnvironment().setNoClasspath(true);
 				spoon.getEnvironment().setCommentEnabled(true);
-				spoon.getEnvironment().setAutoImports(true);
+				spoon.getEnvironment().setAutoImports(false);
 				//spoon.getEnvironment().setShouldCompile(true);
 				spoon.getEnvironment().setPreserveLineNumbers(true);
 				spoon.addInputResource(f.getAbsolutePath());
