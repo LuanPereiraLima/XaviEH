@@ -80,7 +80,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>ufc.br.mutant_project.Main</mainClass>
+              <mainClass>ufc.br.mutant_project.test.RunNew</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>

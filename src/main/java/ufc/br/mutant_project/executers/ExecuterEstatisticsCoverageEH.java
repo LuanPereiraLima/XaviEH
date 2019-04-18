@@ -70,19 +70,22 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 			if(version!=null)
 				path=path+"-"+version;
 
-			if(verifyIfProjectAlreadyRun)
+			if(verifyIfProjectAlreadyRun) {
+				System.out.println("testandoooooo");
 				if (verifyIfProjectAlreadyRun(path))
 					continue;
+			}
 
 			if(!(path!=null && !path.trim().isEmpty())) {
 				System.out.println("Incorrect GIT URL: "+list.get(i)+" (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt')");
 				continue;
 			}
 
-			System.out.println("--------------------------------");
-			System.out.println("-Cloning Repository: "+path+" ...");
-			
+
 			if(cloneRepository){
+				System.out.println("--------------------------------");
+				System.out.println("-Cloning Repository: "+path+" ...");
+
 				try {
 					Util.cloneRepository(linha[0], path, commit);
 				} catch (CloneRepositoryException e) {
@@ -90,23 +93,25 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 					e.printStackTrace();
 					continue;
 				}
+
+				System.out.println("--Ok!");
+			}
+
+			if(testProject) {
+				System.out.println("-Verificanndo se o projeto está passando nos testes inicialmente.");
+				if (this.testProject(submodule, path))
+					continue;
+
+				System.out.println("--OK!");
 			}
 			
-			System.out.println("--Ok!");
-			
-			System.out.println("-Verificanndo se o projeto está passando nos testes inicialmente.");
 
-			if(testProject)
-				if(this.testProject(submodule, path))
+
+			if(testProjectSPOONCompability) {
+				System.out.println("-Verificando se o projeto é compatível com o SPOON para a criação de modelos.");
+				if (!projectSPOONCompatibility(build, path, submodule))
 					continue;
-
-			System.out.println("--OK!");
-			
-			System.out.println("-Verificando se o projeto é compatível com o SPOON para a criação de modelos.");
-
-			if(testProjectSPOONCompability)
-				if(!projectSPOONCompatibility(build, path, submodule))
-					continue;
+			}
 
 			CtModel model = null;
 			

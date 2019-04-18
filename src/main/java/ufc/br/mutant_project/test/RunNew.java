@@ -33,7 +33,7 @@ public class RunNew {
 
 		//String path = "/home/loopback/mutationsTests/xstream-1.4.11.1/xstream-1.4.11.1/xstream/src/java";
 
-		String path = "/home/loopback/mutationsDocker/hadoop-3.1.2-19/hadoop-3.1.2-19/hadoop-mapreduce-project/hadoop-mapreduce-client/hadoop-mapreduce-client-shuffle/src/main/java/org/apache/hadoop/mapred/ShuffleHandler.java";
+		String path = "/home/loopback/hadoop/hadoop-mapreduce-project/hadoop-mapreduce-client/hadoop-mapreduce-client-shuffle/src/main/java/org/apache/hadoop/mapred/ShuffleHandler.java";
 
 		//String path = "/home/loopback/mutationsDocker/hadoop-3.1.2-20/hadoop-3.1.2-20/hadoop-common-project/hadoop-kms";
 

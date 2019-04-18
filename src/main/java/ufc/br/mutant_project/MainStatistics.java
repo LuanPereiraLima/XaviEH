@@ -11,22 +11,18 @@ public class MainStatistics {
 
 	public static void main(String[] args) {
 		ExecuterEstatisticsCoverageEH ex = new ExecuterEstatisticsCoverageEH();
-//		ExecuterGeneralEstatistics ex = new ExecuterGeneralEstatistics(false);
+		//ExecuterGeneralEstatistics ex = new ExecuterGeneralEstatistics(false);
 		//ExecuterCloneAndRunTestsWithJaCoCo ex = new ExecuterCloneAndRunTestsWithJaCoCo();
 		//ExecuterEstatisticsOnlyTotalCoveredStatus ex = new ExecuterEstatisticsOnlyTotalCoveredStatus();
 		try {
 			ex.execute();
 		} catch (InicializerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ListProjectsNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NotURLsException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ConfigPropertiesNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
