@@ -10,7 +10,7 @@ import java.util.List;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 import spoon.reflect.CtModel;
-import ufc.br.mutant_project.constants.ConfigPropierties;
+import ufc.br.mutant_project.constants.ConfigProperties;
 import ufc.br.mutant_project.constants.PathProject;
 import ufc.br.mutant_project.exceptions.CloneRepositoryException;
 import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
@@ -21,12 +21,7 @@ import ufc.br.mutant_project.exceptions.NotURLsException;
 import ufc.br.mutant_project.exceptions.PomException;
 import ufc.br.mutant_project.exceptions.TestFailMavenInvokerException;
 import ufc.br.mutant_project.models.Properties;
-import ufc.br.mutant_project.processors.ProcessorCBD;
-import ufc.br.mutant_project.processors.ProcessorCBI;
-import ufc.br.mutant_project.processors.ProcessorCBR;
-import ufc.br.mutant_project.processors.ProcessorCRE;
-import ufc.br.mutant_project.processors.ProcessorFBD;
-import ufc.br.mutant_project.processors.ProcessorPTL;
+import ufc.br.mutant_project.processors.*;
 import ufc.br.mutant_project.runners.AbstractRunner;
 import ufc.br.mutant_project.runners.Runner;
 import ufc.br.mutant_project.runners.RunnerSubProcessCatch;
@@ -72,10 +67,18 @@ public class Execute {
 		this.testProject = testProject;
 	}
 
+	public Execute(boolean saveInFile, boolean cloneRepository, boolean verifyIfProjectAlreadyRun, boolean testProject, boolean spoonVerify) {
+		this.saveOutputInFile = saveInFile;
+		this.cloneRepository = cloneRepository;
+		this.verifyIfProjectAlreadyRun = verifyIfProjectAlreadyRun;
+		this.testProject = testProject;
+		this.testProjectSPOONCompability = spoonVerify;
+	}
+
 	/*
 	 *	Inicializa todos os itens antes de inicializar o projeto
 	 */
-	protected void inicializer() throws ConfigPropertiesNotFoundException, InicializerException, NotURLsException, ListProjectsNotFoundException{
+	protected void initializer() throws ConfigPropertiesNotFoundException, InicializerException, NotURLsException, ListProjectsNotFoundException{
 
 		showName();
 
@@ -83,7 +86,7 @@ public class Execute {
 		
 		Properties properties = null;
 		
-		for(String f: ConfigPropierties.fields)
+		for(String f: ConfigProperties.fields)
 			fields += f+"\n";
 		
 		try {
@@ -163,10 +166,19 @@ public class Execute {
 	 *	retorna verdade se o projeto é compatível com o SPOON
 	 */
 	protected boolean projectSPOONCompatibility(String build, String path, String submodule){
+		return projectSPOONCompatibility(build, path, submodule, null);
+	}
+
+	protected boolean projectSPOONCompatibility(String build, String path, String submodule, String pathProject){
 		try {
 			CtModel model = null;
 			if(build != null && build.equals("g")) {
-				model = Util.getModelNoMaven(PathProject.makePathToProjectMaven(path, submodule)+Util.getSourceDirectory(PathProject.makePathToProjectMaven(path, submodule)));
+				if(pathProject!=null)
+					PathProject.PROJECT_PATH_FILES_DEFAULT = pathProject;
+
+				model = Util.getModelNoMaven(PathProject.makePathToProjectMaven(path, submodule) + PathProject.PROJECT_PATH_FILES_DEFAULT);
+				System.out.println("mE:"+PathProject.makePathToProjectMaven(path, submodule) + PathProject.PROJECT_PATH_FILES_DEFAULT);
+
 				isProjectMaven = false;
 			}else {
 				model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
@@ -186,8 +198,8 @@ public class Execute {
 	 *	retorna verdade se o projeto já foi rodado
 	 */
 	protected boolean verifyIfProjectAlreadyRun(String path){
+		System.out.println("-Verificando se o projeto já foi rodado...");
 		if(AbstractRunner.listSavedMutantResultType!=null) {
-			System.out.println("-Verificando se o projeto já foi rodado...");
 			boolean projectAlreadyRunned = false;
 			for(String project : AbstractRunner.listSavedMutantResultType.keySet()) {
 				if(path.equals(project)) {
@@ -198,12 +210,13 @@ public class Execute {
 			System.out.println("--OK!");
 			return projectAlreadyRunned;
 		}
+		System.out.println("--OK!");
 		return false;
 	}
 
 	public void execute() throws InicializerException, ListProjectsNotFoundException, NotURLsException, ConfigPropertiesNotFoundException {
 
-		inicializer();
+		initializer();
 		
 		for(int i=0; i < listProjects.size(); i++) {
 			
@@ -250,9 +263,9 @@ public class Execute {
 					e.printStackTrace();
 					continue;
 				}
+				System.out.println("--Ok!");
 			}
-			
-			System.out.println("--Ok!");
+
 			
 			System.out.println("Existe Submodulo? :"+submodule);
 
@@ -260,37 +273,40 @@ public class Execute {
 				if(!testProject(submodule, path))
 					continue;
 
-			System.out.println("-Verificando se o projeto é compatível com o SPOON para a criação de modelos.");
-			
-			if(testProjectSPOONCompability)
-				if(!projectSPOONCompatibility(build, path, submodule))
+			if(testProjectSPOONCompability){
+				System.out.println("-Verificando se o projeto é compatível com o SPOON para a criação de modelos.");
+				if(!projectSPOONCompatibility(build, path, submodule, pathProject))
 					continue;
-			
-			System.out.println("--OK!");
-			
+				System.out.println("--OK!");
+			}
+
 			try {
 				System.out.println("-Iniciando Mutações para o projeto");
 				AbstractRunner abs = new Runner(path, submodule, isProjectMaven);
 				
 				System.out.println("--Iniciando Mutações CBD para o projeto");
-				abs.processor(new ProcessorCBD());
+				//abs.processor(new ProcessorCBD());
 				System.out.println("---OK!");
 				System.out.println("--Iniciando Mutações CBI para o projeto");
-				abs.processor(new ProcessorCBI());
+				//abs.processor(new ProcessorCBI());
 				System.out.println("---OK!");
 				System.out.println("--Iniciando Mutações CRE para o projeto");
-				abs.processor(new ProcessorCRE());
+				//abs.processor(new ProcessorCRE());
 				System.out.println("---OK!");
 				System.out.println("--Iniciando Mutações FBD para o projeto");
-				abs.processor(new ProcessorFBD());
+				//abs.processor(new ProcessorFBD());
 				System.out.println("---OK!");
 				System.out.println("--Iniciando Mutações PLT para o projeto");
-				abs.processor(new ProcessorPTL());
+				//abs.processor(new ProcessorPTL());
+				System.out.println("---OK!");
+
+				System.out.println("--Iniciando Mutações THD para o projeto");
+				abs.processor(new ProcessorTHD());
 				System.out.println("---OK!");
 				
 				abs = new RunnerSubProcessCatch(path, submodule, isProjectMaven);
 				System.out.println("--Iniciando Mutações CBR para o projeto");
-				abs.processor(new ProcessorCBR());
+				//abs.processor(new ProcessorCBR());
 				System.out.println("---OK!");
 			} catch (PomException e1) {
 				System.out.println(e1.getMessage());

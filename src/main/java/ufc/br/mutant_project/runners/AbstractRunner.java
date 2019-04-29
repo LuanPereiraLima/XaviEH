@@ -67,9 +67,16 @@ public abstract class AbstractRunner {
 		
 		if(this.subModule!=null)
 			submodules = Collections.singletonList(this.subModule);
-		
-		int result = Util.invoker(mutantPath, submodules, true);
-		
+
+		int result = 0;
+		//TODO ADICIONADO TESTE COM O GRADLEW
+		if(isMavenProject) {
+			result = Util.invoker(mutantPath, submodules, true);
+		}else{
+			result = Util.invokerGradle(mutantPath, submodules, true);
+		}
+		//TODO ------------------------------
+
 		System.out.println("--OK! Morto? Result: "+(result!=0));
 		
 		//createResult(f.getAbsolutePath(), result, myAbstractorProcessor.getParameterVisitor(), myAbstractorProcessor.pathIdentification());
@@ -79,10 +86,10 @@ public abstract class AbstractRunner {
 
 		//System.out.println("MUTANT PATH: "+mutantPath);
 
-		//Util.removeDirectoryAndCreate(mutantPath);
+		Util.removeDirectoryAndCreate(mutantPath);
 
 		//COPIAR NOVAMENTE OS ARQUIVOS IMPORTANTES CRIADOS
-		//Util.copyOutputSpoonToProject(mutantPath + (File.separator) + PathProject.makePathToPathFiles(uriName, subModule));
+		Util.copyOutputSpoonToProject(mutantPath + (File.separator) + PathProject.makePathToPathFiles(uriName, subModule));
 
 		//TODO ----------------------------------------
 

@@ -50,7 +50,7 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 
 	public void execute() throws InicializerException, ListProjectsNotFoundException, NotURLsException, ConfigPropertiesNotFoundException {
 
-		inicializer();
+		initializer();
 		
 		List<String> list = listProjects;
 		
@@ -69,6 +69,8 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 			String version = getItemByUrl(linha, VERSION_URL);
 			String submodule = getItemByUrl(linha, MODULE_URL);
 			String commit = getItemByUrl(linha, COMMIT_URL);
+			String build = getItemByUrl(linha, BUILD_URL);
+			String pathProjectUrl = getItemByUrl(linha, PATH_PROJECT_URL);
 
 
 			path = Util.validateAndGetNameRepository(linha[0]);
@@ -131,24 +133,39 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 			System.out.println("--OK!");
 			
 			
-			System.out.println("-Verificando se o projeto é compatível com o SPOON para a criação de modelos.");
-			
-//			try {
-//				if(Util.getModel(PathProject.makePathToProjectMaven(path)).getAllTypes().size() == 0){
-//					System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
-//					continue;
-//				}
-//			}catch(Exception e) {
-//				System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
-//				continue;
-//			}
-			System.out.println("--OK!");
-			
+			if(!testProjectSPOONCompability){
+				if(!projectSPOONCompatibility(build, path, pathProjectUrl)){
+					continue;
+
+				}
+				System.out.println("--OK!");
+			}
+
 			CtModel model = null;
 			
 			System.out.println(PathProject.makePathToProjectMaven(path, submodule));
-			
-			model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
+
+			if(pathProjectUrl!=null){
+				PathProject.PROJECT_PATH_FILES_DEFAULT = pathProjectUrl;
+			}
+
+			try {
+
+				if(build != null && build.equals("g")) {
+					model = Util.getModelNoMaven(PathProject.makePathToProjectMaven(path, submodule)+PathProject.PROJECT_PATH_FILES_DEFAULT);
+				}else {
+					model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
+				}
+
+				if(model.getAllTypes().size() == 0){
+					System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
+					continue;
+				}
+
+			}catch(Exception e) {
+				System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
+				continue;
+			}
 			
 			System.out.println();
 			
@@ -819,7 +836,9 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 		
 		System.out.println(resultCoverageTotal);
 
-		UtilWriteReader.writeCsvFileEstatistics2(resultCoverageTotal);
+
+		//TODO REMOVIDO, CONTEÙDO QUE MOSTRA PARA QUE CADA LINHA ERA RELACIONADA
+		//UtilWriteReader.writeCsvFileEstatistics2(resultCoverageTotal);
 		UtilWriteReader.writeCsvFileEstatistics2(tcs);
 		
 		if(saveOutputInFile)	

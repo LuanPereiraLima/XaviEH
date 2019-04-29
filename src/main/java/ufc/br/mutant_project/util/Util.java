@@ -38,6 +38,7 @@ import org.eclipse.jgit.api.errors.TransportException;
 import com.thoughtworks.xstream.XStream;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
+import org.gradle.tooling.*;
 import spoon.Launcher;
 import spoon.MavenLauncher;
 import spoon.SpoonAPI;
@@ -128,6 +129,38 @@ public class Util {
 			else
 				return -1;
     }
+
+	public static int invokerGradle(String copyProjectPath, List<String> submodules, boolean showInConsole) {
+		String GRADLE_TASK = "test";
+		final int[] result = new int[1];
+		GradleConnector connector;
+    	connector = GradleConnector.newConnector();
+		//connector.useInstallation(new File(gradleInstallationDir));
+		connector.forProjectDirectory(new File(copyProjectPath));
+
+		ProjectConnection connection = connector.connect();
+		BuildLauncher build = connection.newBuild();
+		build.addProgressListener((ProgressListener) progressEvent -> System.out.println(progressEvent.getDescription()));
+		build.setStandardOutput(System.out);
+		build.setStandardError(System.out);
+		build.forTasks(GRADLE_TASK);
+
+		build.run(new ResultHandler<Void>() {
+			@Override
+			public void onComplete(Void aVoid) {
+				result[0] = 0;
+			}
+
+			@Override
+			public void onFailure(GradleConnectionException e) {
+				result[0] = -1;
+			}
+		});
+
+		connection.close();
+
+		return result[0];
+	}
     
     //MÉTODO UTILIZADO PARA CRIAR AS PASTAS QUE O PROJETO NECESSITA PARA O FUNCIONAMENTO
     public static boolean preparePathInit() {
@@ -182,7 +215,7 @@ public class Util {
     	return uri.substring(uri.lastIndexOf("/")+1, uri.lastIndexOf(".git"));
     }
     
-    //MÉTODO UTILIZADO PARA REALIZAR O OBJETIVO MAVEN NO PROJETO
+    //MÉTODO UTILIZADO PARA LISTAR OS PROJETOS QUE ESTÃO NO ARQUIVO
     public static List<String> listProjects(String name) throws FileNotFoundException {
     	if(name==null) {
     		name = "repositories.txt";
@@ -191,11 +224,7 @@ public class Util {
 		final List<String> list = new ArrayList<String>();
 		try {
 			stream = Files.lines(Paths.get(name));
-			stream.forEach(new Consumer<String>() {
-				public void accept(String t) {
-					list.add(t);
-				}
-			});
+			stream.forEach(t -> list.add(t));
 			stream.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -327,7 +356,7 @@ public class Util {
 			try {
 				model = getModelNoMaven(projectPath+getSourceDirectory(projectPath));
 			} catch (PomException e) {
-				System.out.println("BIBIIIII");
+				System.out.println("Error Exception getModelNoMaven in getClassByModel");
 				return null;
 			}
 		}
@@ -418,7 +447,7 @@ public class Util {
     	return lista;
     }
     
-    //MÉTODO QUE RETORNA OS TIPOS DIRETOS DE EXCEÇÕES DA ÁRVORE DE EXCEÇÕES
+    //MÉTODO QUE RETORNA OS TIPOS DERIVADOS DE EXCEÇÕES DA ÁRVORE DE EXCEÇÕES
     public static List<CtTypeReference<?>> getListOfDirectDerivedTypes(CHE che){
     	List<CtTypeReference<?>> lista = new ArrayList<CtTypeReference<?>>();
     	if(che!=null && che.getFilhos()!=null)

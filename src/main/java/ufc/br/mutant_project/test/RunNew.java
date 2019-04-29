@@ -9,15 +9,10 @@ import spoon.SpoonAPI;
 import spoon.processing.AbstractProcessor;
 import spoon.processing.Processor;
 import spoon.reflect.CtModel;
-import spoon.reflect.code.CtBlock;
-import spoon.reflect.code.CtCatch;
-import spoon.reflect.code.CtThrow;
-import spoon.reflect.code.CtTry;
-import spoon.reflect.declaration.CtClass;
-import spoon.reflect.declaration.CtElement;
-import spoon.reflect.declaration.CtModule;
-import spoon.reflect.declaration.CtType;
+import spoon.reflect.code.*;
+import spoon.reflect.declaration.*;
 import spoon.reflect.reference.CtTypeReference;
+import spoon.reflect.visitor.Filter;
 import spoon.reflect.visitor.filter.TypeFilter;
 import spoon.support.sniper.SniperJavaPrettyPrinter;
 import ufc.br.mutant_project.constants.Maven;
@@ -33,19 +28,19 @@ public class RunNew {
 
 		//String path = "/home/loopback/mutationsTests/xstream-1.4.11.1/xstream-1.4.11.1/xstream/src/java";
 
-		String path = "/home/loopback/hadoop/hadoop-mapreduce-project/hadoop-mapreduce-client/hadoop-mapreduce-client-shuffle/src/main/java/org/apache/hadoop/mapred/ShuffleHandler.java";
+		String path = "/home/loopback/hadoop/hadoop-common-project/hadoop-kms";///src/main/java/org/apache/hadoop/mapred/ShuffleHandler.java";
 
 		//String path = "/home/loopback/mutationsDocker/hadoop-3.1.2-20/hadoop-3.1.2-20/hadoop-common-project/hadoop-kms";
 
-		Launcher spoon = new Launcher();
+		//Launcher spoon = new Launcher();
 
-		//spoon = new MavenLauncher(path, MavenLauncher.SOURCE_TYPE.APP_SOURCE);
+		Launcher spoon = new MavenLauncher(path, MavenLauncher.SOURCE_TYPE.APP_SOURCE);
 
 		spoon.getEnvironment().setNoClasspath(true);
 
 		//spoon.getEnvironment().setSourceClasspath(new String[]{path});
 
-		spoon.addInputResource( path );
+		//spoon.addInputResource( path );
 
 		spoon.getEnvironment().setAutoImports(true);
 
@@ -53,24 +48,36 @@ public class RunNew {
 
 		//spoon.getEnvironment().setPrettyPrinterCreator(() -> new SniperJavaPrettyPrinter(spoon.getEnvironment()));
 
-		//spoon.createPrettyPrinter();
+		//System.out.println(spoon.createPrettyPrinter().getResult());
 
 		//spoon.run();
 
 		//spoon.buildModel();
 
+		//spoon.prettyprint();
 		spoon.addProcessor(new AbstractProcessor<CtTry>() {
 			@Override
 			public void process(CtTry element) {
-				element.setCatchers(null);
 
-				if(element.getFinalizer()==null){
-					element.setFinalizer(spoon.getFactory().createBlock());
+				//if(!element.getQualifiedName().equals("ShuffleHandler")){
+					//return;
+				//}
+
+				//System.out.println(element.toStringWithImports());
+//				System.exit(0);
+				if(element.getCatchers()!=null && element.getCatchers().size() > 0){
+					if(element.getFinalizer()==null){
+						element.setFinalizer(getFactory().createBlock());
+
+					}
+					element.setCatchers(null);
 				}
 			}
 		});
 
 		spoon.run();
+
+		System.out.println(spoon.getModel().getElements((Filter<CtTry>) ctElement -> true).stream().count());
 
 		/*CtModel model = spoon.getModel();
 

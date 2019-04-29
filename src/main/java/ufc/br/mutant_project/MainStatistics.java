@@ -4,16 +4,18 @@ import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
 import ufc.br.mutant_project.exceptions.InicializerException;
 import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
 import ufc.br.mutant_project.exceptions.NotURLsException;
-import ufc.br.mutant_project.executers.ExecuterCloneAndRunTestsWithJaCoCo;
-import ufc.br.mutant_project.executers.ExecuterEstatisticsCoverageEH;
+import ufc.br.mutant_project.executers.*;
+
+import java.util.function.Function;
 
 public class MainStatistics {
 
 	public static void main(String[] args) {
-		ExecuterEstatisticsCoverageEH ex = new ExecuterEstatisticsCoverageEH();
-		//ExecuterGeneralEstatistics ex = new ExecuterGeneralEstatistics(false);
-		//ExecuterCloneAndRunTestsWithJaCoCo ex = new ExecuterCloneAndRunTestsWithJaCoCo();
-		//ExecuterEstatisticsOnlyTotalCoveredStatus ex = new ExecuterEstatisticsOnlyTotalCoveredStatus();
+		//ExecuterGeneralEstatistics ex = new ExecuterGeneralEstatistics(false, false, false, false);
+		Execute ex = new Execute(false, false, false, false);
+		//ExecuterEstatisticsCoverageEH ex = new ExecuterEstatisticsCoverageEH(false, false, true, false);
+       //ExecuterEstatisticsCoverageEHStudy2 ex = new ExecuterEstatisticsCoverageEHStudy2(false, false, true, false);
+
 		try {
 			ex.execute();
 		} catch (InicializerException e) {

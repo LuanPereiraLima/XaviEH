@@ -9,7 +9,7 @@ import spoon.reflect.reference.CtTypeReference;
 import ufc.br.mutant_project.models.ParameterProcessorSubProcess;
 import ufc.br.mutant_project.util.Util;
 
-public class ProcessorCBR extends AbstractorProcessorSubProcessCatch<CtTry>{
+public class ProcessorCBR extends AbstractorProcessorSubProcess<CtTry> {
 	
     @SuppressWarnings("unchecked")
 	public void process(CtTry element) {

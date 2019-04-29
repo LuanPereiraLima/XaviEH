@@ -19,7 +19,7 @@ import ufc.br.mutant_project.exceptions.PomException;
 import ufc.br.mutant_project.models.CHE;
 import ufc.br.mutant_project.models.ParameterProcessorSubProcess;
 import ufc.br.mutant_project.processors.AbstractorProcessor;
-import ufc.br.mutant_project.processors.AbstractorProcessorSubProcessCatch;
+import ufc.br.mutant_project.processors.AbstractorProcessorSubProcess;
 import ufc.br.mutant_project.util.Util;
 
 public class RunnerSubProcessCatch extends AbstractRunner {
@@ -30,7 +30,7 @@ public class RunnerSubProcessCatch extends AbstractRunner {
 	
 	@Override
 	public void processor(AbstractorProcessor<?> cp1) throws PomException {
-		AbstractorProcessorSubProcessCatch<?> cp = (AbstractorProcessorSubProcessCatch<?>) cp1;
+		AbstractorProcessorSubProcess<?> cp = (AbstractorProcessorSubProcess<?>) cp1;
 		
 		File source = new File(PathProject.makePathToJavaCode(uriName, subModule));
 		System.out.println("Gerando mutantes nas classes...");

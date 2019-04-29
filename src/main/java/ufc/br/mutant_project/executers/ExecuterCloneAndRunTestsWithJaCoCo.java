@@ -27,7 +27,7 @@ public class ExecuterCloneAndRunTestsWithJaCoCo extends Execute {
 	
 	public void execute() throws InicializerException, ListProjectsNotFoundException, NotURLsException, ConfigPropertiesNotFoundException {
 		
-		inicializer();
+		initializer();
 		
 		List<String> list = listProjects;
 		

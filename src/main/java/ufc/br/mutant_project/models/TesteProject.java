@@ -49,7 +49,7 @@ public class TesteProject {
 	
 	
 	public String toCSV() {
-		return getNameProject() + " " + getUrlProject() + " " + getCommitProject() + " " + isPassInTests() + " " + isJacocoGenerate(); 
+		return getNameProject() + "," + getUrlProject() + "," + getCommitProject() + "," + isPassInTests() + "," + isJacocoGenerate();
 	}
 	
 }

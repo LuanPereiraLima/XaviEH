@@ -21,11 +21,7 @@ import spoon.reflect.visitor.Filter;
 import spoon.reflect.visitor.filter.TypeFilter;
 import ufc.br.mutant_project.constants.PathProject;
 import ufc.br.mutant_project.exceptions.*;
-import ufc.br.mutant_project.models.ClassXMLCoverage;
-import ufc.br.mutant_project.models.ClassXMLCoverageLine;
-import ufc.br.mutant_project.models.ClassXMLCoverageLineNormal;
-import ufc.br.mutant_project.models.CoverageResult;
-import ufc.br.mutant_project.models.TotalCoveredStatus;
+import ufc.br.mutant_project.models.*;
 import ufc.br.mutant_project.util.Util;
 import ufc.br.mutant_project.util.UtilWriteReader;
 import ufc.br.mutant_project.util.XmlJacoco;
@@ -45,7 +41,7 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 	
 	public void execute() throws InicializerException, ListProjectsNotFoundException, NotURLsException, ConfigPropertiesNotFoundException {
 
-		inicializer();
+		initializer();
 		
 		List<String> list = listProjects;
 		List<CoverageResult> resultCoverageTotal = new ArrayList<CoverageResult>();
@@ -64,6 +60,7 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 			String commit = getItemByUrl(linha, COMMIT_URL);
 			String submodule = getItemByUrl(linha, MODULE_URL);
 			String build = getItemByUrl(linha, BUILD_URL);
+			String pathProjectURL = getItemByUrl(linha, PATH_PROJECT_URL);
 			
 			path = Util.validateAndGetNameRepository(linha[0]);
 			
@@ -71,7 +68,6 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 				path=path+"-"+version;
 
 			if(verifyIfProjectAlreadyRun) {
-				System.out.println("testandoooooo");
 				if (verifyIfProjectAlreadyRun(path))
 					continue;
 			}
@@ -104,13 +100,15 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 
 				System.out.println("--OK!");
 			}
-			
-
 
 			if(testProjectSPOONCompability) {
 				System.out.println("-Verificando se o projeto é compatível com o SPOON para a criação de modelos.");
 				if (!projectSPOONCompatibility(build, path, submodule))
 					continue;
+			}
+
+			if(pathProjectURL!=null){
+				PathProject.PROJECT_PATH_FILES_DEFAULT = pathProjectURL;
 			}
 
 			CtModel model = null;
@@ -120,7 +118,7 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 			try {
 			
 				if(build != null && build.equals("g")) {
-					model = Util.getModelNoMaven(PathProject.makePathToProjectMaven(path, submodule)+Util.getSourceDirectory(PathProject.makePathToProjectMaven(path, submodule)));
+					model = Util.getModelNoMaven(PathProject.makePathToProjectMaven(path, submodule)+PathProject.PROJECT_PATH_FILES_DEFAULT);
 				}else {
 					model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
 				}
@@ -156,11 +154,11 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 //			}
 
 			List<ClassXMLCoverage> listaxml = null;
-		//	List<ClassXMLCoverage>  listaxmlMethods = null;
+			List<ClassXMLCoverage>  listaxmlMethods = null;
 			TotalCoveredStatus totalCoveredStatus = null;
 			
 			listaxml = XmlJacoco.listaClassCoverageFromXMLJaCoCo(PathProject.makePathToProjectMavenToJacoco(path, submodule));
-			//listaxmlMethods = XmlJacoco.listaClassCoverageFromXMLJaCoCoMethods(PathProject.makePathToProjectMavenToJacoco(path, submodule));
+			listaxmlMethods = XmlJacoco.listaClassCoverageFromXMLJaCoCoMethods(PathProject.makePathToProjectMavenToJacoco(path, submodule));
 			totalCoveredStatus = XmlJacoco.listaClassCoverageFromXMLJaCoCoTotalCoveredStatus(PathProject.makePathToProjectMavenToJacoco(path, submodule));
 			
 			for(CtType<?> tp : model.getAllTypes()) {
@@ -330,57 +328,53 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 							//		"-- Catch [" + handler.getPosition().getLine() + "," + handler.getPosition().getEndLine()
 								//			+ "]: " + handler.getParameter().getMultiTypes().toString());
 							
-							handler.getBody().getElements(new Filter<CtBlock<?>>() {
+							handler.getBody().getElements((Filter<CtBlock<?>>) element -> {
 
-								@Override
-								public boolean matches(CtBlock<?> element) {
+								for(CtStatement st: element.getStatements()) {
 
-									for(CtStatement st: element.getStatements()) {
-										
-										if(st instanceof CtThrow)
-											continue;
-										
-										if(st.isImplicit())
-											continue;
-										
-										CoverageResult cr = new CoverageResult();
-										cr.setClassName(tp.getQualifiedName());
-										cr.setLineCode(st.getPosition().getLine());
-										cr.setProject(path);
-										cr.setCoveraged(false);
-										cr.setTypeCode(CoverageResult.ALL_HANDLINGS);
-										cr.setType(CoverageResult.CATCH);
-									
-										if(st instanceof CtLoop) {
-											CtLoop p = (CtLoop)st;
-											cr.setLineContent(p.toString().replace(p.getBody().toString(), ""));
-										}
-										else if(st instanceof CtIf) {
-											CtIf i = (CtIf) st;
-											if(i.getElseStatement()==null) {
-												cr.setLineContent(st.toString().replace(i.getThenStatement().toString(), ""));
-											}else {
-												cr.setLineContent(st.toString().replace(i.getThenStatement().toString(), "").replace(i.getElseStatement().toString(), "").replace("else", ""));
-											}
-										}else {
-											cr.setLineContent(st.toString());
-										}
-										
-										for(ClassXMLCoverageLine cl: cc.getLineDetails()) {
-											if(cl.getNumberLine() == st.getPosition().getLine()) {
-												cr.setCoveraged(cl.verifyCoverage());
-												cr.setCoverageLine(cl);
-											}
-										}
-										
-										if(cr.getCoverageLine()==null)
-											continue;
-										
-										//System.out.println(cr);
-										resultCoverage.add(cr);
+									if(st instanceof CtThrow)
+										continue;
+
+									if(st.isImplicit())
+										continue;
+
+									CoverageResult cr = new CoverageResult();
+									cr.setClassName(tp.getQualifiedName());
+									cr.setLineCode(st.getPosition().getLine());
+									cr.setProject(path);
+									cr.setCoveraged(false);
+									cr.setTypeCode(CoverageResult.ALL_HANDLINGS);
+									cr.setType(CoverageResult.CATCH);
+
+									if(st instanceof CtLoop) {
+										CtLoop p = (CtLoop)st;
+										cr.setLineContent(p.toString().replace(p.getBody().toString(), ""));
 									}
-									return false;
+									else if(st instanceof CtIf) {
+										CtIf i1 = (CtIf) st;
+										if(i1.getElseStatement()==null) {
+											cr.setLineContent(st.toString().replace(i1.getThenStatement().toString(), ""));
+										}else {
+											cr.setLineContent(st.toString().replace(i1.getThenStatement().toString(), "").replace(i1.getElseStatement().toString(), "").replace("else", ""));
+										}
+									}else {
+										cr.setLineContent(st.toString());
+									}
+
+									for(ClassXMLCoverageLine cl: cc.getLineDetails()) {
+										if(cl.getNumberLine() == st.getPosition().getLine()) {
+											cr.setCoveraged(cl.verifyCoverage());
+											cr.setCoverageLine(cl);
+										}
+									}
+
+									if(cr.getCoverageLine()==null)
+										continue;
+
+									//System.out.println(cr);
+									resultCoverage.add(cr);
 								}
+								return false;
 							});
 						}
 					}
@@ -569,7 +563,7 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 							}
 							
 						}
-						//TODO THROWS AND TRY REMOVEDS
+						//TODO THROWS AND TRY ADDEDED AGAIN
 						/*else if(rc.getType().equals("THROWS")) {
 							
 							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineMethod) {
@@ -619,7 +613,7 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 								tcs.get(path).setCATCH_E_CB_TotalCoveredBrachesCatchBlocks(tcs.get(path).getCATCH_E_CB_TotalCoveredBrachesCatchBlocks()+cn.getCb());
 							}
 						}
-						//TODO FINALLY REMOVED
+						//TODO FINALLY ADDEDED AGAIN
 						/*else if(rc.getType().equals("FINALLY")) {
 							
 							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
@@ -651,7 +645,7 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 			tcs.get(path).setMI_TotalMissedInstructions(totalCoveredStatus.getMI_TotalMissedInstructions());
 			tcs.get(path).setMM_TotalMissedMethods(totalCoveredStatus.getMM_TotalMissedMethods());
 			tcs.get(path).setCM_TotalCoveredMethods(totalCoveredStatus.getCM_TotalCoveredMethods());
-	
+
 			/**
 			 *  vou resumir as informações que quero que você extraia do código fonte com respeito ao tratamento de exceção:
 			 *  ok - linhas de código que tem lançamento (throw),
@@ -672,8 +666,6 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 		
 		System.out.println(resultCoverageTotal);
 		
-		System.out.close();
-				
 		//Util.writeCsvFileEstatistics2(resultCoverageTotal);
 		UtilWriteReader.writeCsvFileEstatisticsCoveraveTypeCode(tcs);
 		

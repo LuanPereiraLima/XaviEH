@@ -20,6 +20,7 @@ public class Main {
 	private static String NO_CLONE_REPOSITORY = "noCloneRepository";
 	private static String NO_VERIFY_PROJECT = "noVerifyProject";
 	private static String NO_TEST_PROJECT = "noTestProject";
+	private static String NO_SPOON_VERIFY_PROJECT = "noSPOONVerify";
 
 
 	public static void main(String[] args){
@@ -28,6 +29,7 @@ public class Main {
 		boolean cloneRepository = true;
 		boolean verifyIfProjectAlreadyRun = true;
 		boolean testProject = true;
+		boolean spoonVerify = true;
 
 		Execute ex = null;
 

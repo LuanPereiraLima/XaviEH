@@ -28,7 +28,8 @@ public class TesteMavenTest {
 		//});
 		
 		//Iterator<?> i = spoon.getModel().getAllTypes().iterator();
-		
+
+		//spoo.getFactory().CompilationUnit().getOrCreate()
 
 		spoo.getModel().getElements(new Filter<CtClass<?>>() {
 			@Override
