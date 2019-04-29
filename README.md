@@ -13,12 +13,17 @@
 - [x] FBD - Finally Block Deletion
 - [x] CBR - Catch Block Replacement
 - [x] PTL - Placing Try Block Late
+- [x] THD - Throws Deletion
 
-#### Pendencies
+#### Possibilities
 
 - [x] Automate the procurement of projects through Git
 - [x] JaCoCo to cover tests
-- [ ] Run with Gradlew
+- [x] Run with Gradlew
+
+#### Pendencies
+
+- ...
 
 #### Usage
 
@@ -44,12 +49,52 @@
 - **noVerifyProject**: Before the project is analyzed it is checked if it has already been run before, if positive, it will be skipped. This option causes the project to not be parsed.
 - Type of executions: 
   - **ExecuteMutationsAndCoverage**: The mutants of the projects will be created and also their coverage using JaCoCo.
-  - **ExecuteEstatisticsCoverageEH**: 
-    - All Raisings.
-    - Raisings of Programmer Defined Exception.
-    - Raisings of Non Programmer Defined Exception.
-    - All Handlings
-    - Handlings of Programmer Defined Exception.
-    - Handlings of Non Programmer Defined Exception.
-  - **ExecuteEstatisticsCoverageEH2**: Get informations about exception of projects.
+  - **ExecuteEstatisticsCoverageEH**: information returned:
+    - **MI**: Missed Instruction
+    - **CI**: Covered Instruction 
+    - **MB**: Missed Branch
+    - **CB**: Covered Branch
+    - **MM**: Missed Method	
+    - **CM**: Covered Method
+    - **THROW_MI**: Missed Instruction Throw
+    - **THROW_CI**: Covered Instruction Throw
+    - **THROWI_MI**: Missed Instruction Throw (Internal Exception) 
+    - **THROWI_CI**: Covered Instruction Throw (Internal Exception)
+    - **THROWE_MI**: Missed Instruction Throw (Internal Exception)
+    - **THROWE_CI**: Covered Instruction Throw (External Exception)
+    - **CATCH_MI**: Missed Instruction Catch
+    - **CATCH_CI**: Covered Instruction Catch
+    - **CATCH_MB**: Missed Branch Catch
+    - **CATCH_CB**: Covered Branch Catch
+    - **CATCHI_MI**: Missed Instruction Catch (Internal Exception)
+    - **CATCHI_CI**: Covered Instruction Catch (Internal Exception)
+    - **CATCHI_MB**: Missed Branch Catch (Internal Exception)
+    - **CATCHI_CB**: Covered Branch Catch (Internal Exception)
+    - **CATCHE_MI**: Missed Instruction Catch (External Exception)
+    - **CATCHE_CI**: Covered Instruction Catch (External Exception)
+    - **CATCHE_MB**: Missed Branch Catch (External Exception)
+    - **CATCHE_CB**: Covered Branch Catch (External Exception)
+  - **ExecuteEstatisticsCoverageEH2**: information returned:
+    - **MI**: Missed Instruction
+    - **CI**: Covered Instruction 
+    - **MB**: Missed Branch
+    - **CB**: Covered Branch
+    - **MM**: Missed Method	
+    - **CM**: Covered Method
+    - **TRY_MI**: Missed Instruction Try
+    - **TRY_CI**: Missed Instruction Try
+    - **TRY_MB**: Missed Branch Try	
+    - **TRY_CB**: Covered Branch Try	
+    - **CATCH_MI**: Missed Instruction Try
+    - **CATCH_CI**: Covered Instruction Try
+    - **CATCH_MB**:	Missed Branch Try
+    - **CATCH_CB**: Covered Branch Try
+    - **FINALLY_MI**: Missed Instruction Finally
+    - **FINALLY_CI**: Covered Instruction Finally
+    - **FINALLY_MB**: Missed Branch Finally
+    - **FINALLY_CB**: Covered Branch Finally
+    - **THROW_MI**: Missed Instruction Throw
+    - **THROW_CI**: Covered Instruction Throw
+    - **THROWS_MM**: Missed Method Throws
+    - **THROWS_CM**: Covered Method Throws
   - **ExecuteCloneAndRunTestsWithJaCoCo**: Make only tests and JaCoCo report of projects.

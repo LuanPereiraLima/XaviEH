@@ -4,14 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import spoon.Launcher;
+import spoon.MavenLauncher;
 import spoon.SpoonAPI;
+import spoon.processing.AbstractProcessor;
+import spoon.processing.Processor;
 import spoon.reflect.CtModel;
-import spoon.reflect.code.CtCatch;
-import spoon.reflect.code.CtThrow;
-import spoon.reflect.declaration.CtClass;
-import spoon.reflect.declaration.CtType;
+import spoon.reflect.code.*;
+import spoon.reflect.declaration.*;
 import spoon.reflect.reference.CtTypeReference;
+import spoon.reflect.visitor.Filter;
 import spoon.reflect.visitor.filter.TypeFilter;
+import spoon.support.sniper.SniperJavaPrettyPrinter;
+import ufc.br.mutant_project.constants.Maven;
+import ufc.br.mutant_project.models.ParameterProcessor;
+import ufc.br.mutant_project.processors.ProcessorCBD;
 
 
 public class RunNew {
@@ -19,23 +25,75 @@ public class RunNew {
 	public static void main(String[] args) {
 
 		//String path2 = "/Users/lincolnrocha/Documents/tpii-2018-workspace/bank-sys/src/main/java";
-		
-		String path = "/home/loopback/mutationsTests/xstream-1.4.11.1/xstream-1.4.11.1/xstream/src/java";
 
-		SpoonAPI spoon = new Launcher();
+		//String path = "/home/loopback/mutationsTests/xstream-1.4.11.1/xstream-1.4.11.1/xstream/src/java";
 
-		spoon = new Launcher();
+		String path = "/home/loopback/hadoop/hadoop-common-project/hadoop-kms";///src/main/java/org/apache/hadoop/mapred/ShuffleHandler.java";
+
+		//String path = "/home/loopback/mutationsDocker/hadoop-3.1.2-20/hadoop-3.1.2-20/hadoop-common-project/hadoop-kms";
+
+		//Launcher spoon = new Launcher();
+
+		Launcher spoon = new MavenLauncher(path, MavenLauncher.SOURCE_TYPE.APP_SOURCE);
 
 		spoon.getEnvironment().setNoClasspath(true);
 
-		spoon.getEnvironment().setSourceClasspath(new String[] { path });
+		//spoon.getEnvironment().setSourceClasspath(new String[]{path});
 
-		spoon.addInputResource(path);
+		//spoon.addInputResource( path );
 
-		spoon.buildModel();
-		
-		CtModel model = spoon.getModel();
+		spoon.getEnvironment().setAutoImports(true);
 
+		spoon.setSourceOutputDirectory("/home/loopback/spoon");
+
+		//spoon.getEnvironment().setPrettyPrinterCreator(() -> new SniperJavaPrettyPrinter(spoon.getEnvironment()));
+
+		//System.out.println(spoon.createPrettyPrinter().getResult());
+
+		//spoon.run();
+
+		//spoon.buildModel();
+
+		//spoon.prettyprint();
+		spoon.addProcessor(new AbstractProcessor<CtTry>() {
+			@Override
+			public void process(CtTry element) {
+
+				//if(!element.getQualifiedName().equals("ShuffleHandler")){
+					//return;
+				//}
+
+				//System.out.println(element.toStringWithImports());
+//				System.exit(0);
+				if(element.getCatchers()!=null && element.getCatchers().size() > 0){
+					if(element.getFinalizer()==null){
+						element.setFinalizer(getFactory().createBlock());
+
+					}
+					element.setCatchers(null);
+				}
+			}
+		});
+
+		spoon.run();
+
+		System.out.println(spoon.getModel().getElements((Filter<CtTry>) ctElement -> true).stream().count());
+
+		/*CtModel model = spoon.getModel();
+
+		for(CtType<?> md : model.getAllTypes()){
+
+			if(md.isClass()) {
+				CtClass cl = (CtClass) md;
+			}
+			System.out.println();
+			System.out.println("IE: "+md.isTopLevel());
+			System.out.println(md.isClass());
+			System.out.println(md.getSimpleName());
+		}*/
+	}
+
+		/*
 
 		System.out.println("All Raisings");
 
@@ -260,5 +318,5 @@ public class RunNew {
 			}
 		}
 		return result;
-	}
+	}*/
 }

@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import spoon.reflect.CtModel;
+import spoon.reflect.code.CtThrow;
 import spoon.reflect.code.CtTry;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.visitor.Filter;
 import ufc.br.mutant_project.constants.PathProject;
-import ufc.br.mutant_project.exceptions.CloneRepositoryException;
-import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
-import ufc.br.mutant_project.exceptions.InicializerException;
-import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
-import ufc.br.mutant_project.exceptions.NotURLsException;
+import ufc.br.mutant_project.exceptions.*;
 import ufc.br.mutant_project.models.ResultsStatisticsLength;
 import ufc.br.mutant_project.util.Util;
 import ufc.br.mutant_project.util.UtilWriteReader;
@@ -23,15 +20,14 @@ public class ExecuterGeneralEstatistics extends Execute {
 	private int qtdCatchs = 0;
 	private int qtdFinallys = 0;
 	private String path = null;
-	
-	public ExecuterGeneralEstatistics(boolean saveInFile) {
-		super(saveInFile);
-		this.saveOutputInFile = saveInFile;
+
+	public ExecuterGeneralEstatistics(boolean saveInFile, boolean cloneRepository, boolean verifyIfProjectAlreadyRun, boolean testProject) {
+		super(saveInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
 	}
 	
 	public void execute() throws InicializerException, ListProjectsNotFoundException, NotURLsException, ConfigPropertiesNotFoundException {
 		
-		inicializer();
+		initializer();
 		
 		List<String> list = listProjects;
 		
@@ -49,6 +45,8 @@ public class ExecuterGeneralEstatistics extends Execute {
 			String version = getItemByUrl(linha, VERSION_URL);
 			String commit = getItemByUrl(linha, COMMIT_URL);
 			String submodule = getItemByUrl(linha, MODULE_URL);
+			String build = getItemByUrl(linha, BUILD_URL);
+			String pathProject = getItemByUrl(linha, PATH_PROJECT_URL);
 			
 			path = Util.validateAndGetNameRepository(linha[0]);
 			
@@ -65,54 +63,62 @@ public class ExecuterGeneralEstatistics extends Execute {
 				continue;
 			}
 
-			System.out.println("--------------------------------");
-			System.out.println("-Cloning Repository: "+path+" ...");
-			
-			try {
-				Util.cloneRepository(linha[0], path, commit);
-			} catch (CloneRepositoryException e) {
-				System.out.println("-Não foi possível clonar a URL GIT: "+list.get(i)+" O projeto será ignorado. (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt', ou verifique a conexão com a internet)");
-				e.printStackTrace();
-				continue;
-			}
-			System.out.println("--Ok!");
+			if(this.cloneRepository){
+				System.out.println("-Cloning Repository: "+path+" ...");
 
-			if(testProject){
+				/*try {
+					Util.cloneRepository(linha[0], path, commit);
+				} catch (CloneRepositoryException e) {
+					System.out.println("-Não foi possível clonar a URL GIT: "+list.get(i)+" O projeto será ignorado. (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt', ou verifique a conexão com a internet)");
+					e.printStackTrace();
+					continue;
+				}*/
+				System.out.println("--Ok!");
+			}
+
+
+			if(testProject) {
 				testProject(submodule, path);
+
+				System.out.println("--OK!");
 			}
 
-			System.out.println("--OK!");
-			
-			
-			System.out.println("-Verificando se o projeto é compatível com o SPOON para a criação de modelos.");
-			
-//			try {
-//				if(Util.getModel(PathProject.makePathToProjectMaven(path)).getAllTypes().size() == 0){
-//					System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
-//					continue;
-//				}
-//			}catch(Exception e) {
-//				System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
-//				continue;
-//			}
-//			System.out.println("--OK!");
-//			
-			CtModel model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
+			if(!testProjectSPOONCompability) {
+				System.out.println("-Verificando se o projeto é compatível com o SPOON para a criação de modelos.");
+				if (!projectSPOONCompatibility(build, path, submodule, pathProject))
+					continue;
+			}
+
+			if(build != null && build.equals("g")) {
+				isProjectMaven = false;
+			}
+
+			if(pathProject!=null){
+				PathProject.PROJECT_PATH_FILES_DEFAULT = pathProject;
+			}
+
+			CtModel model = null;
+
+			if(isProjectMaven) {
+				System.out.println("Projeto Maven");
+				model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
+			}else {
+				model = Util.getModelNoMaven(PathProject.makePathToProjectMaven(path, submodule) + PathProject.PROJECT_PATH_FILES_DEFAULT);
+			}
+
 			qtdCatchs = 0;
 			qtdFinallys = 0;
 			
 			System.out.println("-----------------");
 			System.out.println("Projeto: "+path);
-			int numTrys  = model.getElements(new Filter<CtTry>() {
-				public boolean matches(CtTry element) {
-					if(element.getCatchers()!=null) {
-						qtdCatchs += element.getCatchers().size();
-					}
-					if(element.getFinalizer()!=null) {
-						qtdFinallys += 1;
-					}
-					return true;
+			int numTrys  = model.getElements((Filter<CtTry>) element -> {
+				if(element.getCatchers()!=null) {
+					qtdCatchs += element.getCatchers().size();
 				}
+				if(element.getFinalizer()!=null) {
+					qtdFinallys += 1;
+				}
+				return true;
 			}).size();
 			
 			System.out.println("Número de blocos try: " + numTrys);
@@ -124,14 +130,17 @@ public class ExecuterGeneralEstatistics extends Execute {
 					numeroClasses++;
 				}
 				numeroLinhas += tp.getPosition().getEndLine();
-				
 			}
+
+			int numThrows  = model.getElements((Filter<CtThrow>) element -> true).size();
+
 			System.out.println("Número de Catchs: "+qtdCatchs);
 			System.out.println("Número de Finallys: "+qtdFinallys);
+			System.out.println("Núemro de throws: " +numThrows);
 			System.out.println("Número de classes: "+numeroClasses);
 			System.out.println("Número de linhas de código: "+numeroLinhas);
 			
-			ResultsStatisticsLength rsl = new ResultsStatisticsLength(path, numTrys, qtdCatchs, qtdFinallys, numeroClasses, numeroLinhas);
+			ResultsStatisticsLength rsl = new ResultsStatisticsLength(path, numTrys, qtdCatchs, qtdFinallys, numeroClasses, numeroLinhas, numThrows);
 			
 			listaRSL.add(rsl);	
 		}

@@ -8,15 +8,17 @@ public class ResultsStatisticsLength {
 	private int numFinallyBlock;
 	private int numClass;
 	private int numLineCode;
+	private int numThrows;
 	
 	public ResultsStatisticsLength(String nameProject, int numTryBlock, int numCatchBlock, int numFinallyBlock,
-			int numClass, int numLineCode) {
+			int numClass, int numLineCode, int numThrows) {
 		this.nameProject = nameProject;
 		this.numTryBlock = numTryBlock;
 		this.numCatchBlock = numCatchBlock;
 		this.numFinallyBlock = numFinallyBlock;
 		this.numClass = numClass;
 		this.numLineCode = numLineCode;
+		this.numThrows = numThrows;
 	}
 	
 	public String getNameProject() {
@@ -55,8 +57,13 @@ public class ResultsStatisticsLength {
 	public void setNumLineCode(int numLineCode) {
 		this.numLineCode = numLineCode;
 	}
-	
+	public int getNumThrows() {
+		return numThrows;
+	}
+	public void setNumThrows(int numThrows) {
+		this.numThrows = numThrows;
+	}
 	public String toStringCSV() {
-		return nameProject+"^"+numTryBlock+"^"+numCatchBlock+"^"+numFinallyBlock+"^"+numClass+"^"+numLineCode;
+		return nameProject+","+numTryBlock+","+numCatchBlock+","+numFinallyBlock+","+numThrows+","+numClass+","+numLineCode;
 	}
 }

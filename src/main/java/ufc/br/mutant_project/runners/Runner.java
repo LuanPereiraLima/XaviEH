@@ -22,7 +22,7 @@ public class Runner extends AbstractRunner{
 	public void processor(AbstractorProcessor<?> cp) throws PomException {
 
 		File source = new File(PathProject.makePathToJavaCode(uriName, subModule));
-		System.out.println("Gerando mutantes nas classes...");
+		System.out.println("Gerando mutantes nas classes...: "+PathProject.makePathToJavaCode(uriName, subModule));
 		String[] typeFiles = new String[] { "java" };
 
 		for (File f : FileUtils.listFiles(source, typeFiles, true)) {
@@ -50,8 +50,11 @@ public class Runner extends AbstractRunner{
 
 				spoon = new Launcher();
 				spoon.getEnvironment().setNoClasspath(true);
-				spoon.addInputResource(f.getAbsolutePath());
 				spoon.getEnvironment().setCommentEnabled(true);
+				spoon.getEnvironment().setAutoImports(false);
+				//spoon.getEnvironment().setShouldCompile(true);
+				spoon.getEnvironment().setPreserveLineNumbers(true);
+				spoon.addInputResource(f.getAbsolutePath());
 				spoon.setSourceOutputDirectory(PathProject.getPathTemp());
 
 				cp.setParameterVisitor(new ParameterProcessor());

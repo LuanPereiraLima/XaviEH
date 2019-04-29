@@ -38,9 +38,11 @@ import org.eclipse.jgit.api.errors.TransportException;
 import com.thoughtworks.xstream.XStream;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
+import org.gradle.tooling.*;
 import spoon.Launcher;
 import spoon.MavenLauncher;
 import spoon.SpoonAPI;
+import spoon.compiler.Environment;
 import spoon.reflect.CtModel;
 import spoon.reflect.code.CtCatch;
 import spoon.reflect.code.CtInvocation;
@@ -91,9 +93,10 @@ public class Util {
 			request.setGoals( Maven.GOALS_PROJECT_DISABLE_CHECK );
 			request.setDebug(false);
 			
-			if(submodules!=null)
+			if(submodules!=null) {
 				request.setProjects(submodules);
-			
+				System.out.println("Realizando os testes dentro dos submodulos: "+submodules);
+			}
 			Thread t = new Thread(new Runnable() {
 				public void run() {
 					try {
@@ -110,9 +113,9 @@ public class Util {
 				
 			    try { Thread.sleep (500); } catch (InterruptedException ex) {}
 			    
-			    if(result!=null) {
+			    if(result!=null)
 			    	return result.getExitCode();
-			    }
+
 			    if(i == ((60*10*2)-1)) {
 			    	t.interrupt();
 			    	t.stop();
@@ -126,6 +129,38 @@ public class Util {
 			else
 				return -1;
     }
+
+	public static int invokerGradle(String copyProjectPath, List<String> submodules, boolean showInConsole) {
+		String GRADLE_TASK = "test";
+		final int[] result = new int[1];
+		GradleConnector connector;
+    	connector = GradleConnector.newConnector();
+		//connector.useInstallation(new File(gradleInstallationDir));
+		connector.forProjectDirectory(new File(copyProjectPath));
+
+		ProjectConnection connection = connector.connect();
+		BuildLauncher build = connection.newBuild();
+		build.addProgressListener((ProgressListener) progressEvent -> System.out.println(progressEvent.getDescription()));
+		build.setStandardOutput(System.out);
+		build.setStandardError(System.out);
+		build.forTasks(GRADLE_TASK);
+
+		build.run(new ResultHandler<Void>() {
+			@Override
+			public void onComplete(Void aVoid) {
+				result[0] = 0;
+			}
+
+			@Override
+			public void onFailure(GradleConnectionException e) {
+				result[0] = -1;
+			}
+		});
+
+		connection.close();
+
+		return result[0];
+	}
     
     //MÉTODO UTILIZADO PARA CRIAR AS PASTAS QUE O PROJETO NECESSITA PARA O FUNCIONAMENTO
     public static boolean preparePathInit() {
@@ -180,7 +215,7 @@ public class Util {
     	return uri.substring(uri.lastIndexOf("/")+1, uri.lastIndexOf(".git"));
     }
     
-    //MÉTODO UTILIZADO PARA REALIZAR O OBJETIVO MAVEN NO PROJETO
+    //MÉTODO UTILIZADO PARA LISTAR OS PROJETOS QUE ESTÃO NO ARQUIVO
     public static List<String> listProjects(String name) throws FileNotFoundException {
     	if(name==null) {
     		name = "repositories.txt";
@@ -189,11 +224,7 @@ public class Util {
 		final List<String> list = new ArrayList<String>();
 		try {
 			stream = Files.lines(Paths.get(name));
-			stream.forEach(new Consumer<String>() {
-				public void accept(String t) {
-					list.add(t);
-				}
-			});
+			stream.forEach(t -> list.add(t));
 			stream.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -224,15 +255,12 @@ public class Util {
     			g.checkout().setCreateBranch( true ).setName( commit ).setStartPoint( commit ).call();
     		
 		} catch (InvalidRemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new CloneRepositoryException();
 		} catch (TransportException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new CloneRepositoryException();
 		} catch (GitAPIException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new CloneRepositoryException();
 		}
@@ -273,15 +301,27 @@ public class Util {
     	    e.printStackTrace();
     	}
     }
+
+    public static void removeDirectoryAndCreate(String pathDC){
+		File source = new File(pathDC);
+		try {
+			System.out.println("APAGANDO E RECRIANDO MUTANTE");
+			FileUtils.deleteDirectory(source);
+			FileUtils.forceMkdir(source);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
     
     //MODELO DO PROJETO
     public static CtModel getModel(String projectPath) {
     	try {
 			launcher = new MavenLauncher(projectPath, MavenLauncher.SOURCE_TYPE.APP_SOURCE);
-			launcher.getEnvironment().setAutoImports(false);
-//			launcher.getEnvironment().setCommentEnabled(true);
-			launcher.getEnvironment().setPreserveLineNumbers(true);
-			launcher.getEnvironment().setNoClasspath(true);
+			Environment env = launcher.getEnvironment();
+			env.setAutoImports(true);
+//			env.setCommentEnabled(true);
+			env.setPreserveLineNumbers(true);
+			env.setNoClasspath(true);
 			launcher.buildModel();
 			return launcher.getModel();
     	}catch(Exception e) {
@@ -294,9 +334,10 @@ public class Util {
     	try {
 			SpoonAPI spoon = new Launcher();
 			spoon = new Launcher();
-			spoon.getEnvironment().setNoClasspath(true);
-			spoon.getEnvironment().setPreserveLineNumbers(true);
-			spoon.getEnvironment().setSourceClasspath(new String[] { projectPath });
+			Environment env = spoon.getEnvironment();
+			env.setNoClasspath(true);
+			env.setPreserveLineNumbers(true);
+			env.setSourceClasspath(new String[] { projectPath });
 			spoon.addInputResource(projectPath);
 			spoon.buildModel();
 			return spoon.getModel();
@@ -315,7 +356,7 @@ public class Util {
 			try {
 				model = getModelNoMaven(projectPath+getSourceDirectory(projectPath));
 			} catch (PomException e) {
-				System.out.println("BIBIIIII");
+				System.out.println("Error Exception getModelNoMaven in getClassByModel");
 				return null;
 			}
 		}
@@ -406,7 +447,7 @@ public class Util {
     	return lista;
     }
     
-    //MÉTODO QUE RETORNA OS TIPOS DIRETOS DE EXCEÇÕES DA ÁRVORE DE EXCEÇÕES
+    //MÉTODO QUE RETORNA OS TIPOS DERIVADOS DE EXCEÇÕES DA ÁRVORE DE EXCEÇÕES
     public static List<CtTypeReference<?>> getListOfDirectDerivedTypes(CHE che){
     	List<CtTypeReference<?>> lista = new ArrayList<CtTypeReference<?>>();
     	if(che!=null && che.getFilhos()!=null)
@@ -448,9 +489,9 @@ public class Util {
 		
 		int result = 1;
 		if(submodule!=null)
-			result = invokerOthers(pathToProject, Collections.singletonList("testProject"), Collections.singletonList(submodule), true);
+			result = invokerOthers(pathToProject, Collections.singletonList("test"), Collections.singletonList(submodule), true);
 		else
-			result = invokerOthers(pathToProject, Collections.singletonList("testProject"), null, true);
+			result = invokerOthers(pathToProject, Collections.singletonList("test"), null, true);
 		
 		if(result==0) {
 			System.out.println("Coverage JaCoCo realizado com sucesso!");
@@ -493,7 +534,7 @@ public class Util {
 			}
 	    }else
 	    	throw new PomException("Pom.xml não encontrado para o projeto: "+pathToProject);
-	 }
+    }
 	
 	private static void modifyPomToJaCoCo(String pathToProject) throws PomException, JacocoException {
 	    MavenXpp3Reader reader = new MavenXpp3Reader();
@@ -525,7 +566,7 @@ public class Util {
 			}
 	    }else
 	    	throw new PomException("Pom.xml não encontrado para o projeto: "+pathToProject);
-	  }
+    }
 	
 	public static boolean createXmlListSaveMutantResultType(String projectPath, Map<String, List<FinalResultSavedByProject>> listSaveMutantResultType) {
 		XStream xs = new XStream();
@@ -558,7 +599,7 @@ public class Util {
 		pe.addGoal("prepare-agent");
 		PluginExecution pe2 = new PluginExecution();
 		pe2.addGoal("report");
-		pe2.setPhase("testProject");
+		pe2.setPhase("test");
 		pe2.setId("report");
 		p.getExecutions().add(pe);
 		p.getExecutions().add(pe2);

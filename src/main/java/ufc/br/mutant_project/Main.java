@@ -20,6 +20,7 @@ public class Main {
 	private static String NO_CLONE_REPOSITORY = "noCloneRepository";
 	private static String NO_VERIFY_PROJECT = "noVerifyProject";
 	private static String NO_TEST_PROJECT = "noTestProject";
+	private static String NO_SPOON_VERIFY_PROJECT = "noSPOONVerify";
 
 
 	public static void main(String[] args){
@@ -28,6 +29,7 @@ public class Main {
 		boolean cloneRepository = true;
 		boolean verifyIfProjectAlreadyRun = true;
 		boolean testProject = true;
+		boolean spoonVerify = true;
 
 		Execute ex = null;
 
@@ -46,15 +48,17 @@ public class Main {
 					testProject = false;
 				}
 				if(args[i].equals(EXEC_TYPE_1)){
+					System.out.println("EXEC_TYPE_1");
 					ex = new Execute(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
 				}else if(args[i].equals(EXEC_TYPE_2)){
+					System.out.println("EXEC_TYPE_2: "+verifyIfProjectAlreadyRun);
 					ex = new ExecuterEstatisticsCoverageEH(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
 				}else if(args[i].equals(EXEC_TYPE_3)){
+					System.out.println("EXEC_TYPE_3");
 					ex = new ExecuterCloneAndRunTestsWithJaCoCo(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
 				}else if(args[i].equals(EXEC_TYPE_4)){
+					System.out.println("EXEC_TYPE_4");
 					ex = new ExecuterEstatisticsCoverageEHStudy2(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
-				}else{
-					ex = new Execute(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
 				}
 			}
 		}else{
@@ -62,7 +66,10 @@ public class Main {
 		}
 		
 		try {
-			ex.execute();
+			if(ex!=null)
+				ex.execute();
+			else
+				System.out.println("Nenhuma execução escolhida");
 		} catch (InicializerException e) {
 			e.printStackTrace();
 		} catch (ListProjectsNotFoundException e) {

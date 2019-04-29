@@ -27,7 +27,7 @@
     <dependency>
       <groupId>fr.inria.gforge.spoon</groupId>
       <artifactId>spoon-core</artifactId>
-      <version>7.3.0</version>
+      <version>7.4.0-beta-17</version>
     </dependency>
     <dependency>
       <groupId>xstream</groupId>
@@ -80,7 +80,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>ufc.br.mutant_project.Main</mainClass>
+              <mainClass>ufc.br.mutant_project.test.RunNew</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>

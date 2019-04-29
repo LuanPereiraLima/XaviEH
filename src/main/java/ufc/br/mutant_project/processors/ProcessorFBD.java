@@ -5,7 +5,6 @@ import spoon.reflect.code.CtTry;
 public class ProcessorFBD  extends AbstractorProcessor<CtTry>{
 	
     public void process(CtTry element) {
-    	System.out.println("ELEMENTO: " + element);
     	if(getPosition() == getParameterVisitor().getPosition()) {
     		getParameterVisitor().setBeginLine(element.getPosition().getLine());
     		getParameterVisitor().setEndLine(element.getPosition().getEndLine());

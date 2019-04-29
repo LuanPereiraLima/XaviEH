@@ -37,12 +37,12 @@ public class UtilWriteReader {
 	
 	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA STATISTICS LENGTH
 	private static String createFileHeaderStatisticLength() {
-		return "nameProject^numTryBlock^numCatchBlock^numFinallyBlock^numClass^numLineCode";
+		return "NameProject,NoTryBlock,NoCatchBlock,NoFinallyBlock,NoThrows,NoClass,NoLineCode";
 	}
 	
 	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
 	private static String createFileHeaderTestsProjects() {
-		return "NAME URL COMMIT PASS_TESTS JACOCO_GENERATE";
+		return "NAME,URL,COMMIT,PASS_TESTS,JACOCO_GENERATE";
 	}
 	
 	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
@@ -69,6 +69,10 @@ public class UtilWriteReader {
 				+ "CATCH_MI,CATCH_CI,CATCH_MB,CATCH_CB,"
 				+ "CATCHI_MI,CATCHI_CI,CATCHI_MB,CATCHI_CB,"
 				+ "CATCHE_MI,CATCHE_CI,CATCHE_MB,CATCHE_CB";
+
+				//+ "THROWS_CM,THROWS_MM,"
+
+				//+ "FINALLY_MI,FINALLY_CI,FINALLY_MB,FINALLY_CB,";
 	}
 		
 	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
@@ -159,7 +163,7 @@ public class UtilWriteReader {
 					fileWriter.append(totalCoveredStatus.get(project).getTHROW_MI_TotalMissedInstructionsThrowStatements()+",");
 					fileWriter.append(totalCoveredStatus.get(project).getTHROW_CI_TotalCoveredInstructionsThrowStatements()+",");
 					fileWriter.append(totalCoveredStatus.get(project).getTHROWS_MM_TotalMissedMethodsWithThrows()+",");
-					fileWriter.append(totalCoveredStatus.get(project).getTHROWS_CM_TotalCoveredMethodsWithThrows()+",");
+					fileWriter.append(totalCoveredStatus.get(project).getTHROWS_CM_TotalCoveredMethodsWithThrows()+"");
 
 					fileWriter.append(NEW_LINE_SEPARATOR);
 				}
@@ -182,7 +186,7 @@ public class UtilWriteReader {
 			FileWriter fileWriter = null;
 			
 			try {
-				fileWriter = new FileWriter(PathProject.USER_REFERENCE_TO_PROJECT+"finalResultForProjectStatus.csv");
+				fileWriter = new FileWriter(PathProject.USER_REFERENCE_TO_PROJECT+"finalResultForProjectStatusInternalExternalExceptions.csv");
 
 				fileWriter.append(createFileHeaderStatisticTypeCode());
 				fileWriter.append(NEW_LINE_SEPARATOR);
@@ -218,6 +222,16 @@ public class UtilWriteReader {
 					fileWriter.append(totalCoveredStatus.get(project).getCATCH_E_CI_TotalCoveredInstructionsCatchBlocks()+",");
 					fileWriter.append(totalCoveredStatus.get(project).getCATCH_E_MB_TotalMissedBrachesCatchBlocks()+",");
 					fileWriter.append(totalCoveredStatus.get(project).getCATCH_E_CB_TotalCoveredBrachesCatchBlocks()+"");
+
+					//TODO ADDED
+					/*fileWriter.append(totalCoveredStatus.get(project).getTHROWS_CM_TotalCoveredMethodsWithThrows()+",");
+					fileWriter.append(totalCoveredStatus.get(project).getTHROWS_MM_TotalMissedMethodsWithThrows()+",");
+
+					fileWriter.append(totalCoveredStatus.get(project).getFINALLY_MI_TotalMissedInstructionsFinallyBlocks()+",");
+					fileWriter.append(totalCoveredStatus.get(project).getFINALLY_CI_TotalCoveredInstructionsFinallyBlocks()+",");
+					fileWriter.append(totalCoveredStatus.get(project).getFINALLY_MB_TotalMissedBrachesFinallyBlocks()+",");
+					fileWriter.append(totalCoveredStatus.get(project).getFINALLY_CB_TotalCoveredBrachesFinallyBlocks()+"");
+					*///TODO ADDED F
 
 					fileWriter.append(NEW_LINE_SEPARATOR);
 				}
