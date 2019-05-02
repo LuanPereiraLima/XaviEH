@@ -4,6 +4,7 @@ public class Properties {
 	private String homeMaven;
 	private String projectsFile;
 	private String urlMutations;
+	private boolean deleteProject;
 	
 	public String getHomeMaven() {
 		return homeMaven;
@@ -27,5 +28,13 @@ public class Properties {
 
 	public void setUrlMutations(String urlMutations) {
 		this.urlMutations = urlMutations;
+	}
+
+	public boolean isDeleteProject() {
+		return deleteProject;
+	}
+
+	public void setDeleteProject(boolean deleteProject) {
+		this.deleteProject = deleteProject;
 	}
 }

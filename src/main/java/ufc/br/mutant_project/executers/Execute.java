@@ -10,6 +10,8 @@ import java.util.List;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 import spoon.reflect.CtModel;
+import spoon.reflect.code.CtThrow;
+import spoon.reflect.code.CtTry;
 import ufc.br.mutant_project.constants.ConfigProperties;
 import ufc.br.mutant_project.constants.PathProject;
 import ufc.br.mutant_project.exceptions.CloneRepositoryException;
@@ -22,9 +24,7 @@ import ufc.br.mutant_project.exceptions.PomException;
 import ufc.br.mutant_project.exceptions.TestFailMavenInvokerException;
 import ufc.br.mutant_project.models.Properties;
 import ufc.br.mutant_project.processors.*;
-import ufc.br.mutant_project.runners.AbstractRunner;
-import ufc.br.mutant_project.runners.Runner;
-import ufc.br.mutant_project.runners.RunnerSubProcessCatch;
+import ufc.br.mutant_project.runners.*;
 import ufc.br.mutant_project.util.Util;
 import ufc.br.mutant_project.util.UtilWriteReader;
 
@@ -282,32 +282,34 @@ public class Execute {
 
 			try {
 				System.out.println("-Iniciando Mutações para o projeto");
-				AbstractRunner abs = new Runner(path, submodule, isProjectMaven);
+				AbstractRunner abs = new Runner<CtTry>(path, submodule, isProjectMaven);
 				
 				System.out.println("--Iniciando Mutações CBD para o projeto");
-				//abs.processor(new ProcessorCBD());
+				abs.processor(new ProcessorCBD());
 				System.out.println("---OK!");
 				System.out.println("--Iniciando Mutações CBI para o projeto");
-				//abs.processor(new ProcessorCBI());
+				abs.processor(new ProcessorCBI());
 				System.out.println("---OK!");
 				System.out.println("--Iniciando Mutações CRE para o projeto");
-				//abs.processor(new ProcessorCRE());
+				abs.processor(new ProcessorCRE());
 				System.out.println("---OK!");
 				System.out.println("--Iniciando Mutações FBD para o projeto");
-				//abs.processor(new ProcessorFBD());
+				abs.processor(new ProcessorFBD());
 				System.out.println("---OK!");
 				System.out.println("--Iniciando Mutações PLT para o projeto");
-				//abs.processor(new ProcessorPTL());
+				abs.processor(new ProcessorPTL());
 				System.out.println("---OK!");
 
-				System.out.println("--Iniciando Mutações THD para o projeto");
-				abs.processor(new ProcessorTHD());
+				abs = new RunnerThrow<CtThrow>(path, submodule, isProjectMaven);
+				System.out.println("--Iniciando Mutações TSD para o projeto");
+				abs.processor(new ProcessorTSD());
 				System.out.println("---OK!");
-				
-				abs = new RunnerSubProcessCatch(path, submodule, isProjectMaven);
+
+				abs = new RunnerSubProcessCatch<CtThrow>(path, submodule, isProjectMaven);
 				System.out.println("--Iniciando Mutações CBR para o projeto");
-				//abs.processor(new ProcessorCBR());
+				abs.processor(new ProcessorCBR());
 				System.out.println("---OK!");
+
 			} catch (PomException e1) {
 				System.out.println(e1.getMessage());
 				e1.printStackTrace();

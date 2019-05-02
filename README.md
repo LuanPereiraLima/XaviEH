@@ -13,7 +13,7 @@
 - [x] FBD - Finally Block Deletion
 - [x] CBR - Catch Block Replacement
 - [x] PTL - Placing Try Block Late
-- [x] THD - Throws Deletion
+- [ ] TSD - Throw Statement Deletion (Testing)
 
 #### Possibilities
 
@@ -30,7 +30,7 @@
 - use **mvn install**
 - Enter in **/target**
 - Execute: **java -jar project-mutant-2.0.0-jar-with-dependencies.jar** for run the program.
-- The file config.properties (which is inside the folder (**/target/FilesNeedToRun**) - **be sure to copy the files from this folder to the directory where the executable jar file is located.**), has all the necessary parameters for the project to work correctly, they are:
+- The file **config.properties** (which is inside the folder (**/target/FilesNeedToRun**) - **be sure to copy the files from this folder to the directory where the executable jar file is located.**), has all the necessary parameters for the project to work correctly, they are:
   - **homeMaven**: path to the maven installed on your computer.
   - **urlMutations**: path where the mutants and information will be created (always finish the path with a slash at the end. **/**).
   - **projectsFile**: name of the file containing the projects that will be used. The same is composed of a url of git and some additional parameters, they are:

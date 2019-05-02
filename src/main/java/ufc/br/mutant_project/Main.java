@@ -69,7 +69,7 @@ public class Main {
 			if(ex!=null)
 				ex.execute();
 			else
-				System.out.println("Nenhuma execução escolhida");
+				System.err.println("Nenhuma execução escolhida");
 		} catch (InicializerException e) {
 			e.printStackTrace();
 		} catch (ListProjectsNotFoundException e) {

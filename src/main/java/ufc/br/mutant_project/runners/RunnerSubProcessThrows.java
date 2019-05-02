@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import spoon.Launcher;
 import spoon.SpoonAPI;
 import spoon.reflect.CtModel;
+import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.visitor.Filter;
 import ufc.br.mutant_project.constants.PathProject;
@@ -17,7 +18,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RunnerSubProcessThrows extends AbstractRunner {
+public class RunnerSubProcessThrows<D extends CtElement> extends AbstractRunner<D> {
 
 	public RunnerSubProcessThrows(String uriName, String subModule, boolean isMavenProject) {
 		super(uriName, subModule, isMavenProject);
