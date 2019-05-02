@@ -11,6 +11,7 @@ import spoon.Launcher;
 import spoon.SpoonAPI;
 import spoon.reflect.code.CtTry;
 import spoon.reflect.declaration.CtClass;
+import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.Filter;
@@ -22,7 +23,7 @@ import ufc.br.mutant_project.processors.AbstractorProcessor;
 import ufc.br.mutant_project.processors.AbstractorProcessorSubProcess;
 import ufc.br.mutant_project.util.Util;
 
-public class RunnerSubProcessCatch extends AbstractRunner {
+public class RunnerSubProcessCatch<D extends CtElement> extends AbstractRunner<D> {
 	
 	public RunnerSubProcessCatch(String uriName, String subModule, boolean isMavenProject) {
 		super(uriName, subModule, isMavenProject);
@@ -45,7 +46,7 @@ public class RunnerSubProcessCatch extends AbstractRunner {
 
 			System.out.println("Arquivo: " + f.getAbsolutePath());
 
-			Map<Integer, CHE> map = new HashMap<Integer, CHE>();
+			Map<Integer, CHE> map = new HashMap();
 		
 			int qtd = getQtdAndMapOfTryCHEDerivedTypes(spoon, map);
 			
@@ -102,49 +103,47 @@ public class RunnerSubProcessCatch extends AbstractRunner {
 	}
 	
 	private int getQtdAndMapOfTryCHEDerivedTypes(SpoonAPI spoon, final Map<Integer, CHE> map) {
-		return spoon.buildModel().getElements(new Filter<CtTry>() {
-			public boolean matches(CtTry element) {
-				
-				if(element.getCatchers().size() > 0) {
+		return spoon.buildModel().getElements((Filter<CtTry>) element -> {
 
-	        		CtClass<?> c = element.getParent(new Filter<CtClass<?>>() {
-	        			public boolean matches(CtClass<?> element) {return true;};
-					});
-	        		
-	        		if(c!=null) {
-	        			
-	        			String name = null;
-	        			
-	        			if(c.getQualifiedName().contains("$")) {
-		        			int index = c.getQualifiedName().indexOf("$");
-		        			
-		        			if(index != -1)
-		        				name = c.getQualifiedName().substring(0, index);
-		        			
-		        			if(name==null)
-		        				name = c.getQualifiedName();
-		        			
-		        			System.out.println(name);
-	        			}else
-	        				name = c.getQualifiedName();
-	        				
-	        			Integer count = 1;
-	    				CtType<?> tipos = Util.getClassByModel(name, PathProject.makePathToProjectMaven(uriName, subModule), isMavenProject);
-	        			for(CtTry tr : tipos.getElements(new Filter<CtTry>() {
-	        				public boolean matches(CtTry element) {
-	        					return true;
-	        				}
-						})){
-	        				CHE che = Util.getCHE(tr);
-        					if(che!=null)
-        						map.put(count, che);
-        					count++;
-	        			}
-	        		}
-	        		
-	    		}
-				return true;
+			if(element.getCatchers().size() > 0) {
+
+				CtClass<?> c = element.getParent(new Filter<CtClass<?>>() {
+					public boolean matches(CtClass<?> element) {return true;};
+				});
+
+				if(c!=null) {
+
+					String name = null;
+
+					if(c.getQualifiedName().contains("$")) {
+						int index = c.getQualifiedName().indexOf("$");
+
+						if(index != -1)
+							name = c.getQualifiedName().substring(0, index);
+
+						if(name==null)
+							name = c.getQualifiedName();
+
+						System.out.println(name);
+					}else
+						name = c.getQualifiedName();
+
+					Integer count = 1;
+					CtType<?> tipos = Util.getClassByModel(name, PathProject.makePathToProjectMaven(uriName, subModule), isMavenProject);
+					for(CtTry tr : tipos.getElements(new Filter<CtTry>() {
+						public boolean matches(CtTry element) {
+							return true;
+						}
+					})){
+						CHE che = Util.getCHE(tr);
+						if(che!=null)
+							map.put(count, che);
+						count++;
+					}
+				}
+
 			}
+			return true;
 		}).size();
 	}
 }

@@ -1,8 +1,5 @@
 package ufc.br.mutant_project.runners;
 
-import java.io.File;
-import java.lang.reflect.Type;
-
 import org.apache.commons.io.FileUtils;
 import spoon.Launcher;
 import spoon.SpoonAPI;
@@ -17,9 +14,12 @@ import ufc.br.mutant_project.models.ParameterProcessor;
 import ufc.br.mutant_project.processors.AbstractorProcessor;
 import ufc.br.mutant_project.util.Util;
 
-public class Runner<A extends CtElement> extends AbstractRunner<A>{
-	
-	public Runner(String uriName, String subModule, boolean isMavenProject) {
+import java.io.File;
+
+//TODO PROVISÓRIO (ASSOCIAR O CONTADOR COM O GENÉRICO)
+public class RunnerThrow<A extends CtElement> extends AbstractRunner<A>{
+
+	public RunnerThrow(String uriName, String subModule, boolean isMavenProject) {
 		super(uriName, subModule, isMavenProject);
 	}
 
@@ -40,7 +40,7 @@ public class Runner<A extends CtElement> extends AbstractRunner<A>{
 
 			CtModel mo = spoon.buildModel();
 
-			int qtd = mo.getElements((Filter<CtTry>) element -> true).size();
+			int qtd = mo.getElements((Filter<CtThrow>) element -> true).size();
 
 			System.out.println("Número de ocorrencias: " + qtd);
 

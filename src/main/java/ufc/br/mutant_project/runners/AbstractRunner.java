@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.thoughtworks.xstream.XStream;
 
+import spoon.reflect.declaration.CtElement;
 import ufc.br.mutant_project.constants.PathProject;
 import ufc.br.mutant_project.exceptions.PomException;
 import ufc.br.mutant_project.models.FinalResultSavedByProject;
@@ -19,7 +20,7 @@ import ufc.br.mutant_project.models.ResultSavedByMutant;
 import ufc.br.mutant_project.processors.AbstractorProcessor;
 import ufc.br.mutant_project.util.Util;
 
-public abstract class AbstractRunner {
+public abstract class AbstractRunner<A extends CtElement> {
 
 	protected int numberMutant = 0;
 	protected int qtdMutantDead = 0;
@@ -28,12 +29,12 @@ public abstract class AbstractRunner {
 	protected String uriName;
 	protected String subModule;
 	protected boolean isMavenProject;
-	
+
 	public AbstractRunner(String uriName, String subModule, boolean isMavenProject) {
 		this.uriName = uriName;
 		this.subModule = subModule;
 		if(listSavedMutantResultType==null)
-			listSavedMutantResultType = new HashMap<String, List<FinalResultSavedByProject>>();
+			listSavedMutantResultType = new HashMap();
 		
 		this.isMavenProject = isMavenProject;
 	}

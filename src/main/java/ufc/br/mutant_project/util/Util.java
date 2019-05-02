@@ -449,7 +449,7 @@ public class Util {
     
     //MÉTODO QUE RETORNA OS TIPOS DERIVADOS DE EXCEÇÕES DA ÁRVORE DE EXCEÇÕES
     public static List<CtTypeReference<?>> getListOfDirectDerivedTypes(CHE che){
-    	List<CtTypeReference<?>> lista = new ArrayList<CtTypeReference<?>>();
+    	List<CtTypeReference<?>> lista = new ArrayList();
     	if(che!=null && che.getFilhos()!=null)
     		for(CHE fi : che.getFilhos())
     			if(fi.getClasses()!=null)
@@ -460,15 +460,18 @@ public class Util {
     }
 	
 	public static Properties getProperties() throws IOException {
-		if(properties!=null)
+
+    	if(properties!=null)
 			return properties;
+
 		java.util.Properties prop = geFileProp();
 		
 		properties = new Properties();
 		properties.setHomeMaven(prop.getProperty("homeMaven", null));
 		properties.setUrlMutations(prop.getProperty("urlMutations", null));
 		properties.setProjectsFile(prop.getProperty("projectsFile", null));
-	
+		properties.setDeleteProject(prop.getProperty("deleteProject", null) == null || prop.getProperty("deleteProject", null).equals("true"));
+
 		return properties;
 	}
 	
@@ -511,7 +514,6 @@ public class Util {
 	}
 	
 	public static String getSourceDirectory(String pathToProject) throws PomException {
-		System.out.println("Eita: "+pathToProject);
 	    MavenXpp3Reader reader = new MavenXpp3Reader();
 	    Model model;
 	    File f = new File(pathToProject+"pom.xml");
