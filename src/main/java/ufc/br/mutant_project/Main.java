@@ -4,10 +4,7 @@ import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
 import ufc.br.mutant_project.exceptions.InicializerException;
 import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
 import ufc.br.mutant_project.exceptions.NotURLsException;
-import ufc.br.mutant_project.executers.Execute;
-import ufc.br.mutant_project.executers.ExecuterCloneAndRunTestsWithJaCoCo;
-import ufc.br.mutant_project.executers.ExecuterEstatisticsCoverageEH;
-import ufc.br.mutant_project.executers.ExecuterEstatisticsCoverageEHStudy2;
+import ufc.br.mutant_project.executers.*;
 
 public class Main {
 
@@ -15,6 +12,7 @@ public class Main {
 	private static String EXEC_TYPE_2 = "ExecuterEstatisticsCoverageEH";
 	private static String EXEC_TYPE_3 = "ExecuteCloneAndRunTestsWithJaCoCo";
 	private static String EXEC_TYPE_4 = "ExecuterEstatisticsCoverageEH";
+	private static String EXEC_TYPE_5 = "ExecuterOnlyMutant";
 
 	private static String OUTPUT_FILE = "outputFile";
 	private static String NO_CLONE_REPOSITORY = "noCloneRepository";
@@ -59,6 +57,9 @@ public class Main {
 				}else if(args[i].equals(EXEC_TYPE_4)){
 					System.out.println("EXEC_TYPE_4");
 					ex = new ExecuterEstatisticsCoverageEHStudy2(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
+				}else if(args[i].equals(EXEC_TYPE_5)){
+					System.out.println("EXEC_TYPE_5");
+					ex = new ExecuteOnlyMutant(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject,false);
 				}
 			}
 		}else{

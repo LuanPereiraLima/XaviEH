@@ -97,16 +97,14 @@ public class Util {
 				request.setProjects(submodules);
 				System.out.println("Realizando os testes dentro dos submodulos: "+submodules);
 			}
-			Thread t = new Thread(new Runnable() {
-				public void run() {
-					try {
-						result = invoker.execute( request );
-					} catch (MavenInvocationException e) {
-						e.printStackTrace();
-					}
+			Thread t = new Thread(() -> {
+				try {
+					result = invoker.execute( request );
+				} catch (MavenInvocationException e) {
+					e.printStackTrace();
 				}
 			});
-			
+
 			t.start();
 			
 			for (int i = 0; i < (60*10*2); ++i) {
@@ -130,21 +128,25 @@ public class Util {
 				return -1;
     }
 
+	//MÉTODO UTILIZADO PARA REALIZAR O TESTE NO MUTANTE CRIADO EM PROJETOS GRADLE
 	public static int invokerGradle(String copyProjectPath, List<String> submodules, boolean showInConsole) {
 		String GRADLE_TASK = "test";
 		final int[] result = new int[1];
 		GradleConnector connector;
-    	connector = GradleConnector.newConnector();
+		connector = GradleConnector.newConnector();
 		//connector.useInstallation(new File(gradleInstallationDir));
 		connector.forProjectDirectory(new File(copyProjectPath));
 
 		ProjectConnection connection = connector.connect();
 		BuildLauncher build = connection.newBuild();
 		build.addProgressListener((ProgressListener) progressEvent -> System.out.println(progressEvent.getDescription()));
-		build.setStandardOutput(System.out);
-		build.setStandardError(System.out);
-		build.forTasks(GRADLE_TASK);
 
+		if (showInConsole) {
+			build.setStandardOutput(System.out);
+			build.setStandardError(System.out);
+		}
+
+		build.forTasks(GRADLE_TASK);
 		build.run(new ResultHandler<Void>() {
 			@Override
 			public void onComplete(Void aVoid) {
