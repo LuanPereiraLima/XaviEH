@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>br.ufc.evidense</groupId>
   <artifactId>project-mutant</artifactId>
-  <version>2.0.0</version>
+  <version>3.0.0</version>
   <name>Mutante Project - Creating Mutants and Coverage Projects EH</name>
   <url></url>
   <properties>
@@ -12,6 +12,12 @@
 	<maven.compiler.source>1.8</maven.compiler.source>
 	<maven.compiler.target>1.8</maven.compiler.target>
   </properties>
+  <repositories>
+    <repository>
+      <id>myRepository</id>
+      <url>file://${basedir}/libs</url>
+    </repository>
+  </repositories>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -64,6 +70,11 @@
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.7.5</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache</groupId>
+      <artifactId>tooling</artifactId>
+      <version>1.0</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -80,7 +91,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>ufc.br.mutant_project.test.RunNew</mainClass>
+              <mainClass>ufc.br.mutant_project.Main</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
