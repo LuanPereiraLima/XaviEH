@@ -28,13 +28,18 @@ public class RunNew {
 
 		//String path = "/home/loopback/mutationsTests/xstream-1.4.11.1/xstream-1.4.11.1/xstream/src/java";
 
-		String path = "/home/loopback/hadoop/hadoop-common-project/hadoop-kms";///src/main/java/org/apache/hadoop/mapred/ShuffleHandler.java";
+		String path = "/media/loopback/C4DAE5FEDAE5EC9C/Users/luan_/mutationsTests/commons-math-3.6.1/commons-math-3.6.1";//"/home/loopback/hadoop/hadoop-common-project/hadoop-kms";///src/main/java/org/apache/hadoop/mapred/ShuffleHandler.java";
 
 		//String path = "/home/loopback/mutationsDocker/hadoop-3.1.2-20/hadoop-3.1.2-20/hadoop-common-project/hadoop-kms";
 
 		//Launcher spoon = new Launcher();
 
-		Launcher spoon = new MavenLauncher(path, MavenLauncher.SOURCE_TYPE.APP_SOURCE);
+		//Launcher spoon = new MavenLauncher(path, MavenLauncher.SOURCE_TYPE.APP_SOURCE);
+
+		SpoonAPI spoon = new Launcher();
+		spoon.getEnvironment().setNoClasspath(true);
+		spoon.getEnvironment().setCommentEnabled(true);
+		spoon.addInputResource(path);
 
 		spoon.getEnvironment().setNoClasspath(true);
 
@@ -42,9 +47,9 @@ public class RunNew {
 
 		//spoon.addInputResource( path );
 
-		spoon.getEnvironment().setAutoImports(true);
+		//spoon.getEnvironment().setAutoImports(true);
 
-		spoon.setSourceOutputDirectory("/home/loopback/spoon");
+		//spoon.setSourceOutputDirectory("/home/loopback/spoon");
 
 		//spoon.getEnvironment().setPrettyPrinterCreator(() -> new SniperJavaPrettyPrinter(spoon.getEnvironment()));
 
@@ -55,7 +60,7 @@ public class RunNew {
 		//spoon.buildModel();
 
 		//spoon.prettyprint();
-		spoon.addProcessor(new AbstractProcessor<CtTry>() {
+		/*spoon.addProcessor(new AbstractProcessor<CtTry>() {
 			@Override
 			public void process(CtTry element) {
 
@@ -75,9 +80,11 @@ public class RunNew {
 			}
 		});
 
-		spoon.run();
+		spoon.run();*/
 
-		System.out.println(spoon.getModel().getElements((Filter<CtTry>) ctElement -> true).stream().count());
+		spoon.buildModel();
+
+		System.out.println(spoon.getModel().getElements((Filter<CtThrow>) ctElement -> true).stream().count());
 
 		/*CtModel model = spoon.getModel();
 

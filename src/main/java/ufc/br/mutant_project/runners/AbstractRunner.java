@@ -87,10 +87,10 @@ public abstract class AbstractRunner<A extends CtElement> {
 
 		//System.out.println("MUTANT PATH: "+mutantPath);
 
-		Util.removeDirectoryAndCreate(mutantPath);
+		//Util.removeDirectoryAndCreate(mutantPath);
 
 		//COPIAR NOVAMENTE OS ARQUIVOS IMPORTANTES CRIADOS
-		Util.copyOutputSpoonToProject(mutantPath + (File.separator) + PathProject.makePathToPathFiles(uriName, subModule));
+		//Util.copyOutputSpoonToProject(mutantPath + (File.separator) + PathProject.makePathToPathFiles(uriName, subModule));
 
 		//TODO ----------------------------------------
 

@@ -285,7 +285,7 @@ public class Execute {
 				AbstractRunner abs = new Runner<CtTry>(path, submodule, isProjectMaven);
 				
 				System.out.println("--Iniciando Mutações CBD para o projeto");
-				abs.processor(new ProcessorCBD());
+				//abs.processor(new ProcessorCBD());
 				System.out.println("---OK!");
 				System.out.println("--Iniciando Mutações CBI para o projeto");
 				abs.processor(new ProcessorCBI());

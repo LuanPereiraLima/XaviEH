@@ -355,12 +355,8 @@ public class Util {
     	if(isMavenProject)
     		model = getModel(projectPath);
 		else {
-			try {
-				model = getModelNoMaven(projectPath+getSourceDirectory(projectPath));
-			} catch (PomException e) {
-				System.out.println("Error Exception getModelNoMaven in getClassByModel");
-				return null;
-			}
+			System.out.println("PATH:"+projectPath+PathProject.PROJECT_PATH_FILES_DEFAULT);
+			model = getModelNoMaven(projectPath+PathProject.PROJECT_PATH_FILES_DEFAULT);
 		}
         		
     	for(CtType<?> ty : model.getAllTypes()) {

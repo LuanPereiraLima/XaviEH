@@ -44,6 +44,11 @@ public class ProcessorCBI extends AbstractorProcessor<CtTry>{
         			}else {
         				nome = c.getQualifiedName();
         			}
+					System.out.println("ERRO AQUI: -----------");
+					System.out.println("NOME: "+ nome);
+					System.out.println("PATH TO PROJECT: "+ PathProject.makePathToProjectMaven(getUriName(), getSubModule()));
+					System.out.println("IS MAVEN PROJECT: "+isMavenProject());
+					System.out.println("ERRO AQUI: -----------/");
     				CtType<?> tipos = Util.getClassByModel(nome, PathProject.makePathToProjectMaven(getUriName(), getSubModule()), isMavenProject());
         			int count = 1;
         			for(CtTry tr : tipos.getElements(new Filter<CtTry>() {
