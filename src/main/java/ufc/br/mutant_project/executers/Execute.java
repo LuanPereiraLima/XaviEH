@@ -245,6 +245,11 @@ public class Execute {
 
 			if(pathProject!=null){
 				PathProject.PROJECT_PATH_FILES_DEFAULT  = pathProject;
+
+			}
+
+			if(build != null && build.equals("g")) {
+				this.isProjectMaven = false;
 			}
 			
 			String path = Util.validateAndGetNameRepository(linha[0]);
@@ -289,6 +294,9 @@ public class Execute {
 					continue;
 				System.out.println("--OK!");
 			}
+
+
+
 
 			try {
 				System.out.println("-Iniciando Mutações para o projeto");
