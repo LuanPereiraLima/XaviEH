@@ -35,6 +35,7 @@ public class Execute {
 	protected boolean cloneRepository = true;
 	protected boolean testProject = true;
 	protected boolean testProjectSPOONCompability = true;
+	protected boolean createReportJaCoCo = true;
 	
 	protected static final String VERSION_URL = "-v";
 	protected static final String COMMIT_URL = "-c";
@@ -73,6 +74,15 @@ public class Execute {
 		this.verifyIfProjectAlreadyRun = verifyIfProjectAlreadyRun;
 		this.testProject = testProject;
 		this.testProjectSPOONCompability = spoonVerify;
+	}
+
+	public Execute(boolean saveInFile, boolean cloneRepository, boolean verifyIfProjectAlreadyRun, boolean testProject, boolean spoonVerify, boolean createReportJaCoCo) {
+		this.saveOutputInFile = saveInFile;
+		this.cloneRepository = cloneRepository;
+		this.verifyIfProjectAlreadyRun = verifyIfProjectAlreadyRun;
+		this.testProject = testProject;
+		this.testProjectSPOONCompability = spoonVerify;
+		this.createReportJaCoCo = createReportJaCoCo;
 	}
 
 	/*
@@ -285,7 +295,7 @@ public class Execute {
 				AbstractRunner abs = new Runner<CtTry>(path, submodule, isProjectMaven);
 				
 				System.out.println("--Iniciando Mutações CBD para o projeto");
-				//abs.processor(new ProcessorCBD());
+				abs.processor(new ProcessorCBD());
 				System.out.println("---OK!");
 				System.out.println("--Iniciando Mutações CBI para o projeto");
 				abs.processor(new ProcessorCBI());
@@ -322,20 +332,22 @@ public class Execute {
 			System.out.println("-Gerando arquivo xml para se for preciso continuar depois...");
 			Util.createXmlListSaveMutantResultType(PathProject.USER_REFERENCE_TO_PROJECT, AbstractRunner.listSavedMutantResultType);
 			System.out.println("-OK!");
-			
-			try {
-				System.out.println("-Reportando a cobertura do projeto usando o JaCoCo");
-				Util.createReportJaCoCo(PathProject.makePathToProjectMaven(path, null), submodule);
-				System.out.println("--OK!");
-			} catch (PomException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-			} catch (JacocoException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-			} catch (TestFailMavenInvokerException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
+
+			if(this.createReportJaCoCo) {
+				try {
+					System.out.println("-Reportando a cobertura do projeto usando o JaCoCo");
+					Util.createReportJaCoCo(PathProject.makePathToProjectMaven(path, null), submodule);
+					System.out.println("--OK!");
+				} catch (PomException e) {
+					System.out.println(e.getMessage());
+					e.printStackTrace();
+				} catch (JacocoException e) {
+					System.out.println(e.getMessage());
+					e.printStackTrace();
+				} catch (TestFailMavenInvokerException e) {
+					System.out.println(e.getMessage());
+					e.printStackTrace();
+				}
 			}
 		}
 

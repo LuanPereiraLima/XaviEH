@@ -19,6 +19,7 @@ public class Main {
 	private static String NO_VERIFY_PROJECT = "noVerifyProject";
 	private static String NO_TEST_PROJECT = "noTestProject";
 	private static String NO_SPOON_VERIFY_PROJECT = "noSPOONVerify";
+	private static String NO_CREATE_JACOCO_REPORT = "noCreateJaCoCoReport";
 
 
 	public static void main(String[] args){
@@ -28,6 +29,7 @@ public class Main {
 		boolean verifyIfProjectAlreadyRun = true;
 		boolean testProject = true;
 		boolean spoonVerify = true;
+		boolean createJaCoCoReport = true;
 
 		Execute ex = null;
 
@@ -45,9 +47,15 @@ public class Main {
 				if(args[i].equals(NO_TEST_PROJECT)){
 					testProject = false;
 				}
+				if(args[i].equals(NO_CREATE_JACOCO_REPORT)){
+					createJaCoCoReport = false;
+				}
+				if(args[i].equals(NO_SPOON_VERIFY_PROJECT)){
+					spoonVerify = false;
+				}
 				if(args[i].equals(EXEC_TYPE_1)){
 					System.out.println("EXEC_TYPE_1");
-					ex = new Execute(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
+					ex = new Execute(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject, spoonVerify, createJaCoCoReport);
 				}else if(args[i].equals(EXEC_TYPE_2)){
 					System.out.println("EXEC_TYPE_2: "+verifyIfProjectAlreadyRun);
 					ex = new ExecuterEstatisticsCoverageEH(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
