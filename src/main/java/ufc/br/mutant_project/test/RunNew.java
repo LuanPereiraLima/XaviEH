@@ -28,7 +28,8 @@ public class RunNew {
 
 		//String path = "/home/loopback/mutationsTests/xstream-1.4.11.1/xstream-1.4.11.1/xstream/src/java";
 
-		String path = "/media/loopback/C4DAE5FEDAE5EC9C/Users/luan_/mutationsTests/commons-math-3.6.1/commons-math-3.6.1";//"/home/loopback/hadoop/hadoop-common-project/hadoop-kms";///src/main/java/org/apache/hadoop/mapred/ShuffleHandler.java";
+		//String path = "/media/loopback/C4DAE5FEDAE5EC9C/Users/luan_/mutationsTests/commons-math-3.6.1/commons-math-3.6.1";//"/home/loopback/hadoop/hadoop-common-project/hadoop-kms";///src/main/java/org/apache/hadoop/mapred/ShuffleHandler.java";
+		String path = "/media/loopback/C4DAE5FEDAE5EC9C/Users/luan_/mutationsTests2/commons-dbcp-2.5/commons-dbcp-2.5";
 
 		//String path = "/home/loopback/mutationsDocker/hadoop-3.1.2-20/hadoop-3.1.2-20/hadoop-common-project/hadoop-kms";
 

@@ -130,6 +130,9 @@ public class RunnerSubProcessCatch<D extends CtElement> extends AbstractRunner<D
 
 					Integer count = 1;
 					CtType<?> tipos = Util.getClassByModel(name, PathProject.makePathToProjectMaven(uriName, subModule), isMavenProject);
+					if(tipos==null){
+						return true;
+					}
 					for(CtTry tr : tipos.getElements(new Filter<CtTry>() {
 						public boolean matches(CtTry element) {
 							return true;

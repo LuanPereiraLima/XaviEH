@@ -23,7 +23,7 @@ public class TestFiles {
                 System.out.println(name);
                 System.out.println(dir.getName());
                 System.out.println(dir.getPath());
-                if (dir.isDirectory() && !name.contains(".") && Integer.parseInt(name)<1281){
+                if (dir.isDirectory() && !name.contains(".") && Integer.parseInt(name)<1420){
                     System.out.println("é diretorio: "+name+" "+dir.getAbsolutePath());
                     return true;
                 }

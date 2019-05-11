@@ -1,18 +1,9 @@
 package ufc.br.mutant_project.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -37,7 +28,6 @@ import org.eclipse.jgit.api.errors.TransportException;
 
 import com.thoughtworks.xstream.XStream;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
 import org.gradle.tooling.*;
 import spoon.Launcher;
 import spoon.MavenLauncher;
@@ -286,7 +276,23 @@ public class Util {
     	File dest = new File(toPath);
     	try {
     		System.out.println("Gerando copia do arquivo... copyOutputSpoonToProject toPath: "+toPath+" fromPath: "+PathProject.getPathTemp());
-    	    FileUtils.copyDirectory(source, dest);
+
+    		//TODO REMOVENDO ARQUIVO QUE IMPEDE O FUNCIONAMENTO EM ALGUM SISTEMAS
+    		File files[] = source.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    if (name.contains("package.html")){
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            for (int i = 0; i < files.length; i++) {
+                FileUtils.forceDelete(files[i]);
+            }
+            //TODO REMOVENDO ARQUIVO QUE IMPEDE O FUNCIONAMENTO EM ALGUM SISTEMAS
+
+            FileUtils.copyDirectory(source, dest);
     	} catch (IOException e) {
     	    e.printStackTrace();
     	}
@@ -362,7 +368,7 @@ public class Util {
     	for(CtType<?> ty : model.getAllTypes()) {
     		if(ty instanceof CtClass<?>) {
     			CtClass<?> ctc = (CtClass<?>) ty;
-	    		//System.out.println("OPA: "+ctc.getQualifiedName());
+	    		System.out.println("OPA: "+ctc.getQualifiedName());
 	    		if(ctc.getQualifiedName().equals(name))
 	    			return ty;
     		}

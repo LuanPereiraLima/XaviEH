@@ -73,19 +73,8 @@ public class ExecuterCloneAndRunTestsWithJaCoCo extends Execute {
 				}
 			}
 
-			try {
-				System.out.println("-Reportando a cobertura do projeto usando o JaCoCo");
-				Util.createReportJaCoCo(PathProject.makePathToProjectMaven(path, null), submodule);
-				System.out.println("--OK!");
-			} catch (PomException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-			} catch (JacocoException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-			} catch (TestFailMavenInvokerException e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
+			if(createReportJaCoCo){
+				reportJacoco(path, submodule);
 			}
 		}
 

@@ -21,7 +21,6 @@ public class Main {
 	private static String NO_SPOON_VERIFY_PROJECT = "noSPOONVerify";
 	private static String NO_CREATE_JACOCO_REPORT = "noCreateJaCoCoReport";
 
-
 	public static void main(String[] args){
 		
 		boolean runInFile = false;
@@ -54,19 +53,19 @@ public class Main {
 					spoonVerify = false;
 				}
 				if(args[i].equals(EXEC_TYPE_1)){
-					System.out.println("EXEC_TYPE_1");
+					System.out.println("EXEC_TYPE_1: ExecuteMutationsAndCoverage");
 					ex = new Execute(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject, spoonVerify, createJaCoCoReport);
 				}else if(args[i].equals(EXEC_TYPE_2)){
-					System.out.println("EXEC_TYPE_2: "+verifyIfProjectAlreadyRun);
+					System.out.println("EXEC_TYPE_2: ExecuterEstatisticsCoverageEH");
 					ex = new ExecuterEstatisticsCoverageEH(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
 				}else if(args[i].equals(EXEC_TYPE_3)){
-					System.out.println("EXEC_TYPE_3");
+					System.out.println("EXEC_TYPE_3: ExecuteCloneAndRunTestsWithJaCoCo");
 					ex = new ExecuterCloneAndRunTestsWithJaCoCo(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
 				}else if(args[i].equals(EXEC_TYPE_4)){
-					System.out.println("EXEC_TYPE_4");
+					System.out.println("EXEC_TYPE_4: ExecuterEstatisticsCoverageEH");
 					ex = new ExecuterEstatisticsCoverageEHStudy2(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
 				}else if(args[i].equals(EXEC_TYPE_5)){
-					System.out.println("EXEC_TYPE_5");
+					System.out.println("EXEC_TYPE_5: ExecuterOnlyMutant");
 					ex = new ExecuteOnlyMutant(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject,false);
 				}
 			}

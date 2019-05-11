@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.sql.Struct;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -172,6 +173,23 @@ public class Execute {
 		return true;
 	}
 
+	protected void reportJacoco(String path, String submodule){
+		try {
+			System.out.println("-Reportando a cobertura do projeto usando o JaCoCo");
+			Util.createReportJaCoCo(PathProject.makePathToProjectMaven(path, null), submodule);
+			System.out.println("--OK!");
+		} catch (PomException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} catch (JacocoException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} catch (TestFailMavenInvokerException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
 	/*
 	 *	retorna verdade se o projeto é compatível com o SPOON
 	 */
@@ -296,8 +314,6 @@ public class Execute {
 			}
 
 
-
-
 			try {
 				System.out.println("-Iniciando Mutações para o projeto");
 				AbstractRunner abs = new Runner<CtTry>(path, submodule, isProjectMaven);
@@ -342,20 +358,7 @@ public class Execute {
 			System.out.println("-OK!");
 
 			if(this.createReportJaCoCo) {
-				try {
-					System.out.println("-Reportando a cobertura do projeto usando o JaCoCo");
-					Util.createReportJaCoCo(PathProject.makePathToProjectMaven(path, null), submodule);
-					System.out.println("--OK!");
-				} catch (PomException e) {
-					System.out.println(e.getMessage());
-					e.printStackTrace();
-				} catch (JacocoException e) {
-					System.out.println(e.getMessage());
-					e.printStackTrace();
-				} catch (TestFailMavenInvokerException e) {
-					System.out.println(e.getMessage());
-					e.printStackTrace();
-				}
+				reportJacoco(path, submodule);
 			}
 		}
 

@@ -24,6 +24,8 @@ public class ProcessorCBI extends AbstractorProcessor<CtTry>{
     		
     		if(element.getCatchers().size() > 0) {
 
+				System.out.println(element.getParent().getParent());
+
         		CtClass<?> c = element.getParent(new Filter<CtClass<?>>() {
         			public boolean matches(CtClass<?> element) {return true;};
 				});
@@ -51,6 +53,10 @@ public class ProcessorCBI extends AbstractorProcessor<CtTry>{
 					System.out.println("ERRO AQUI: -----------/");
     				CtType<?> tipos = Util.getClassByModel(nome, PathProject.makePathToProjectMaven(getUriName(), getSubModule()), isMavenProject());
         			int count = 1;
+        			if(tipos==null){
+						getParameterVisitor().setNeedModification(false);
+						return;
+					}
         			for(CtTry tr : tipos.getElements(new Filter<CtTry>() {
         				public boolean matches(CtTry element) {
         					return true;

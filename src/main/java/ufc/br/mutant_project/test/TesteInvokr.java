@@ -39,7 +39,7 @@ import ufc.br.mutant_project.models.FinalResultSavedByProject;
 public class TesteInvokr {
 	
 	public static void main(String[] args) {
-		invokerOthers("/media/loopback/C4DAE5FEDAE5EC9C/Users/luan_/mutationsTests/junit4-4.12/junit4-4.12", Collections.singletonList("testProject"), Collections.singletonList("httpclient5-osgi"));
+		invokerOthers("/home/loopback/mutationsTests3/commons-io-2.6/commons-io-2.6", Collections.singletonList("test"), null);
 	}
 	
 	public static int invokerOthers(String copyProjectPath, List<String> goals, List<String> projects) {

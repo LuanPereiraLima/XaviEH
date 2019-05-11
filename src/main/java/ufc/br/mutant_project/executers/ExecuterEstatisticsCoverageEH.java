@@ -137,21 +137,6 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 			
 			System.out.println("-----------------");
 			System.out.println("Projeto: "+path);
-			
-//			try {
-//				System.out.println("-Reportando a cobertura do projeto usando o JaCoCo");
-//				Util.createReportJaCoCo(PathProject.makePathToProjectMaven(path), submodule);
-//				System.out.println("--OK!");
-//			} catch (PomException e) {
-//				System.out.println(e.getMessage());
-//				e.printStackTrace();
-//			} catch (JacocoException e) {
-//				System.out.println(e.getMessage());
-//				e.printStackTrace();
-//			} catch (TestFailMavenInvokerException e) {
-//				System.out.println(e.getMessage());
-//				e.printStackTrace();
-//			}
 
 			List<ClassXMLCoverage> listaxml = null;
 			List<ClassXMLCoverage>  listaxmlMethods = null;
