@@ -40,7 +40,7 @@ public class TesteRunnerTSD {
      //       e1.printStackTrace();
       //  }
 
-        Execute ex = new ExecuteOnlyMutant(true, false, false, false,false);
+        Execute ex = new ExecuteOnlyMutant(true, true, false, false,false);
 
         try {
             ex.execute();
