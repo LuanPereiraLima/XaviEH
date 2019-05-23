@@ -290,7 +290,7 @@ public class Execute {
 				path=path+"-"+version;
 
 			if(submodule!=null)
-				path=path+"-"+submodule;
+				path=path+"-"+(submodule.replaceAll("/", "--"));
 
 			if(verifyIfProjectAlreadyRun)
 				if(verifyIfProjectAlreadyRun(path)) {
