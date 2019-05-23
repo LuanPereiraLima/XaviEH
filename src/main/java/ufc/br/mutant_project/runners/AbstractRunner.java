@@ -12,6 +12,7 @@ import java.util.Map;
 import com.thoughtworks.xstream.XStream;
 
 import spoon.reflect.declaration.CtElement;
+import ufc.br.mutant_project.constants.Configurations;
 import ufc.br.mutant_project.constants.PathProject;
 import ufc.br.mutant_project.exceptions.PomException;
 import ufc.br.mutant_project.models.FinalResultSavedByProject;
@@ -84,11 +85,12 @@ public abstract class AbstractRunner<A extends CtElement> {
 
 		//System.out.println("MUTANT PATH: "+mutantPath);
 
-		Util.removeDirectoryAndCreate(mutantPath);
+		if(Configurations.DELETE_FILES_PROJECT) {
+			Util.removeDirectoryAndCreate(mutantPath);
 
-		//COPIAR NOVAMENTE OS ARQUIVOS IMPORTANTES CRIADOS
-		Util.copyOutputSpoonToProject(mutantPath + (File.separator) + PathProject.makePathToPathFiles(uriName, subModule));
-
+			//COPIAR NOVAMENTE OS ARQUIVOS IMPORTANTES CRIADOS
+			Util.copyOutputSpoonToProject(mutantPath + (File.separator) + PathProject.makePathToPathFiles(uriName, subModule));
+		}
 		//TODO ----------------------------------------
 
 		createResult(f.getAbsolutePath(), result, myAbstractorProcessor.getParameterVisitor(), myAbstractorProcessor.pathIdentification());

@@ -20,6 +20,7 @@ public class Main {
 	private static String NO_TEST_PROJECT = "noTestProject";
 	private static String NO_SPOON_VERIFY_PROJECT = "noSPOONVerify";
 	private static String NO_CREATE_JACOCO_REPORT = "noCreateJaCoCoReport";
+	private static String NO_DELETE_FILES_PROJECT = "noDeleteFilesProject";
 
 	public static void main(String[] args){
 		
@@ -29,6 +30,7 @@ public class Main {
 		boolean testProject = true;
 		boolean spoonVerify = true;
 		boolean createJaCoCoReport = true;
+		boolean deleteFilesProject = true;
 
 		Execute ex = null;
 
@@ -52,9 +54,12 @@ public class Main {
 				if(args[i].equals(NO_SPOON_VERIFY_PROJECT)){
 					spoonVerify = false;
 				}
+				if(args[i].equals(NO_DELETE_FILES_PROJECT)){
+					deleteFilesProject = false;
+				}
 				if(args[i].equals(EXEC_TYPE_1)){
 					System.out.println("EXEC_TYPE_1: ExecuteMutationsAndCoverage");
-					ex = new Execute(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject, spoonVerify, createJaCoCoReport);
+					ex = new Execute(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject, spoonVerify, createJaCoCoReport, deleteFilesProject);
 				}else if(args[i].equals(EXEC_TYPE_2)){
 					System.out.println("EXEC_TYPE_2: ExecuterEstatisticsCoverageEH");
 					ex = new ExecuterEstatisticsCoverageEH(runInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);

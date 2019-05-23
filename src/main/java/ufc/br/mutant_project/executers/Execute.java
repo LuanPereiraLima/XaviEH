@@ -14,6 +14,7 @@ import spoon.reflect.CtModel;
 import spoon.reflect.code.CtThrow;
 import spoon.reflect.code.CtTry;
 import ufc.br.mutant_project.constants.ConfigProperties;
+import ufc.br.mutant_project.constants.Configurations;
 import ufc.br.mutant_project.constants.PathProject;
 import ufc.br.mutant_project.exceptions.CloneRepositoryException;
 import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
@@ -37,6 +38,7 @@ public class Execute {
 	protected boolean testProject = true;
 	protected boolean testProjectSPOONCompability = true;
 	protected boolean createReportJaCoCo = true;
+	protected boolean deleteFilesProject = true;
 	
 	protected static final String VERSION_URL = "-v";
 	protected static final String COMMIT_URL = "-c";
@@ -86,12 +88,24 @@ public class Execute {
 		this.createReportJaCoCo = createReportJaCoCo;
 	}
 
+	public Execute(boolean saveInFile, boolean cloneRepository, boolean verifyIfProjectAlreadyRun, boolean testProject, boolean spoonVerify, boolean createReportJaCoCo, boolean deleteFilesProject) {
+		this.saveOutputInFile = saveInFile;
+		this.cloneRepository = cloneRepository;
+		this.verifyIfProjectAlreadyRun = verifyIfProjectAlreadyRun;
+		this.testProject = testProject;
+		this.testProjectSPOONCompability = spoonVerify;
+		this.createReportJaCoCo = createReportJaCoCo;
+		this.deleteFilesProject = deleteFilesProject;
+	}
+
 	/*
 	 *	Inicializa todos os itens antes de inicializar o projeto
 	 */
 	protected void initializer() throws ConfigPropertiesNotFoundException, InicializerException, NotURLsException, ListProjectsNotFoundException{
 
 		showName();
+
+		Configurations.DELETE_FILES_PROJECT = this.deleteFilesProject;
 
 		String fields = "";
 		
