@@ -285,9 +285,12 @@ public class Execute {
 			}
 			
 			String path = Util.validateAndGetNameRepository(linha[0]);
-			
+
 			if(version!=null)
 				path=path+"-"+version;
+
+			if(submodule!=null)
+				path=path+"-"+submodule;
 
 			if(verifyIfProjectAlreadyRun)
 				if(verifyIfProjectAlreadyRun(path)) {
