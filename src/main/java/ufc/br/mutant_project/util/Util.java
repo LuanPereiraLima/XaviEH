@@ -474,7 +474,6 @@ public class Util {
 		properties.setHomeMaven(prop.getProperty("homeMaven", null));
 		properties.setUrlMutations(prop.getProperty("urlMutations", null));
 		properties.setProjectsFile(prop.getProperty("projectsFile", null));
-		properties.setDeleteProject(prop.getProperty("deleteProject", null) == null || prop.getProperty("deleteProject", null).equals("true"));
 
 		return properties;
 	}
