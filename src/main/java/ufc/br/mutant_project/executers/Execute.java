@@ -123,13 +123,13 @@ public class Execute {
 			throw new ConfigPropertiesNotFoundException("Nenhum arquivo de propriedades foi encontrado (Para resolver o problema, crie um arquivo 'config.properties' com as propriedades necessárias para o projeto do projeto \n[ propriedades dispníveis: \n"+fields+" ]).");
 		}
 		
-		if(this.saveOutputInFile) {
+		//if(this.saveOutputInFile) {
 			try {
 				System.setOut(new PrintStream(new FileOutputStream(new Date()+"-output.txt")));
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-		}
+		//}
 		
 		PathProject.USER_REFERENCE_TO_PROJECT = properties.getUrlMutations();
 
