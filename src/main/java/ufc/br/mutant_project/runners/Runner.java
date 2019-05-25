@@ -51,7 +51,8 @@ public class Runner<A extends CtElement> extends AbstractRunner<A>{
 				spoon = new Launcher();
 				spoon.getEnvironment().setNoClasspath(true);
 				spoon.getEnvironment().setCommentEnabled(true);
-				spoon.getEnvironment().setAutoImports(false);
+				//TODO ATIVANDO AUTO IMPORTS PARA TESTE
+				spoon.getEnvironment().setAutoImports(true);
 				//spoon.getEnvironment().setShouldCompile(true);
 				spoon.getEnvironment().setPreserveLineNumbers(true);
 				spoon.addInputResource(f.getAbsolutePath());
