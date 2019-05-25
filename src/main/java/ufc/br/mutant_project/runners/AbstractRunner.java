@@ -72,6 +72,7 @@ public abstract class AbstractRunner<A extends CtElement> {
 
 		int result = 0;
 		//TODO ADICIONADO TESTE COM O GRADLEW
+
 		if(isMavenProject) {
 			result = Util.invoker(mutantPath, submodules, true);
 		}else{
