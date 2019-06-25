@@ -7,9 +7,10 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 
 public class TestFiles {
-    public static void main(String[] args) {
+    @SuppressWarnings("unused")
+	public static void main(String[] args) {
 
-        String[] mutations = {"CBD", "CBI", "CBR", "CRE", "FBD", "PTL"};
+		String[] mutations = {"CBD", "CBI", "CBR", "CRE", "FBD", "PTL"};
         String[] programs = {"commons-math-3.6.1"};//"commons-math-3.6.1", "commons-io-2.6", "commons-lang-3.8.1", "jsoup-1.11.3"};
 
         String path = "/media/loopback/C4DAE5FEDAE5EC9C/Users/luan_/mutationsTests2/commons-math-3.6.1/TSD";

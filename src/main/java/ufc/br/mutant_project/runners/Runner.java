@@ -1,13 +1,10 @@
 package ufc.br.mutant_project.runners;
 
 import java.io.File;
-import java.lang.reflect.Type;
-
 import org.apache.commons.io.FileUtils;
 import spoon.Launcher;
 import spoon.SpoonAPI;
 import spoon.reflect.CtModel;
-import spoon.reflect.code.CtThrow;
 import spoon.reflect.code.CtTry;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.Filter;

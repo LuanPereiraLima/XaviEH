@@ -10,7 +10,8 @@ import java.io.PrintStream;
 
 public class TesteRunnerTHD {
 
-    public static void main(String[] args) {
+    @SuppressWarnings("rawtypes")
+	public static void main(String[] args) {
         try {
 
             try {
@@ -19,7 +20,7 @@ public class TesteRunnerTHD {
                 e.printStackTrace();
             }
 
-            AbstractRunner abs = new RunnerSubProcessThrows("commons-io-2.6", null, true);
+            AbstractRunner<?> abs = new RunnerSubProcessThrows("commons-io-2.6", null, true);
             System.out.println("--Iniciando Mutações CBD para o projeto");
             abs.processor(new ProcessorTHD());
             System.out.println("---OK!");

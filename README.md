@@ -13,7 +13,7 @@
 - [x] FBD - Finally Block Deletion
 - [x] CBR - Catch Block Replacement
 - [x] PTL - Placing Try Block Late
-- [ ] TSD - Throw Statement Deletion (Testing)
+- [X] TSD - Throw Statement Deletion (Testing)
 
 #### Possibilities
 

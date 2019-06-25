@@ -1,21 +1,18 @@
 package ufc.br.mutant_project.executers;
 
-import spoon.reflect.code.CtThrow;
-import ufc.br.mutant_project.constants.ConfigProperties;
-import ufc.br.mutant_project.constants.PathProject;
-import ufc.br.mutant_project.exceptions.*;
-import ufc.br.mutant_project.models.Properties;
-import ufc.br.mutant_project.processors.ProcessorTSD;
-import ufc.br.mutant_project.runners.AbstractRunner;
-import ufc.br.mutant_project.runners.RunnerThrow;
-import ufc.br.mutant_project.util.Util;
-import ufc.br.mutant_project.util.UtilWriteReader;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Date;
+
+import ufc.br.mutant_project.constants.ConfigProperties;
+import ufc.br.mutant_project.constants.PathProject;
+import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
+import ufc.br.mutant_project.models.Properties;
+import ufc.br.mutant_project.runners.AbstractRunner;
+import ufc.br.mutant_project.util.Util;
+import ufc.br.mutant_project.util.UtilWriteReader;
 
 public class ExecuteCSVFromXMLFinal extends Execute{
 

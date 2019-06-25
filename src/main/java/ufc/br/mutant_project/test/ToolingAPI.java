@@ -1,12 +1,13 @@
 package ufc.br.mutant_project.test;
 
-import org.gradle.tooling.*;
-
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Stream;
+
+import org.gradle.tooling.BuildLauncher;
+import org.gradle.tooling.GradleConnectionException;
+import org.gradle.tooling.GradleConnector;
+import org.gradle.tooling.ProgressListener;
+import org.gradle.tooling.ProjectConnection;
+import org.gradle.tooling.ResultHandler;
 
 public class ToolingAPI {
     private static final String GRADLE_INSTALLATION = "C:\\Program Files\\Gradle";

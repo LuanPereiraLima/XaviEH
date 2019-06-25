@@ -2,15 +2,11 @@ package ufc.br.mutant_project.executers;
 
 import java.util.List;
 
-import ufc.br.mutant_project.constants.PathProject;
 import ufc.br.mutant_project.exceptions.CloneRepositoryException;
 import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
 import ufc.br.mutant_project.exceptions.InicializerException;
-import ufc.br.mutant_project.exceptions.JacocoException;
 import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
 import ufc.br.mutant_project.exceptions.NotURLsException;
-import ufc.br.mutant_project.exceptions.PomException;
-import ufc.br.mutant_project.exceptions.TestFailMavenInvokerException;
 import ufc.br.mutant_project.util.Util;
 
 public class ExecuterCloneAndRunTestsWithJaCoCo extends Execute {

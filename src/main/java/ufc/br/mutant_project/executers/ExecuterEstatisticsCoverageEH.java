@@ -20,12 +20,24 @@ import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.Filter;
 import spoon.reflect.visitor.filter.TypeFilter;
 import ufc.br.mutant_project.constants.PathProject;
-import ufc.br.mutant_project.exceptions.*;
-import ufc.br.mutant_project.models.*;
+import ufc.br.mutant_project.exceptions.CloneRepositoryException;
+import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
+import ufc.br.mutant_project.exceptions.InicializerException;
+import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
+import ufc.br.mutant_project.exceptions.NotURLsException;
+import ufc.br.mutant_project.models.ClassXMLCoverage;
+import ufc.br.mutant_project.models.ClassXMLCoverageLine;
+import ufc.br.mutant_project.models.ClassXMLCoverageLineNormal;
+import ufc.br.mutant_project.models.CoverageResult;
+import ufc.br.mutant_project.models.TotalCoveredStatus;
 import ufc.br.mutant_project.util.Util;
 import ufc.br.mutant_project.util.UtilWriteReader;
 import ufc.br.mutant_project.util.XmlJacoco;
 
+/**
+ * Trabalha exclusivamente com informações relacionadas a exceções internas e externas do sistema
+ * 
+ */
 public class ExecuterEstatisticsCoverageEH extends Execute {
 	
 	private ClassXMLCoverage cc = null;
@@ -139,11 +151,9 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 			System.out.println("Projeto: "+path);
 
 			List<ClassXMLCoverage> listaxml = null;
-			List<ClassXMLCoverage>  listaxmlMethods = null;
 			TotalCoveredStatus totalCoveredStatus = null;
 			
 			listaxml = XmlJacoco.listaClassCoverageFromXMLJaCoCo(PathProject.makePathToProjectMavenToJacoco(path, submodule));
-			listaxmlMethods = XmlJacoco.listaClassCoverageFromXMLJaCoCoMethods(PathProject.makePathToProjectMavenToJacoco(path, submodule));
 			totalCoveredStatus = XmlJacoco.listaClassCoverageFromXMLJaCoCoTotalCoveredStatus(PathProject.makePathToProjectMavenToJacoco(path, submodule));
 			
 			for(CtType<?> tp : model.getAllTypes()) {
@@ -157,8 +167,6 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 					boolean encontrada = false;
 					
 					for(ClassXMLCoverage cx : listaxml) {
-						//System.out.println("ali: "+cx.getFullName());
-//						System.out.println("L: "+tp.isTopLevel());
 						if(cx.getFullName().replace(".java", "").equals(tp.getQualifiedName())) {
 							cc = cx;
 							encontrada = true;
@@ -169,33 +177,17 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 					if(!encontrada) {
 						System.out.println("Uma classe não foi encontrada na cobertura do jacoco.");
 						System.out.println("nome: "+tp.getQualifiedName());
-						
 						continue;
-						
-//						CtClass<?> c = (CtClass<?>)tp;
-//						System.out.println("pan pan pa: "+c.isTopLevel());
-//
-//						System.out.println("lista de classes disponíveis");
-//						for(ClassXMLCoverage cx : listaxml) {
-//							System.out.println("_- ");
-//							System.out.println(cx.getFullName());
-//						}	
-//						System.exit(0);
 					}
 					
 					System.out.println("Nome da classe do Model: "+tp.getQualifiedName());
 					System.out.println("Nome da classe pareada no jacoco: "+cc.getFullName());
-					
-					
+										
 					//All Raisings
-					
 					List<CtThrow> raisers = tp.getElements(new TypeFilter<CtThrow>(CtThrow.class));
 
 					if (!raisers.isEmpty()) {
-						for (CtThrow raiser : raisers) {
-							//System.out.println(
-								//	"-- Throws [" + raiser.getPosition().getLine() + "," + raiser.getPosition().getEndLine()
-									//		+ "]: " + raiser.getThrownExpression().getType().getQualifiedName());
+						for (CtThrow raiser : raisers){
 							
 							CoverageResult cr = new CoverageResult();
 							cr.setCoveraged(false);
@@ -215,9 +207,8 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 								}
 							}
 							
-							if(cr.getCoverageLine()==null) {
+							if(cr.getCoverageLine()==null)
 								System.out.println("Coverage liene null");
-							}
 							
 							if(entrou)
 								resultCoverage.add(cr);
@@ -225,15 +216,11 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 					}
 					
 					//Raisings of Programmer Defined Exception
-					
 					System.out.println("Raisings of Programmer Defined Exception");
 					List<CtThrow> raisers2 = findRaisers(true, tp);
 
 					if (!raisers2.isEmpty()) {
 						for (CtThrow raiser : raisers2) {
-							//System.out.println(
-								//	"-- Throws [" + raiser.getPosition().getLine() + "," + raiser.getPosition().getEndLine()
-//											+ "]: " + raiser.getThrownExpression().getType().getQualifiedName());
 							
 							CoverageResult cr = new CoverageResult();
 							cr.setCoveraged(false);
@@ -271,11 +258,6 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 
 					if (!raisers3.isEmpty()) {
 						for (CtThrow raiser : raisers3) {
-//							System.out.println(
-	//								"-- Throws [" + raiser.getPosition().getLine() + "," + raiser.getPosition().getEndLine()
-//
-	//										+ "]: " + raiser.getThrownExpression().getType().getQualifiedName());
-							
 							CoverageResult cr = new CoverageResult();
 							cr.setCoveraged(false);
 							cr.setClassName(tp.getQualifiedName());
@@ -309,10 +291,7 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 
 					if (!catchers.isEmpty()) {
 						for(CtCatch handler : catchers) {
-							//System.out.println(
-							//		"-- Catch [" + handler.getPosition().getLine() + "," + handler.getPosition().getEndLine()
-								//			+ "]: " + handler.getParameter().getMultiTypes().toString());
-							
+
 							handler.getBody().getElements((Filter<CtBlock<?>>) element -> {
 
 								for(CtStatement st: element.getStatements()) {
@@ -337,14 +316,12 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 									}
 									else if(st instanceof CtIf) {
 										CtIf i1 = (CtIf) st;
-										if(i1.getElseStatement()==null) {
+										if(i1.getElseStatement()==null)
 											cr.setLineContent(st.toString().replace(i1.getThenStatement().toString(), ""));
-										}else {
+										else
 											cr.setLineContent(st.toString().replace(i1.getThenStatement().toString(), "").replace(i1.getElseStatement().toString(), "").replace("else", ""));
-										}
-									}else {
+									}else
 										cr.setLineContent(st.toString());
-									}
 
 									for(ClassXMLCoverageLine cl: cc.getLineDetails()) {
 										if(cl.getNumberLine() == st.getPosition().getLine()) {
@@ -356,7 +333,6 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 									if(cr.getCoverageLine()==null)
 										continue;
 
-									//System.out.println(cr);
 									resultCoverage.add(cr);
 								}
 								return false;
@@ -370,9 +346,7 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 
 					if (!catchers2.isEmpty()) {
 						for(CtCatch handler : catchers2) {
-							//System.out.println(
-								//	"-- Catch [" + handler.getPosition().getLine() + "," + handler.getPosition().getEndLine()
-									//		+ "]: " + handler.getParameter().getMultiTypes().toString());
+
 							//passando por cada elemento do catch
 							handler.getBody().getElements(new Filter<CtBlock<?>>() {
 
@@ -435,9 +409,6 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 					
 					if (!catchers3.isEmpty()) {
 						for(CtCatch handler : catchers3) {
-							//System.out.println(
-								//	"-- Catch [" + handler.getPosition().getLine() + "," + handler.getPosition().getEndLine()
-									//		+ "]: " + handler.getParameter().getMultiTypes().toString());
 							
 							//passando por cada elemento do catch
 							handler.getBody().getElements(new Filter<CtBlock<?>>() {
@@ -467,14 +438,12 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 										}
 										else if(st instanceof CtIf) {
 											CtIf i = (CtIf) st;
-											if(i.getElseStatement()==null) {
+											if(i.getElseStatement()==null)
 												cr.setLineContent(st.toString().replace(i.getThenStatement().toString(), ""));
-											}else {
+											else
 												cr.setLineContent(st.toString().replace(i.getThenStatement().toString(), "").replace(i.getElseStatement().toString(), "").replace("else", ""));
-											}
-										}else {
+										}else
 											cr.setLineContent(st.toString());
-										}
 										
 										for(ClassXMLCoverageLine cl: cc.getLineDetails()) {
 											if(cl.getNumberLine() == st.getPosition().getLine()) {
@@ -486,7 +455,6 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 										if(cr.getCoverageLine()==null)
 											continue;
 										
-										//System.out.println(cr);
 										resultCoverage.add(cr);
 									}
 									return false;
@@ -507,7 +475,6 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 						
 						if(rc.getType().equals(CoverageResult.THROW) && rc.getTypeCode().equals(CoverageResult.ALL_RASINGS)) {
 							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
-								ClassXMLCoverageLineNormal cn = (ClassXMLCoverageLineNormal) rc.getCoverageLine();
 								if(rc.isCoveraged()) {
 									tcs.get(path).setTHROW_CI_TotalCoveredInstructionsThrowStatements(tcs.get(path).getTHROW_CI_TotalCoveredInstructionsThrowStatements()+2);
 									tcs.get(path).setTHROW_MI_TotalMissedInstructionsThrowStatements(tcs.get(path).getTHROW_MI_TotalMissedInstructionsThrowStatements()+0);
@@ -521,7 +488,6 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 							
 						}else if(rc.getType().equals(CoverageResult.THROW) && rc.getTypeCode().equals(CoverageResult.RAISINGS_PROGRAMMER_DEFINED)) {
 							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
-								ClassXMLCoverageLineNormal cn = (ClassXMLCoverageLineNormal) rc.getCoverageLine();
 								if(rc.isCoveraged()) {
 									tcs.get(path).setTHROW_I_CI_TotalCoveredInstructionsThrowStatements(tcs.get(path).getTHROW_I_CI_TotalCoveredInstructionsThrowStatements()+2);
 									tcs.get(path).setTHROW_I_MI_TotalMissedInstructionsThrowStatements(tcs.get(path).getTHROW_I_MI_TotalMissedInstructionsThrowStatements()+0);
@@ -535,7 +501,6 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 							
 						}else if(rc.getType().equals(CoverageResult.THROW) && rc.getTypeCode().equals(CoverageResult.RAISINGS_NON_PROGRAMMER_DEFINED)) {
 							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
-								ClassXMLCoverageLineNormal cn = (ClassXMLCoverageLineNormal) rc.getCoverageLine();
 								if(rc.isCoveraged()) {
 									tcs.get(path).setTHROW_E_CI_TotalCoveredInstructionsThrowStatements(tcs.get(path).getTHROW_E_CI_TotalCoveredInstructionsThrowStatements()+2);
 									tcs.get(path).setTHROW_E_MI_TotalMissedInstructionsThrowStatements(tcs.get(path).getTHROW_E_MI_TotalMissedInstructionsThrowStatements()+0);
@@ -547,31 +512,7 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 								System.out.println("NÃO ENTROU THROW");
 							}
 							
-						}
-						//TODO THROWS AND TRY ADDEDED AGAIN
-						/*else if(rc.getType().equals("THROWS")) {
-							
-							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineMethod) {
-								ClassXMLCoverageLineMethod cm = (ClassXMLCoverageLineMethod) rc.getCoverageLine();
-								tcs.get(path).setTHROWS_CM_TotalCoveredMethodsWithThrows(tcs.get(path).getTHROWS_CM_TotalCoveredMethodsWithThrows()+cm.getCm());
-								tcs.get(path).setTHROWS_MM_TotalMissedMethodsWithThrows(tcs.get(path).getTHROWS_MM_TotalMissedMethodsWithThrows()+cm.getMm());
-							}else {
-								System.out.println("NÃO ENTROU THROWS");
-							}
-							
-						}else if(rc.getType().equals("TRY")) {
-							
-							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
-								ClassXMLCoverageLineNormal cn = (ClassXMLCoverageLineNormal) rc.getCoverageLine();
-								tcs.get(path).setTRY_MI_TotalMissedInstructionsTryBlocks(tcs.get(path).getTRY_MI_TotalMissedInstructionsTryBlocks()+cn.getMi());
-								tcs.get(path).setTRY_CI_TotalCoveredInstructionsTryBlocks(tcs.get(path).getTRY_CI_TotalCoveredInstructionsTryBlocks()+cn.getCi());
-								tcs.get(path).setTRY_MB_TotalMissedBrachesTryBlocks(tcs.get(path).getTRY_MB_TotalMissedBrachesTryBlocks()+cn.getMb());
-								tcs.get(path).setTRY_CB_TotalCoveredBrachesTryBlocks(tcs.get(path).getTRY_CB_TotalCoveredBrachesTryBlocks()+cn.getCb());
-							}else {
-								System.out.println("NÃO ENTROU TRY");
-							}
-							
-						}*/else if(rc.getType().equals(CoverageResult.CATCH) && rc.getTypeCode().equals(CoverageResult.ALL_HANDLINGS)) {
+						}else if(rc.getType().equals(CoverageResult.CATCH) && rc.getTypeCode().equals(CoverageResult.ALL_HANDLINGS)) {
 
 							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
 								ClassXMLCoverageLineNormal cn = (ClassXMLCoverageLineNormal) rc.getCoverageLine();
@@ -598,20 +539,6 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 								tcs.get(path).setCATCH_E_CB_TotalCoveredBrachesCatchBlocks(tcs.get(path).getCATCH_E_CB_TotalCoveredBrachesCatchBlocks()+cn.getCb());
 							}
 						}
-						//TODO FINALLY ADDEDED AGAIN
-						/*else if(rc.getType().equals("FINALLY")) {
-							
-							if(rc.getCoverageLine() instanceof ClassXMLCoverageLineNormal) {
-								ClassXMLCoverageLineNormal cn = (ClassXMLCoverageLineNormal) rc.getCoverageLine();
-								tcs.get(path).setFINALLY_MI_TotalMissedInstructionsFinallyBlocks(tcs.get(path).getFINALLY_MI_TotalMissedInstructionsFinallyBlocks()+cn.getMi());
-								tcs.get(path).setFINALLY_CI_TotalCoveredInstructionsFinallyBlocks(tcs.get(path).getFINALLY_CI_TotalCoveredInstructionsFinallyBlocks()+cn.getCi());
-								tcs.get(path).setFINALLY_MB_TotalMissedBrachesFinallyBlocks(tcs.get(path).getFINALLY_MB_TotalMissedBrachesFinallyBlocks()+cn.getMb());
-								tcs.get(path).setFINALLY_CB_TotalCoveredBrachesFinallyBlocks(tcs.get(path).getFINALLY_CB_TotalCoveredBrachesFinallyBlocks()+cn.getCb());
-							}else {
-								System.out.println("NÃO ENTROU FINNALY");
-							}
-							
-						}*/
 					}
 				}
 			}
@@ -684,6 +611,29 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 		List<CtCatch> result = new ArrayList<CtCatch>();
 		for (CtCatch handler : element.getElements(new TypeFilter<CtCatch>(CtCatch.class))) {
 			for (CtTypeReference<?> exceptionType : handler.getParameter().getMultiTypes()) {
+				CtType<?> declaredType = exceptionType.getTypeDeclaration();
+
+				if (isProgramerDefined) {
+					if (declaredType != null && !declaredType.isShadow()) {
+						result.add(handler);
+						break;
+					}
+				} else {
+					if (declaredType == null || declaredType.isShadow()) {
+						result.add(handler);
+						break;
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	private static List<CtThrow> findThrow(boolean isProgramerDefined, CtType<?> element) {
+
+		List<CtThrow> result = new ArrayList<CtThrow>();
+		for (CtThrow throwv : element.getElements(new TypeFilter<CtThrow>(CtThrow.class))) {
+			for (CtTypeReference<?> exceptionType : throwv.getParameter().getMultiTypes()) {
 				CtType<?> declaredType = exceptionType.getTypeDeclaration();
 
 				if (isProgramerDefined) {

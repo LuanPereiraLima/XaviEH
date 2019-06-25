@@ -1,28 +1,18 @@
 package ufc.br.mutant_project.executers;
 
-import edu.emory.mathcs.backport.java.util.Collections;
-import spoon.reflect.CtModel;
 import spoon.reflect.code.CtThrow;
-import spoon.reflect.code.CtTry;
-import ufc.br.mutant_project.constants.ConfigProperties;
 import ufc.br.mutant_project.constants.PathProject;
-import ufc.br.mutant_project.exceptions.*;
-import ufc.br.mutant_project.models.Properties;
-import ufc.br.mutant_project.processors.*;
+import ufc.br.mutant_project.exceptions.CloneRepositoryException;
+import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
+import ufc.br.mutant_project.exceptions.InicializerException;
+import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
+import ufc.br.mutant_project.exceptions.NotURLsException;
+import ufc.br.mutant_project.exceptions.PomException;
+import ufc.br.mutant_project.processors.ProcessorTSD;
 import ufc.br.mutant_project.runners.AbstractRunner;
-import ufc.br.mutant_project.runners.Runner;
-import ufc.br.mutant_project.runners.RunnerSubProcessCatch;
 import ufc.br.mutant_project.runners.RunnerThrow;
 import ufc.br.mutant_project.util.Util;
 import ufc.br.mutant_project.util.UtilWriteReader;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 public class ExecuteOnlyMutant extends Execute{
 
@@ -101,7 +91,7 @@ public class ExecuteOnlyMutant extends Execute{
 			}
 
 			try {
-				AbstractRunner abs = new RunnerThrow<CtThrow>(path, submodule, isProjectMaven);
+				AbstractRunner<?> abs = new RunnerThrow<CtThrow>(path, submodule, isProjectMaven);
 				System.out.println("--Iniciando Mutações TSD para o projeto");
 				abs.processor(new ProcessorTSD());
 				System.out.println("---OK!");

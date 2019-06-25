@@ -31,6 +31,7 @@ public abstract class AbstractRunner<A extends CtElement> {
 	protected String subModule;
 	protected boolean isMavenProject;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public AbstractRunner(String uriName, String subModule, boolean isMavenProject) {
 		this.uriName = uriName;
 		this.subModule = subModule;

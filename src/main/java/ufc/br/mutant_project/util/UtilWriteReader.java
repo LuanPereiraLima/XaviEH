@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import edu.emory.mathcs.backport.java.util.concurrent.helpers.Utils;
 import ufc.br.mutant_project.constants.PathProject;
 import ufc.br.mutant_project.constants.Processors;
 import ufc.br.mutant_project.models.CoverageResult;

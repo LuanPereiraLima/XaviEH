@@ -46,7 +46,7 @@ public class RunnerSubProcessCatch<D extends CtElement> extends AbstractRunner<D
 
 			System.out.println("Arquivo: " + f.getAbsolutePath());
 
-			Map<Integer, CHE> map = new HashMap();
+			Map<Integer, CHE> map = new HashMap<Integer, CHE>();
 		
 			int qtd = getQtdAndMapOfTryCHEDerivedTypes(spoon, map);
 			

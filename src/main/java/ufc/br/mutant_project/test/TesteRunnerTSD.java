@@ -1,19 +1,11 @@
 package ufc.br.mutant_project.test;
 
-import spoon.reflect.code.CtThrow;
-import ufc.br.mutant_project.exceptions.*;
+import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
+import ufc.br.mutant_project.exceptions.InicializerException;
+import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
+import ufc.br.mutant_project.exceptions.NotURLsException;
 import ufc.br.mutant_project.executers.Execute;
 import ufc.br.mutant_project.executers.ExecuteOnlyMutant;
-import ufc.br.mutant_project.processors.ProcessorTHD;
-import ufc.br.mutant_project.processors.ProcessorTSD;
-import ufc.br.mutant_project.runners.AbstractRunner;
-import ufc.br.mutant_project.runners.Runner;
-import ufc.br.mutant_project.runners.RunnerSubProcessThrows;
-import ufc.br.mutant_project.runners.RunnerThrow;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 
 public class TesteRunnerTSD {
 

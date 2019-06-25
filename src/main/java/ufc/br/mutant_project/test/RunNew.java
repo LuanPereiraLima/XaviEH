@@ -1,23 +1,9 @@
 package ufc.br.mutant_project.test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import spoon.Launcher;
-import spoon.MavenLauncher;
 import spoon.SpoonAPI;
-import spoon.processing.AbstractProcessor;
-import spoon.processing.Processor;
-import spoon.reflect.CtModel;
-import spoon.reflect.code.*;
-import spoon.reflect.declaration.*;
-import spoon.reflect.reference.CtTypeReference;
+import spoon.reflect.code.CtThrow;
 import spoon.reflect.visitor.Filter;
-import spoon.reflect.visitor.filter.TypeFilter;
-import spoon.support.sniper.SniperJavaPrettyPrinter;
-import ufc.br.mutant_project.constants.Maven;
-import ufc.br.mutant_project.models.ParameterProcessor;
-import ufc.br.mutant_project.processors.ProcessorCBD;
 
 
 public class RunNew {

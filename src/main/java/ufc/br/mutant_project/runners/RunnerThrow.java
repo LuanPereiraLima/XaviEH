@@ -1,11 +1,13 @@
 package ufc.br.mutant_project.runners;
 
+import java.io.File;
+
 import org.apache.commons.io.FileUtils;
+
 import spoon.Launcher;
 import spoon.SpoonAPI;
 import spoon.reflect.CtModel;
 import spoon.reflect.code.CtThrow;
-import spoon.reflect.code.CtTry;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.Filter;
 import ufc.br.mutant_project.constants.PathProject;
@@ -13,8 +15,6 @@ import ufc.br.mutant_project.exceptions.PomException;
 import ufc.br.mutant_project.models.ParameterProcessor;
 import ufc.br.mutant_project.processors.AbstractorProcessor;
 import ufc.br.mutant_project.util.Util;
-
-import java.io.File;
 
 //TODO PROVISÓRIO (ASSOCIAR O CONTADOR COM O GENÉRICO)
 public class RunnerThrow<A extends CtElement> extends AbstractRunner<A>{
