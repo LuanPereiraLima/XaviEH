@@ -628,27 +628,4 @@ public class ExecuterEstatisticsCoverageEH extends Execute {
 		}
 		return result;
 	}
-	
-	private static List<CtThrow> findThrow(boolean isProgramerDefined, CtType<?> element) {
-
-		List<CtThrow> result = new ArrayList<CtThrow>();
-		for (CtThrow throwv : element.getElements(new TypeFilter<CtThrow>(CtThrow.class))) {
-			for (CtTypeReference<?> exceptionType : throwv.getParameter().getMultiTypes()) {
-				CtType<?> declaredType = exceptionType.getTypeDeclaration();
-
-				if (isProgramerDefined) {
-					if (declaredType != null && !declaredType.isShadow()) {
-						result.add(handler);
-						break;
-					}
-				} else {
-					if (declaredType == null || declaredType.isShadow()) {
-						result.add(handler);
-						break;
-					}
-				}
-			}
-		}
-		return result;
-	}
 }
