@@ -91,7 +91,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>ufc.br.mutant_project.Main</mainClass>
+              <mainClass>ufc.br.xavieh.Main</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
