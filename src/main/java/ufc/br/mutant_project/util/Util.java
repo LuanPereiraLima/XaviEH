@@ -1,10 +1,19 @@
 package ufc.br.mutant_project.util;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
@@ -25,10 +34,15 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
+import org.gradle.tooling.BuildLauncher;
+import org.gradle.tooling.GradleConnectionException;
+import org.gradle.tooling.GradleConnector;
+import org.gradle.tooling.ProgressListener;
+import org.gradle.tooling.ProjectConnection;
+import org.gradle.tooling.ResultHandler;
 
 import com.thoughtworks.xstream.XStream;
 
-import org.gradle.tooling.*;
 import spoon.Launcher;
 import spoon.MavenLauncher;
 import spoon.SpoonAPI;
@@ -277,7 +291,6 @@ public class Util {
     	try {
     		System.out.println("Gerando copia do arquivo... copyOutputSpoonToProject toPath: "+toPath+" fromPath: "+PathProject.getPathTemp());
 
-    		//TODO REMOVENDO ARQUIVO QUE IMPEDE O FUNCIONAMENTO EM ALGUM SISTEMAS
     		File files[] = source.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
@@ -290,7 +303,6 @@ public class Util {
             for (int i = 0; i < files.length; i++) {
                 FileUtils.forceDelete(files[i]);
             }
-            //TODO REMOVENDO ARQUIVO QUE IMPEDE O FUNCIONAMENTO EM ALGUM SISTEMAS
 
             FileUtils.copyDirectory(source, dest);
     	} catch (IOException e) {
@@ -453,7 +465,7 @@ public class Util {
     
     //MÉTODO QUE RETORNA OS TIPOS DERIVADOS DE EXCEÇÕES DA ÁRVORE DE EXCEÇÕES
     public static List<CtTypeReference<?>> getListOfDirectDerivedTypes(CHE che){
-    	List<CtTypeReference<?>> lista = new ArrayList();
+    	List<CtTypeReference<?>> lista = new ArrayList<CtTypeReference<?>>();
     	if(che!=null && che.getFilhos()!=null)
     		for(CHE fi : che.getFilhos())
     			if(fi.getClasses()!=null)

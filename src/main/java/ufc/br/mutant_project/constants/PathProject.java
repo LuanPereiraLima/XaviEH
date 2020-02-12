@@ -3,8 +3,8 @@
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
+
 import ufc.br.mutant_project.exceptions.PomException;
-import ufc.br.mutant_project.util.Util;
 
 public class PathProject {
 	//public static String USER_REFERENCE_TO_PROJECT = "/media/loopback/C4DAE5FEDAE5EC9C/Users/luan_"+(File.separator)+"mutationsTests"+(File.separator);

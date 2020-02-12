@@ -4,9 +4,7 @@ import ufc.br.mutant_project.exceptions.ConfigPropertiesNotFoundException;
 import ufc.br.mutant_project.exceptions.InicializerException;
 import ufc.br.mutant_project.exceptions.ListProjectsNotFoundException;
 import ufc.br.mutant_project.exceptions.NotURLsException;
-import ufc.br.mutant_project.executers.*;
-
-import java.util.function.Function;
+import ufc.br.mutant_project.executers.Execute;
 
 public class MainStatistics {
 

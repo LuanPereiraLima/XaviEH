@@ -1,23 +1,12 @@
 package ufc.br.mutant_project.test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import spoon.Launcher;
-import spoon.MavenLauncher;
 import spoon.SpoonAPI;
-import spoon.processing.AbstractProcessor;
-import spoon.processing.Processor;
-import spoon.reflect.CtModel;
-import spoon.reflect.code.*;
-import spoon.reflect.declaration.*;
-import spoon.reflect.reference.CtTypeReference;
-import spoon.reflect.visitor.Filter;
+import spoon.reflect.code.CtThrow;
+import spoon.reflect.declaration.CtClass;
 import spoon.reflect.visitor.filter.TypeFilter;
-import spoon.support.sniper.SniperJavaPrettyPrinter;
-import ufc.br.mutant_project.constants.Maven;
-import ufc.br.mutant_project.models.ParameterProcessor;
-import ufc.br.mutant_project.processors.ProcessorCBD;
 
 
 public class RunNew {
@@ -29,7 +18,7 @@ public class RunNew {
 		//String path = "/home/loopback/mutationsTests/xstream-1.4.11.1/xstream-1.4.11.1/xstream/src/java";
 
 		//String path = "/media/loopback/C4DAE5FEDAE5EC9C/Users/luan_/mutationsTests/commons-math-3.6.1/commons-math-3.6.1";//"/home/loopback/hadoop/hadoop-common-project/hadoop-kms";///src/main/java/org/apache/hadoop/mapred/ShuffleHandler.java";
-		String path = "/media/loopback/C4DAE5FEDAE5EC9C/Users/luan_/mutationsTests2/commons-dbcp-2.5/commons-dbcp-2.5";
+		String path = "/home/great/commons-bcel";
 
 		//String path = "/home/loopback/mutationsDocker/hadoop-3.1.2-20/hadoop-3.1.2-20/hadoop-common-project/hadoop-kms";
 
@@ -43,6 +32,33 @@ public class RunNew {
 		spoon.addInputResource(path);
 
 		spoon.getEnvironment().setNoClasspath(true);
+		
+		spoon.buildModel();
+		
+		System.out.println("All Raisings");
+
+		for (CtClass<?> element : spoon.getModel().getElements(new TypeFilter<CtClass<?>>(CtClass.class))) {
+
+			List<CtThrow> raisers = element.getElements(new TypeFilter<CtThrow>(CtThrow.class));
+
+			if (!raisers.isEmpty()) {
+
+				System.out.println(element.getQualifiedName());
+
+				for (CtThrow raiser : raisers) {
+					System.out.println(raiser);
+
+					System.out.println(
+
+							"-- Throws [" + raiser.getPosition().getLine() + "," + raiser.getPosition().getEndLine()
+
+									+ "]: " + raiser.getThrownExpression().getType().getQualifiedName());
+
+				}
+
+			}
+
+		}
 
 		//spoon.getEnvironment().setSourceClasspath(new String[]{path});
 
@@ -83,9 +99,9 @@ public class RunNew {
 
 		spoon.run();*/
 
-		spoon.buildModel();
+		//spoon.buildModel();
 
-		System.out.println(spoon.getModel().getElements((Filter<CtThrow>) ctElement -> true).stream().count());
+		//System.out.println(spoon.getModel().getElements((Filter<CtThrow>) ctElement -> true).stream().count());
 
 		/*CtModel model = spoon.getModel();
 

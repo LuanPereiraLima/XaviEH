@@ -66,13 +66,13 @@ public class ExecuterGeneralEstatistics extends Execute {
 			if(this.cloneRepository){
 				System.out.println("-Cloning Repository: "+path+" ...");
 
-				/*try {
+				try {
 					Util.cloneRepository(linha[0], path, commit);
 				} catch (CloneRepositoryException e) {
 					System.out.println("-Não foi possível clonar a URL GIT: "+list.get(i)+" O projeto será ignorado. (Para resolver o problema analise as URLs adicionadas no arquivo 'repositiores.txt', ou verifique a conexão com a internet)");
 					e.printStackTrace();
 					continue;
-				}*/
+				}
 				System.out.println("--Ok!");
 			}
 

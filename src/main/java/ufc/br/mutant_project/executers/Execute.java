@@ -4,11 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.sql.Struct;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
 import edu.emory.mathcs.backport.java.util.Collections;
 import spoon.reflect.CtModel;
 import spoon.reflect.code.CtThrow;
@@ -153,6 +151,7 @@ public class Execute {
 	/*
 	 *	retorna verdade se o projeto está com os testes passando
 	 */
+	@SuppressWarnings("unchecked")
 	protected boolean testProject(String submodule, String path){
 
 		System.out.println("-Verificanndo se o projeto está passando nos testes inicialmente.");
@@ -275,14 +274,11 @@ public class Execute {
 			String build = getItemByUrl(linha, BUILD_URL);
 			String pathProject = getItemByUrl(linha, PATH_PROJECT_URL);
 
-			if(pathProject!=null){
+			if(pathProject!=null)
 				PathProject.PROJECT_PATH_FILES_DEFAULT  = pathProject;
 
-			}
-
-			if(build != null && build.equals("g")) {
+			if(build != null && build.equals("g"))
 				this.isProjectMaven = false;
-			}
 			
 			String path = Util.validateAndGetNameRepository(linha[0]);
 
@@ -333,7 +329,7 @@ public class Execute {
 
 			try {
 				System.out.println("-Iniciando Mutações para o projeto");
-				AbstractRunner abs = new Runner<CtTry>(path, submodule, isProjectMaven);
+				AbstractRunner<?> abs = new Runner<CtTry>(path, submodule, isProjectMaven);
 				
 				System.out.println("--Iniciando Mutações CBD para o projeto");
 				abs.processor(new ProcessorCBD());

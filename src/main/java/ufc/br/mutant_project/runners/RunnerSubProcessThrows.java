@@ -43,7 +43,7 @@ public class RunnerSubProcessThrows<D extends CtElement> extends AbstractRunner<
 
 			CtModel mo = spoon.buildModel();
 
-			Map<Integer, Integer> map = new HashMap();
+			Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 
 			int qtd = getQtdAndOccurrencesMethodsThrows(mo, map);
 
@@ -97,9 +97,9 @@ public class RunnerSubProcessThrows<D extends CtElement> extends AbstractRunner<
 		resetResults();
 	}
 
-	private int getQtdAndOccurrencesMethodsThrows(CtModel model, Map map){
+	private int getQtdAndOccurrencesMethodsThrows(CtModel model, Map<Integer, Integer> map){
 		final int[] count = {1};
-		model.getElements((Filter<CtMethod>) e ->{
+		model.getElements((Filter<CtMethod<?>>) e ->{
 			if(e.getThrownTypes()!=null && e.getThrownTypes().size()>0){
 				map.put(count[0], e.getThrownTypes().size());
 				count[0]++;

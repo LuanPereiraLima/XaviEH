@@ -1,15 +1,6 @@
 package ufc.br.mutant_project.processors;
 
-import org.apache.commons.compress.utils.Lists;
 import spoon.reflect.code.CtThrow;
-import spoon.reflect.declaration.CtElement;
-import spoon.reflect.declaration.CtMethod;
-import spoon.reflect.reference.CtTypeReference;
-import spoon.reflect.visitor.Filter;
-import ufc.br.mutant_project.models.ParameterProcessorSubProcess;
-
-import java.util.List;
-import java.util.Set;
 
 public class ProcessorTSD extends AbstractorProcessor<CtThrow> {
 	

@@ -1,19 +1,18 @@
 package ufc.br.mutant_project.processors;
 
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.compress.utils.Lists;
+
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.reference.CtTypeReference;
 import ufc.br.mutant_project.models.ParameterProcessorSubProcess;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
-public class ProcessorTHD extends AbstractorProcessorSubProcess<CtMethod> {
+public class ProcessorTHD extends AbstractorProcessorSubProcess<CtMethod<?>> {
 	
-    public void process(CtMethod element) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public void process(CtMethod element) {
 
     	if(getPosition() == getParameterVisitor().getPosition()) {
     		getParameterVisitor().setBeginLine(element.getPosition().getLine());

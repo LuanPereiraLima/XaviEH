@@ -12,6 +12,8 @@ import spoon.reflect.declaration.CtClass;
 import spoon.reflect.visitor.Filter;
 
 public class TesteMavenTest {
+	
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 	
 		Map<String, List<String>> mapsss = new HashedMap();
