@@ -13,17 +13,13 @@
 - [x] FBD - Finally Block Deletion
 - [x] CBR - Catch Block Replacement
 - [x] PTL - Placing Try Block Late
-- [ ] TSD - Throw Statement Deletion (Testing)
+- [x] TSD - Throw Statement Deletion
 
 #### Possibilities
 
 - [x] Automate the procurement of projects through Git
 - [x] JaCoCo to cover tests
 - [x] Run with Gradlew
-
-#### Pendencies
-
-- ...
 
 #### Usage
 
