@@ -3,10 +3,8 @@ package ufc.br.xavieh.executers;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
 
 import spoon.reflect.CtModel;
 import spoon.reflect.code.CtBlock;
@@ -17,18 +15,16 @@ import spoon.reflect.code.CtStatement;
 import spoon.reflect.code.CtThrow;
 import spoon.reflect.code.CtTry;
 import spoon.reflect.declaration.CtClass;
+import spoon.reflect.declaration.CtExecutable;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.declaration.CtType;
+import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.Filter;
+import spoon.reflect.visitor.filter.TypeFilter;
 import ufc.br.xavieh.constants.PathProject;
 import ufc.br.xavieh.exceptions.*;
-import ufc.br.xavieh.models.ClassXMLCoverage;
-import ufc.br.xavieh.models.ClassXMLCoverageLine;
-import ufc.br.xavieh.models.ClassXMLCoverageLineMethod;
-import ufc.br.xavieh.models.ClassXMLCoverageLineNormal;
-import ufc.br.xavieh.models.CoverageResult;
-import ufc.br.xavieh.models.TotalCoveredStatus;
+import ufc.br.xavieh.models.*;
 import ufc.br.xavieh.runners.AbstractRunner;
 import ufc.br.xavieh.util.Util;
 import ufc.br.xavieh.util.UtilWriteReader;
@@ -39,13 +35,14 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 	private ClassXMLCoverage cc = null;
 	private ClassXMLCoverage ccMethod = null;
 	private String path = null;
+	private int idBlock = 1;
 	
 	public ExecuterEstatisticsCoverageEHStudy2() {
 		super(false);
 	}
 
 	public ExecuterEstatisticsCoverageEHStudy2(boolean saveInFile, boolean cloneRepository, boolean verifyIfProjectAlreadyRun, boolean testProject) {
-		super(saveInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
+		super(saveInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject, false);
 	}
 
 	public void execute() throws InicializerException, ListProjectsNotFoundException, NotURLsException, ConfigPropertiesNotFoundException {
@@ -56,6 +53,11 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 		
 		List<CoverageResult> resultCoverageTotal = new ArrayList<CoverageResult>();
 		Map<String, TotalCoveredStatus> tcs = new HashMap<>();
+		Map<String, List<ClassXMLCoverage>> tcs2 = new HashMap<>();
+		Map<String, List<CoverageResult>> tcs3 = new HashMap<>();
+		Map<String, List<ResultCoverageMethodsPaper>> tcs4 = new HashMap<>();
+
+
 		
 		for(int i=0; i < list.size(); i++) {
 
@@ -72,6 +74,9 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 			String build = getItemByUrl(linha, BUILD_URL);
 			String pathProjectUrl = getItemByUrl(linha, PATH_PROJECT_URL);
 
+			if(pathProjectUrl!=null){
+				PathProject.PROJECT_PATH_FILES_DEFAULT = pathProjectUrl;
+			}
 
 			path = Util.validateAndGetNameRepository(linha[0]);
 
@@ -113,31 +118,15 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 			}
 			
 			System.out.println("--Ok!");
-			
-			System.out.println("-Verificanndo se o projeto está passando nos testes inicialmente.");
-			int result = 0;//Util.invoker(PathProject.makePathToProjectMaven(path), Collections.singletonList(submodule), true);
-			
-			if(result!=0) {
-				System.out.println("--O projeto: "+path+" está com os testes falhando, este projeto será pulado.");
-				continue;
-			}
-			System.out.println("--OK!");
-			
-			System.out.println("-Fazendo uma limpeza no projeto usando o Maven Clean.");
-			//result = Util.invokerOthers(PathProject.makePathToProjectMaven(path), Arrays.asList("clean"), Collections.singletonList(submodule), true);
-			
-			if(result!=0) {
-				System.out.println("--O projeto: "+path+" está com os clean falhando, este projeto será pulado.");
-				continue;
-			}
-			System.out.println("--OK!");
-			
-			
-			if(!testProjectSPOONCompability){
-				if(!projectSPOONCompatibility(build, path, pathProjectUrl)){
+
+			if (testProject)
+				if (!testProject(submodule, path))
 					continue;
 
-				}
+			if (testProjectSPOONCompability) {
+				System.out.println("-Verificando se o projeto é compatível com o SPOON para a criação de modelos.");
+				if (!projectSPOONCompatibility(build, path, submodule, pathProjectUrl))
+					continue;
 				System.out.println("--OK!");
 			}
 
@@ -145,22 +134,18 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 			
 			System.out.println(PathProject.makePathToProjectMaven(path, submodule));
 
-			if(pathProjectUrl!=null){
-				PathProject.PROJECT_PATH_FILES_DEFAULT = pathProjectUrl;
-			}
-
 			try {
 
-				if(build != null && build.equals("g")) {
+				//if(build != null && build.equals("g")) {
 					model = Util.getModelNoMaven(PathProject.makePathToProjectMaven(path, submodule)+PathProject.PROJECT_PATH_FILES_DEFAULT);
-				}else {
-					model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
-				}
+				//}else {
+				//	model = Util.getModel(PathProject.makePathToProjectMaven(path, submodule));
+				//}
 
-				if(model.getAllTypes().size() == 0){
+				/*if(model.getAllTypes().size() == 0){
 					System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
 					continue;
-				}
+				}*/
 
 			}catch(Exception e) {
 				System.out.println("--Este projeto não é compatível com o Spoon Model. Projeto pulado.");
@@ -177,14 +162,17 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 			TotalCoveredStatus totalCoveredStatus = null;
 			
 			listaxml = XmlJacoco.listaClassCoverageFromXMLJaCoCo(PathProject.makePathToProjectMavenToJacoco(path, submodule));
+			System.out.println("listaClassCoverageFromXMLJaCoCo: "+listaxml.get(0));
 			listaxmlMethods = XmlJacoco.listaClassCoverageFromXMLJaCoCoMethods(PathProject.makePathToProjectMavenToJacoco(path, submodule));
+			System.out.println("listaClassCoverageFromXMLJaCoCoMethods: "+listaxmlMethods.get(0));
 			totalCoveredStatus = XmlJacoco.listaClassCoverageFromXMLJaCoCoTotalCoveredStatus(PathProject.makePathToProjectMavenToJacoco(path, submodule));
-			
-			System.out.println("quantidade: "+model.getAllTypes().size());
+			System.out.println("listaClassCoverageFromXMLJaCoCoTotalCoveredStatus: "+totalCoveredStatus);
+			//System.out.println("quantidade: "+model.getAllTypes().size());
+			List<CoverageResult> resultCoverageCaches = new ArrayList<CoverageResult>();
+			//List<CtExecutableReference> executableReferences = model.getElements(new TypeFilter<>(CtExecutableReference.class)); // get all references for executables
 			for(CtType<?> tp : model.getAllTypes()) {
-				System.out.println("Analisando "+tp+" do "+path);
+				//System.out.println("Analisando "+tp+" do "+path);
 				if(tp.isClass()) {
-
 					List<CoverageResult> resultCoverage = new ArrayList<CoverageResult>();
 					boolean encontrada = false;
 					for(ClassXMLCoverage cx : listaxml) {
@@ -253,6 +241,7 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 									cr.setProject(path);
 									cr.setCoveraged(false);
 									cr.setType("TRY");
+									cr.setIdBlock((idBlock)+"");
 								
 									if(st instanceof CtLoop) {
 										CtLoop p = (CtLoop)st;
@@ -284,6 +273,7 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 							}
 							
 						});
+						idBlock++;
 							
 						//OBTENDO O CORPO DO FINALLY
 						if(element.getFinalizer()!=null) {
@@ -301,6 +291,7 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 										cr.setProject(path);
 										cr.setCoveraged(false);
 										cr.setType("FINALLY");
+										cr.setIdBlock((idBlock)+"");
 									
 										if(st instanceof CtLoop) {
 											CtLoop p = (CtLoop)st;
@@ -332,10 +323,33 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 								}
 							
 							});
+							idBlock++;
 						}
 						
 						//OBTENDO O CORPO DOS CATCHS
 						for(CtCatch elementCatch: element.getCatchers()) {
+
+							System.out.println("element catch: "+ elementCatch.getPosition().getLine());
+
+							for(ClassXMLCoverageLine cl: cc.getLineDetails()) {
+								if(cl.getNumberLine() == elementCatch.getPosition().getLine()) {
+									System.out.println("-------");
+									System.out.println(cl.verifyCoverage());
+									System.out.println(cl);
+									System.out.println("-------");
+
+									CoverageResult cr = new CoverageResult();
+									cr.setClassName(tp.getQualifiedName());
+									cr.setLineCode(elementCatch.getPosition().getLine());
+									cr.setProject(path);
+									cr.setCoveraged(cl.verifyCoverage());
+									cr.setType("CATCH");
+
+									resultCoverageCaches.add(cr);
+									break;
+								}
+							}
+
 							elementCatch.getBody().getElements(new Filter<CtBlock<?>>() {
 								@Override
 								public boolean matches(CtBlock<?> element) {
@@ -354,6 +368,7 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 										cr.setProject(path);
 										cr.setCoveraged(false);
 										cr.setType("CATCH");
+										cr.setIdBlock(idBlock+"");
 									
 										if(st instanceof CtLoop) {
 											CtLoop p = (CtLoop)st;
@@ -385,10 +400,10 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 								}
 								
 							});
-						
+							idBlock++;
 						}
 					 }
-					
+
 					//OBTENDO METODOS DA CLASSE
 					List<CtThrow> listThrows = tp.getElements(new Filter<CtThrow>() {
 						
@@ -425,12 +440,12 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 						}
 						
 						if(!entrou) {
-							System.out.println("classe atual: "+tp.getQualifiedName());
+							/*System.out.println("classe atual: "+tp.getQualifiedName());
 							System.out.println("classe: "+cc.getFullName());
 							System.out.println("element.toString() "+element.toString());
 							System.out.println("linha: "+element.getPosition().getLine());
 							System.out.println("é implicito: "+element.isImplicit());
-							System.out.println("linhas:");
+							System.out.println("linhas:");*/
 							
 							for(ClassXMLCoverageLine cl: cc.getLineDetails())
 								System.out.println("----\n"+cl.getNumberLine());
@@ -475,7 +490,25 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 							return true;
 						}
 					});
-					
+
+					System.out.println("--1");
+					List<CtExecutableReference> executableReferences = model.getElements(new TypeFilter<>(CtExecutableReference.class)); // get all references for executables
+					for (CtExecutableReference execReference : executableReferences) {
+						CtExecutable declaration = execReference.getExecutableDeclaration(); // we look for the declaration of the reference
+						if (declaration != null && declaration instanceof CtMethod) { // if it's a method
+							CtMethod methodOfExec = (CtMethod)declaration;
+							for (CtMethod method : new ArrayList<>(listMethods)) { // we look for it in the list of methods (we copy it to be able to remove from the original list)
+								if (method.equals(methodOfExec)) {
+									System.out.println("Classe: "+tp.getQualifiedName());
+									System.out.println("Print metode: "+method.getSimpleName()); // and we can remove it
+									break;
+								}
+							}
+						}
+					}
+					System.out.println("--1");
+
+
 					System.out.println("--");
 					for(CtMethod<?> me : listMethods) {
 						String nome = me.getSignature()+" throws ";
@@ -507,30 +540,30 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 							}
 						}
 						if(!entrou) {
-							System.out.println("--");
+							/*System.out.println("--");
 							System.out.println("WAU "+ me.getSimpleName());
 							System.out.println("-Nome da classe: "+tp.getQualifiedName());
 							System.out.println("-Nome da classe do ccMethod: "+ccMethod.getFullName());
-							System.out.println("-");
+							System.out.println("-");*/
 							for(ClassXMLCoverageLine cl: ccMethod.getLineDetails()) {
 								ClassXMLCoverageLineMethod clm = (ClassXMLCoverageLineMethod) cl;
 								System.out.println(clm.getMethodName());
 							}
-							System.out.println("-");
+							/*System.out.println("-");
 							System.out.println(cr);
-							System.out.println("--");
+							System.out.println("--");*/
 						}
 						resultCoverage.add(cr);
 					}
 					
 					resultCoverageTotal.addAll(resultCoverage);
 					
-					System.out.println("analisando "+path);
+					//System.out.println("analisando "+path);
 					if(!tcs.containsKey(path)) {
-						System.out.println("adicionando "+path);
+						//System.out.println("adicionando "+path);
 						tcs.put(path, new TotalCoveredStatus());
 					}
-					
+
 					for(CoverageResult rc: resultCoverage) {
 						
 						if(rc.getType().equals("THROW")) {
@@ -586,14 +619,12 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 					}
 				}
 			}
-			
-			
-			System.out.println("olhando este "+path);
+
 			if(tcs.get(path)==null) {
 				System.out.println("não existe este");
 				System.out.println("opa, ta nulzão");
 			}
-			
+
 			tcs.get(path).setCI_TotalCoveredInstructions(totalCoveredStatus.getCI_TotalCoveredInstructions());
 			tcs.get(path).setCB_TotalCoveredBraches(totalCoveredStatus.getCB_TotalCoveredBraches());
 			tcs.get(path).setMB_TotalMissedBraches(totalCoveredStatus.getMB_TotalMissedBraches());
@@ -610,23 +641,285 @@ public class ExecuterEstatisticsCoverageEHStudy2 extends Execute {
 			 *     ok - ação de limpeza (finally) + linha de cada instrução dentro do bloco. 
 			 *      Tudo isso associado a respectiva classe.
 			 */
-		
+
+			//UtilWriteReader.writeCsvFileEstatistics2(listaxmlMethods);
+			tcs2.put(path, listaxmlMethods);
+			tcs3.put(path, resultCoverageCaches);
+
+			/*List<ResultCoverageMethodsPaper> listResultCoverageMethodsPaper = new ArrayList<>();
+			for(CtType<?> tp : model.getAllTypes()) {
+				if(tp.isClass()) {
+					boolean encontrada = false;
+					for (ClassXMLCoverage cx : listaxml) {
+						if (cx.getFullName().replace(".java", "").equals(tp.getQualifiedName())) {
+							cc = cx;
+							encontrada = true;
+							break;
+						}
+					}
+					if(!encontrada){
+						continue;
+					}
+
+					List<CtMethod<?>> listMethods = tp.getElements(new Filter<CtMethod<?>>() {
+
+						@Override
+						public boolean matches(CtMethod<?> element) {
+							if(!element.getParent(new Filter<CtClass<?>>() {
+								@Override
+								public boolean matches(CtClass<?> element) {
+									return true;
+								}
+							}).getSimpleName().equals(tp.getSimpleName())) {
+								return false;
+							}
+
+							if(element.isAbstract())
+								return false;
+
+							return true;
+						}
+					});
+
+
+					for (CtExecutableReference<?> execReference : executableReferences) {
+						CtExecutable<?> declaration = execReference.getExecutableDeclaration(); // we look for the declaration of
+						// the
+						// reference
+						if (declaration != null && declaration instanceof CtMethod) { // if it's a method
+							CtMethod<?> methodOfExec = (CtMethod<?>) declaration;
+							for (CtMethod<?> method : new ArrayList<CtMethod<?>>(listMethods)) { // we look for it in the list of
+								// methods (we copy it
+								if (method.equals(methodOfExec)) {
+									listMethods.remove(method); // and we can remove it
+									break;
+								}
+							}
+						}
+					}
+
+					System.out.println("Fail here 2");
+
+					for(ClassXMLCoverage cx : listaxmlMethods) {
+						if(cx.getFullName().replace(".java", "").equals(tp.getQualifiedName())) {
+							ccMethod = cx;
+							break;
+						}
+					}
+
+					System.out.println("ccMethod.getFullName(): "+ccMethod.getFullName());
+
+					for (ClassXMLCoverageLine lineDetail : ccMethod.getLineDetails()) {
+						System.out.println("lineDetail: " + lineDetail.getNumberLine());
+					}
+
+					if (listMethods.isEmpty()) {
+						System.out.println("There is no dead code from methods!");
+					} else {
+						for (CtMethod<?> method : listMethods) {
+							if (method.isPrivate() || method.isProtected()) {
+								System.out.println("The following method is dead: " + method.getSimpleName());
+
+							} else {
+								System.out.println("The following method seems dead: " + method.getSimpleName());
+								//System.out.println(method.getDeclaringType().getQualifiedName() + " Linha: " + method.getBody().getOriginalSourceFragment().getSourcePosition().getLine() +  " " + method.getSimpleName() + "");
+							}
+							System.out.println("Classe: "+tp.getQualifiedName());
+							System.out.println("Print metode: "+method.getSimpleName()); // and we can remove it
+							System.out.println("Print metode: "+method.getPosition().getSourceStart()); // and we can remove it
+
+
+							for (ClassXMLCoverageLine lineDetail : ccMethod.getLineDetails()) {
+								System.out.println("lineDetail: "+lineDetail);
+								System.out.println("cc: "+ccMethod.getFullName());
+								ClassXMLCoverageLineMethod clm = (ClassXMLCoverageLineMethod) lineDetail;
+								if(method.getSimpleName().equals(clm.getMethodName())){
+									System.out.println("line detauls: ");
+									ResultCoverageMethodsPaper rcmp = new ResultCoverageMethodsPaper();
+									rcmp.setCoveraged(clm.verifyCoverage());
+									rcmp.setMethodName(method.getSimpleName());
+									if(method.isPrivate())
+										rcmp.setType("private");
+									else if(method.isPublic())
+										rcmp.setType("public");
+									else if(method.isProtected())
+										rcmp.setType("protected");
+									else
+										rcmp.setType("not_type_mod");
+									rcmp.setNameClass(tp.getQualifiedName());
+									rcmp.setMethodNumberLine(method.getPosition().getLine()+"");
+
+									if((method.isPrivate() ||
+										method.isProtected() ||
+										rcmp.getType().equals("not_type_mod")) && !clm.verifyCoverage())
+										listResultCoverageMethodsPaper.add(rcmp);
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+			tcs4.put(path, listResultCoverageMethodsPaper);*/
 		}
-		
-		try {
+
+		/*try {
 			System.setOut(new PrintStream(new FileOutputStream("PLIN-output.txt")));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		}*/
+		
+		//System.out.println(resultCoverageTotal);
+
+		HashMap<String, List<CoverageResult>> items = new HashMap<>();
+		ArrayList<String> projects = new ArrayList<>();
+		for(CoverageResult cr: resultCoverageTotal){
+			if(items.containsKey(cr.getProject())){
+				items.get(cr.getProject()).add(cr);
+			} else {
+				List<CoverageResult> lista = new ArrayList<>();
+				lista.add(cr);
+				items.put(cr.getProject(), lista);
+			}
+			if(!projects.contains(cr.getProject())) {
+				projects.add(cr.getProject());
+			}
 		}
-		
-		System.out.println(resultCoverageTotal);
 
+		for(String project: projects) {
+			//UtilWriteReader.writeCsvFileEstatistics2(items.get(project), project);
+		}
+		//UtilWriteReader.writeCsvFileEstatistics2(tcs);
 
-		//TODO REMOVIDO, CONTEÙDO QUE MOSTRA PARA QUE CADA LINHA ERA RELACIONADA
-		//UtilWriteReader.writeCsvFileEstatistics2(resultCoverageTotal);
-		UtilWriteReader.writeCsvFileEstatistics2(tcs);
-		
-		if(saveOutputInFile)	
+		for(String name: tcs2.keySet()) {
+			for(ClassXMLCoverage xml : tcs2.get(name)){
+				boolean allCoverageB = false;
+				double coverageBResult = 100.0;
+				if((xml.getMB_MissedBraches()+xml.getCB_CoveredBraches()) == 0){
+					allCoverageB = true;
+				} else {
+					coverageBResult = ((float)xml.getCB_CoveredBraches()/((float)xml.getMB_MissedBraches()+(float)xml.getCB_CoveredBraches())) * 100;
+					if(coverageBResult == 100){
+						allCoverageB = true;
+					}
+				}
+
+				boolean allCoverageI = false;
+				double coverageIResult = 100.0;
+				if((xml.getMI_MissedInstructions()+xml.getCI_CoveredInstructions()) == 0){
+					allCoverageI = true;
+				} else {
+					coverageIResult = ((float)xml.getCI_CoveredInstructions()/((float)xml.getMI_MissedInstructions()+(float)xml.getCI_CoveredInstructions())) * 100;
+					if(coverageIResult == 100){
+						allCoverageI = true;
+					}
+				}
+
+				xml.setPercentB(coverageBResult);
+				xml.setPercentI(coverageIResult);
+				xml.setAllCoverage((allCoverageI || allCoverageB));
+			}
+		}
+
+		for(String name: tcs2.keySet()) {
+			//UtilWriteReader.writeCsvFileEstatistics3(name, tcs2.get(name));
+		}
+
+		HashMap<String, ResultCoveragePaper> projectQuantity = new HashMap<>();
+		for(String name: tcs2.keySet()) {
+			List<ClassXMLCoverage> classNotAllCoverages = new ArrayList<>();
+			for(ClassXMLCoverage xml : tcs2.get(name)){
+				if(!xml.isAllCoverage()){
+					classNotAllCoverages.add(xml);
+				}
+			}
+			long quantityClasses = sampleSize(classNotAllCoverages.size(), 5);
+
+			//System.out.println("name: "+name+" "+classNotAllCoverages.size()+" calc: "+sampleSize(classNotAllCoverages.size(), 5));
+			ResultCoveragePaper p = new ResultCoveragePaper();
+			p.setNameClass(name);
+			p.setQuantityClassNotCoverage(classNotAllCoverages.size());
+			p.setNumberClassSample(quantityClasses);
+
+			String classesSorted = "[ ";
+
+			if(quantityClasses == classNotAllCoverages.size()){
+				for(ClassXMLCoverage c: classNotAllCoverages){
+					classesSorted+=c.getFullName()+" - ";
+				}
+			} else {
+				Collections.shuffle(classNotAllCoverages);
+				for(int i=0; i < quantityClasses; i++){
+					classesSorted+=classNotAllCoverages.get(i).getFullName()+" - ";
+				}
+			}
+			classesSorted += " ]";
+			p.setClassesSorted(classesSorted);
+
+			projectQuantity.put(name, p);
+		}
+		//UtilWriteReader.writeCsvFileEstatistics4(projectQuantity);
+
+		List<TotalCoveragedAndNotCoveragedCatch> items3 = new ArrayList<>();
+		for(String name: tcs3.keySet()) {
+			TotalCoveragedAndNotCoveragedCatch tcenc = new TotalCoveragedAndNotCoveragedCatch();
+			tcenc.setProjectName(name);
+			for(CoverageResult rl: tcs3.get(name)){
+				if(rl.isCoveraged()){
+					tcenc.setQuantityCoveraged(tcenc.getQuantityCoveraged()+1);
+				} else {
+					tcenc.setQuantityNotCoveraged(tcenc.getQuantityNotCoveraged()+1);
+				}
+			}
+			items3.add(tcenc);
+			//UtilWriteReader.writeCsvFileEstatistics2(tcs3.get(name), name, "/coverage_classes_caches/");
+		}
+
+		//UtilWriteReader.writeCsvFileEstatistics4(items3, "/coverage_classes_caches/");
+
+		for(String name: tcs4.keySet()) {
+			List<ClassXMLCoverage> classNotAllCoverages = new ArrayList<>();
+			for(ClassXMLCoverage xml : tcs2.get(name)){
+				if(!xml.isAllCoverage()){
+					classNotAllCoverages.add(xml);
+				}
+			}
+			List<ResultCoverageMethodsPaper> listaNew = new ArrayList<>();
+			for(ResultCoverageMethodsPaper rs: tcs4.get(name)){
+				boolean found = false;
+				for(ClassXMLCoverage cl: classNotAllCoverages){
+					if(rs.getNameClass().equals(cl.getFullName())){
+						found = true;
+						break;
+					}
+				}
+				if(found){
+					listaNew.add(rs);
+				}
+			}
+			UtilWriteReader.writeCsvFileEstatistics5(listaNew, name, "/coverage_classes_methods/");
+		}
+
+		if(saveOutputInFile)
 			System.out.close();
+	}
+
+	public static boolean verifyExists(ResultCoverageMethodsPaper rcmp, List<ResultCoverageMethodsPaper> rcmpList) {
+		for(ResultCoverageMethodsPaper ex: rcmpList){
+			if(ex.toString().equals(rcmp.toString())) return true;
+		}
+		return false;
+	}
+
+	public static long sampleSize(long pop, double e) {
+		double ss = 0;
+		if (pop == 0) {
+			ss = ((1.96 *1.96) * 0.25) / ((e / 100) *(e / 100));
+		}
+		else {
+			ss = ((1.96 *1.96) * 0.25) / ((e / 100) *(e / 100));
+			ss = ss/(1+(ss-1)/pop);
+		}
+		return (long)(ss+.5);
 	}
 }

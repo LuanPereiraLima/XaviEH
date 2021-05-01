@@ -17,9 +17,13 @@ import ufc.br.xavieh.util.UtilWriteReader;
 import ufc.br.xavieh.util.XmlJacoco;
 
 public class ExecuterEstatisticsOnlyTotalCoveredStatus extends Execute {
-	
+
 	public ExecuterEstatisticsOnlyTotalCoveredStatus() {
 		super(false);
+	}
+
+	public ExecuterEstatisticsOnlyTotalCoveredStatus(boolean saveInFile, boolean cloneRepository, boolean verifyIfProjectAlreadyRun, boolean testProject) {
+		super(saveInFile, cloneRepository, verifyIfProjectAlreadyRun, testProject);
 	}
 	
 	public void execute() throws InicializerException, ListProjectsNotFoundException, NotURLsException, ConfigPropertiesNotFoundException {

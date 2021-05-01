@@ -5,16 +5,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import ufc.br.xavieh.constants.PathProject;
 import ufc.br.xavieh.constants.Processors;
-import ufc.br.xavieh.models.CoverageResult;
-import ufc.br.xavieh.models.FinalResultSavedByProject;
-import ufc.br.xavieh.models.ResultsStatisticsLength;
-import ufc.br.xavieh.models.TesteProject;
-import ufc.br.xavieh.models.TotalCoveredStatus;
+import ufc.br.xavieh.models.*;
 
 public class UtilWriteReader {
 
@@ -31,7 +28,22 @@ public class UtilWriteReader {
 	
 	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
 	private static String createFileHeaderStatistic2() {
-		return "PROJECT,CLASS NAME,LINE NUMBER,TYPE,COVERAGED,MI,CI,MB,CB,MM,CM,BRANCH OR NSTRUCTION";
+		return "PROJECT,CLASS NAME,LINE NUMBER,TYPE,COVERAGED,MI,CI,MB,CB,MM,CM,BRANCH OR NSTRUCTION,ID_BLOCK";
+	}
+
+	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
+	private static String createFileHeaderStatistic3() {
+		return "PROJECT,CLASS NAME,LINE NUMBER,TYPE,COVERAGED";
+	}
+
+	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
+	private static String createFileHeaderStatistic5() {
+		return "PROJECT,QUANTITY_NOT_COVERAGED,QUANTITY_COVERAGED";
+	}
+
+	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
+	private static String createFileHeaderStatistic6() {
+		return "PROJECT,CLASS_NAME,METHOD_NAME,TYPE_METHOD,COVERAGED,METHOD_NUMBER";
 	}
 	
 	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA STATISTICS LENGTH
@@ -52,6 +64,16 @@ public class UtilWriteReader {
 				+ "FINALLY_MI,FINALLY_CI,FINALLY_MB,FINALLY_CB,"
 				+ "THROW_MI,THROW_CI,"
 				+ "THROWS_MM,THROWS_CM";
+	}
+
+	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
+	private static String createFileHeaderStatistic3Status() {
+		return "CLASS_NAME,MI,CI,MB,CB,MM,CM,PERCENT_I,PERCENT_B,ALL_COVERAGE";
+	}
+
+	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
+	private static String createFileHeaderStatistic4Status() {
+		return "CLASS_NAME,QUANTITY_CLASS_NOT_ALL_COVERAGED,NUMBER_CLASSES_SAMPLE,CLASSES_SORTED";
 	}
 	
 	//MÉTODO QUE CRIA O CABEÇALHO DO CSV PARA CADA PROJETO
@@ -180,7 +202,76 @@ public class UtilWriteReader {
 				
 			}
 		}
-		
+
+	public static void writeCsvFileEstatistics3(String nameProject, List<ClassXMLCoverage> totalCoveredStatus, String newpPath) {
+		FileWriter fileWriter = null;
+
+		try {
+			fileWriter = new FileWriter(PathProject.USER_REFERENCE_TO_PROJECT+newpPath+nameProject+".csv");
+
+			fileWriter.append(createFileHeaderStatistic3Status());
+			fileWriter.append(NEW_LINE_SEPARATOR);
+
+			for(ClassXMLCoverage project: totalCoveredStatus) {
+				fileWriter.append(project.getName()+",");
+				fileWriter.append(project.getMI_MissedInstructions()+",");
+				fileWriter.append(project.getCI_CoveredInstructions()+",");
+				fileWriter.append(project.getMB_MissedBraches()+",");
+				fileWriter.append(project.getCB_CoveredBraches()+",");
+				fileWriter.append(project.getMM_MissedMethods()+",");
+				fileWriter.append(project.getCM_CoveredMethods()+",");
+				fileWriter.append(project.getPercentI()+",");
+				fileWriter.append(project.getPercentB()+",");
+				fileWriter.append(project.isAllCoverage()+"");
+
+				fileWriter.append(NEW_LINE_SEPARATOR);
+			}
+		} catch (Exception e) {
+			System.out.println("Error in CsvFileWriter !!!");
+			e.printStackTrace();
+		} finally {
+			try {
+				fileWriter.flush();
+				fileWriter.close();
+			} catch (IOException e) {
+				System.out.println("Error while flushing/closing fileWriter !!!");
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	public static void writeCsvFileEstatistics4(HashMap<String, ResultCoveragePaper> projectQuantity) {
+		FileWriter fileWriter = null;
+
+		try {
+			fileWriter = new FileWriter(PathProject.USER_REFERENCE_TO_PROJECT+"/coverage_classes_filtered/all_projects.csv");
+
+			fileWriter.append(createFileHeaderStatistic4Status());
+			fileWriter.append(NEW_LINE_SEPARATOR);
+			//CLASS_NAME,QUANTITY_CLASS_NOT_ALL_COVERAGED,NUMBER_CLASSES_SAMPLE,CLASSES_SORTED
+			for(String nameProject : projectQuantity.keySet()) {
+				fileWriter.append(nameProject + ",");
+				fileWriter.append(projectQuantity.get(nameProject).getQuantityClassNotCoverage() + ",");
+				fileWriter.append(projectQuantity.get(nameProject).getNumberClassSample() + ",");
+				fileWriter.append(projectQuantity.get(nameProject).getClassesSorted() + "");
+				fileWriter.append(NEW_LINE_SEPARATOR);
+			}
+		} catch (Exception e) {
+			System.out.println("Error in CsvFileWriter !!!");
+			e.printStackTrace();
+		} finally {
+			try {
+				fileWriter.flush();
+				fileWriter.close();
+			} catch (IOException e) {
+				System.out.println("Error while flushing/closing fileWriter !!!");
+				e.printStackTrace();
+			}
+
+		}
+	}
+
 	public static void writeCsvFileEstatisticsCoveraveTypeCode(Map<String, TotalCoveredStatus> totalCoveredStatus) {
 			FileWriter fileWriter = null;
 			
@@ -278,17 +369,17 @@ public class UtilWriteReader {
 			}
 		}
 		
-	public static void writeCsvFileEstatistics2(List<CoverageResult> resultCoverage) {
+	public static void writeCsvFileEstatistics2(List<CoverageResult> resultCoverage, String nameProject, String newPath) {
 			FileWriter fileWriter = null;
 			
 			try {
-				fileWriter = new FileWriter(PathProject.USER_REFERENCE_TO_PROJECT+"finalResultForProject.csv");
+				fileWriter = new FileWriter(PathProject.USER_REFERENCE_TO_PROJECT+newPath+nameProject+".csv");
 
-				fileWriter.append(createFileHeaderStatistic2());
+				fileWriter.append(createFileHeaderStatistic3());
 				fileWriter.append(NEW_LINE_SEPARATOR);
 				
 				for(CoverageResult cr: resultCoverage) {
-					fileWriter.append(cr.toStringCSV());
+					fileWriter.append(cr.toStringCSV3());
 					fileWriter.append(NEW_LINE_SEPARATOR);
 				}
 				
@@ -306,7 +397,61 @@ public class UtilWriteReader {
 				
 			}
 		}
-		
+	public static void writeCsvFileEstatistics4(List<TotalCoveragedAndNotCoveragedCatch> list, String newPath) {
+		FileWriter fileWriter = null;
+
+		try {
+			fileWriter = new FileWriter(PathProject.USER_REFERENCE_TO_PROJECT+newPath+"totalCoveragedAndNot.csv");
+
+			fileWriter.append(createFileHeaderStatistic5());
+			fileWriter.append(NEW_LINE_SEPARATOR);
+			for(TotalCoveragedAndNotCoveragedCatch item: list) {
+				fileWriter.append(item.toString());
+				fileWriter.append(NEW_LINE_SEPARATOR);
+			}
+
+		} catch (Exception e) {
+			System.out.println("Error in CsvFileWriter !!!");
+			e.printStackTrace();
+		} finally {
+			try {
+				fileWriter.flush();
+				fileWriter.close();
+			} catch (IOException e) {
+				System.out.println("Error while flushing/closing fileWriter !!!");
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	public static void writeCsvFileEstatistics5(List<ResultCoverageMethodsPaper> list, String nameProject, String newPath) {
+		FileWriter fileWriter = null;
+
+		try {
+			fileWriter = new FileWriter(PathProject.USER_REFERENCE_TO_PROJECT+newPath+nameProject+".csv");
+			//PROJECT,CLASS_NAME,METHOD_NAME,TYPE_METHOD,COVERAGED
+			fileWriter.append(createFileHeaderStatistic6());
+			fileWriter.append(NEW_LINE_SEPARATOR);
+			for(ResultCoverageMethodsPaper item: list) {
+				fileWriter.append(nameProject+","+item.toString());
+				fileWriter.append(NEW_LINE_SEPARATOR);
+			}
+		} catch (Exception e) {
+			System.out.println("Error in CsvFileWriter !!!");
+			e.printStackTrace();
+		} finally {
+			try {
+				fileWriter.flush();
+				fileWriter.close();
+			} catch (IOException e) {
+				System.out.println("Error while flushing/closing fileWriter !!!");
+				e.printStackTrace();
+			}
+
+		}
+	}
+
 	public static void writeCsvFileTests(List<TesteProject> testsProjects) {
 			FileWriter fileWriter = null;
 			

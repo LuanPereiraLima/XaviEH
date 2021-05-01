@@ -1,0 +1,255 @@
+-https://github.com/apache/commons-bcel.git -v 6.5 -c a9c13ede0e565fae0593c1fde3b774d93abf3f71 OK
+-https://github.com/apache/commons-bcel.git -v 6.4 -c bbaf623d750f030d186ed026dc201995145c63ec OK
+-https://github.com/apache/commons-bcel.git -v 6.3 -c 3aecd517ad0ac4c83828a5f89b6b062acb6f4f6a OK
+https://github.com/apache/commons-bcel.git -v 6.2 -c 893d9bbcdbd5ce764db1a38eccd73af150e5d34d OK
+-https://github.com/apache/commons-bcel.git -v 6.1 -c f70742fde892c2fac4f0862f8f0b00e121f7d16e OK
+-https://github.com/apache/commons-bcel.git -v 6.0 -c 647c723ba1262e1ffce520524692b366a7fde45a OK
+
+-https://github.com/apache/commons-beanutils.git -v 1.9 -c 32ceb2c92512d44f97638805e2f3fd9d70dfcfc6 OK
+-https://github.com/apache/commons-beanutils.git -v 1.8 -c bcd28bd06687c9e7441c061572e5474e2151ff14 OK
+-https://github.com/apache/commons-beanutils.git -v 1.7 -c cbdadd2011983734383a785466cdc16c06f99fe9 SEM POM
+-https://github.com/apache/commons-beanutils.git -v 1.6 -c 3e7ecf18305b8cd8dd7f03e718f172a7502f82a8 SEM POM
+-https://github.com/apache/commons-beanutils.git -v 1.5 -c b72aa9e97b85714aad2951b9ff4e2be90a2940a7 SEM POM
+-https://github.com/apache/commons-beanutils.git -v 1.4 -c 4f1072a008e803bb59fd11fc108232f73b5c94ae SEM POM
+-https://github.com/apache/commons-beanutils.git -v 1.3 -c 227e5d2d4dd00ebbdf49004447e016431648d735 SEM POM
+-https://github.com/apache/commons-beanutils.git -v 1.2 -c a55d81e2b2b47d73c8dbf5e1de7f0394322290bd SEM POM
+-https://github.com/apache/commons-beanutils.git -v 1.1 -c f4dd0a42d9d642dfc231c1290044fafd281c3fa3 SEM POM
+-https://github.com/apache/commons-beanutils.git -v 1.0 -c 41f492e7eaed0a9d3f32ee02ca8aa284472d526a SEM POM
+
+-https://github.com/apache/commons-cli.git -v 1.4 -c f7153c3c10cc8060d3858a6a90d7ddccd0b3533e OK
+-https://github.com/apache/commons-cli.git -v 1.3 -c 41d3dbf00f3e2041f5e407b9b96d8f048ab388d9 OK
+-https://github.com/apache/commons-cli.git -v 1.2 -c 636fac44643c497373b747097bd46b457bddbc8e OK
+-https://github.com/apache/commons-cli.git -v 1.1 -c d95543de51dc1b3948fbffab0f890ad950c2d0e0 SEM POM
+-https://github.com/apache/commons-cli.git -v 1.0 -c 086bdefe078bf6fa8bcdf29cc5fac496c25fd235 SEM POM
+
+-https://github.com/apache/commons-codec.git -v 1.14 -c af7b94750e2178b8437d9812b28e36ac87a455f2 OK
+-https://github.com/apache/commons-codec.git -v 1.13 -c beafa49f88be397f89b78d125d2c7c52b0114006 OK
+-https://github.com/apache/commons-codec.git -v 1.12 -c 0082c9e31747d6f0d5a66dc993d817a00e1451a4 OK
+-https://github.com/apache/commons-codec.git -v 1.11 -c 9ceef2231549e95f7868266f38b0c7e1a0a40ed4 OK
+-https://github.com/apache/commons-codec.git -v 1.10 -c e9da3d16ae67f2940a0bbdf982ecec19a0481981 OK
+-https://github.com/apache/commons-codec.git -v 1.9 -c 52cfc73491e417366c77c226a7b01b40f7677f9a OK
+-https://github.com/apache/commons-codec.git -v 1.8 -c aa988a92ce3317077abd4e8414ef501b382d7fc0 OK
+-https://github.com/apache/commons-codec.git -v 1.7 -c 183aa006e80e5c5a4c8c215d104be39cd77f3336 OK
+-https://github.com/apache/commons-codec.git -v 1.6 -c 23f2aa4fb66aa5b026184ed17b6ad070da183794 OK
+-https://github.com/apache/commons-codec.git -v 1.5 -c 2ce6791741d501bb2e332f6c23ed319d9cf69368 OK
+-https://github.com/apache/commons-codec.git -v 1.4 -c f375d169f8e030169d63d9da00bb14ae2da2ac34 OK
+-https://github.com/apache/commons-codec.git -v 1.3 -c 1af8f98c3bd96501d558bbe980a2a9f7eb188367 SEM POM
+-https://github.com/apache/commons-codec.git -v 1.2 -c 2c0905a09d5d04db7e572172bf2ead04293477a2 SEM POM
+-https://github.com/apache/commons-codec.git -v 1.1 -c b4e4eee0644a211c209c21a2056b6227bfee8ccc SEM POM
+
+-https://github.com/apache/commons-collections.git -v 4.4 -c cab58b3a8093a2f6b84f12783a3fb358747310f7 OK
+-https://github.com/apache/commons-collections.git -v 4.3 -c 77e37dbf238d26351edb29e95391e3df75095d01 OK
+-https://github.com/apache/commons-collections.git -v 4.2 -c 483cbbbf5a8b3c14edf3e6563e8f8ba380966d47 OK
+-https://github.com/apache/commons-collections.git -v 4.1 -c cb157163d7543f942a1391f3ef752ebea1e1b349 OK
+-https://github.com/apache/commons-collections.git -v 4.0 -c db189926f7415b9866e76cd8123e40c09c1cc67e OK
+
+-https://github.com/apache/commons-compress.git -v 1.20 -c f7503adfbad8b44eb079d564f2784aeaa034647c OK
+-https://github.com/apache/commons-compress.git -v 1.19 -c 516f76ac1fe48be9a5162e53e4d0a99f23774565 OK
+-https://github.com/apache/commons-compress.git -v 1.18 -c b95d5cde4c68640f886e3c6802384fae47408a37 OK
+-https://github.com/apache/commons-compress.git -v 1.17 -c d9993f8ff119d4a3eb1259b460c53401f619d655 OK
+-https://github.com/apache/commons-compress.git -v 1.16 -c b5204113485bf5961c5b09a289c99995974895ff OK
+-https://github.com/apache/commons-compress.git -v 1.15 -c 01b06d5ef5c5ac3bd651bedcfec7433231cea371 OK
+-https://github.com/apache/commons-compress.git -v 1.14 -c dd7c7702bf51886aa8bd88b24d98619f310fbeda OK
+-https://github.com/apache/commons-compress.git -v 1.13 -c 45438471726fc5005a41cefecbf62d4d26eb15b2 OK
+-https://github.com/apache/commons-compress.git -v 1.12 -c 3623ee7dad07c74722baeeffcec6770015f915cf OK
+-https://github.com/apache/commons-compress.git -v 1.11 -c ff38bf57378c7cae8617b3c8df692a5ffbe7b83f OK
+-https://github.com/apache/commons-compress.git -v 1.10 -c 121b7e00017b95d1498c4f511ceb4dd21811257a OK
+-https://github.com/apache/commons-compress.git -v 1.9 -c 3a5c8403d892ff1bc245f5ccc6a00bbc860529eb OK
+-https://github.com/apache/commons-compress.git -v 1.8 -c 5048d93858a3a7d976ace35f83868215ce5dfe2c OK
+-https://github.com/apache/commons-compress.git -v 1.7 -c 4a4ba6bfdadc792c59a67935b6c4fe6ee8bfd325 OK
+-https://github.com/apache/commons-compress.git -v 1.6 -c c49e865f4eabd47e264063499e27e12eb549feb1 OK
+-https://github.com/apache/commons-compress.git -v 1.5 -c 163c4eee17c041cb7c1ccfedd983816038cc1eca OK
+-https://github.com/apache/commons-compress.git -v 1.4 -c 30ea3746a0f3635c22b7a45f18c3617909f7595a OK
+-https://github.com/apache/commons-compress.git -v 1.3 -c 0874320927ef9427cf5da5973935a1d17201cdf7 OK
+-https://github.com/apache/commons-compress.git -v 1.2 -c dc733d1ec84c72d68d8cbedc8d4d301eaf975cbf OK
+-https://github.com/apache/commons-compress.git -v 1.1 -c 9ee24a3d6a84c7e09abb5a9b4940bc91e2ab23d6 OK
+-https://github.com/apache/commons-compress.git -v 1.0 -c 4b5962d0fc3082e456a7dd249fc25e5aa7b1d350 OK
+
+-https://github.com/apache/commons-configuration.git -v 2.7 -c 03baa3bfbe123972da39c23e52fcd2d458e805fc OK
+-https://github.com/apache/commons-configuration.git -v 2.6 -c 32d6be96f6b101dfd18d21d79788980ee08e5965 OK
+-https://github.com/apache/commons-configuration.git -v 2.5 -c dc00a04783ea951280ba0cd8318f53e19acb707f OK
+-https://github.com/apache/commons-configuration.git -v 2.4 -c 6543cb0b6c283c0d4331dc0baee269b01db00622 OK
+-https://github.com/apache/commons-configuration.git -v 2.3 -c 43bd7dc2e9d73cb5ac9cb2a3caee2285569f87c3 OK
+-https://github.com/apache/commons-configuration.git -v 2.2 -c 137997974e0ebd3acd047243f46ddf3b90fa0160 OK
+-https://github.com/apache/commons-configuration.git -v 2.1 -c 31c1ab6bed9b9c7686111e00202f555de7471904 OK
+-https://github.com/apache/commons-configuration.git -v 2.0 -c 25c16206e0452a3b68abf4158c4d8f2ea38305da OK
+
+-https://github.com/apache/commons-dbcp.git -v 2.7 -c 9b3f4f9bbff1be4afd992f68a388faf9b8cbf907 OK
+-https://github.com/apache/commons-dbcp.git -v 2.6 -c 3e7fca08d3585aa7cf70045ee3ed607cbaf04baa OK
+-https://github.com/apache/commons-dbcp.git -v 2.5 -c 334784e3043cadaeaa626f792c3f62ac7b697927 OK
+-https://github.com/apache/commons-dbcp.git -v 2.4 -c d7aa662fbbb99e536ae28c47d0c4e1d51e39d5b9 OK
+-https://github.com/apache/commons-dbcp.git -v 2.3 -c 6040b67b78d96d05c282a75bb250fa6ea31623dc OK
+-https://github.com/apache/commons-dbcp.git -v 2.2 -c c5b86d834a53b4891487e62671873d054a6f38d8 OK
+-https://github.com/apache/commons-dbcp.git -v 2.1 -c 638833291337c1ee0bd847a169a948e249561ba3 OK
+-https://github.com/apache/commons-dbcp.git -v 2.0 -c 3a1cfeab2759c9b96cdc857e0df8fa61c15b9893 OK
+
+-https://github.com/apache/commons-dbutils.git -v 2.0 -c 83d65e39ce5ac4ad11f9cfc1294386936b0b2de2 OK
+-https://github.com/apache/commons-dbutils.git -v 1.8 -c 9be04e5cc990deee3ba672aa8060c523db897b7a OK
+-https://github.com/apache/commons-dbutils.git -v 1.7 -c 77faa3caefc24697b00bf370111f7307dae339b0 OK
+-https://github.com/apache/commons-dbutils.git -v 1.6 -c f20ee57775a9f3365dae062055fb2248511be2a9 OK
+-https://github.com/apache/commons-dbutils.git -v 1.5 -c 1919bb3ac5ed5b5d4e38e8f64e6b77aeb66c231c OK
+-https://github.com/apache/commons-dbutils.git -v 1.4 -c 9a74ab921d5f066d6d039639220b45b62d20ab1f OK
+-https://github.com/apache/commons-dbutils.git -v 1.3 -c 6978dd483cecee1414c391ee46205ec34d2539d5 OK
+-https://github.com/apache/commons-dbutils.git -v 1.2 -c 2cf8518621fbaece880eb9b450ece6a649b7266a OK
+-https://github.com/apache/commons-dbutils.git -v 1.1 -c 296ecfa5cba1bfabcbe945c30640230e69831f16 OK
+-https://github.com/apache/commons-dbutils.git -v 1.0 -c de4cb838f7b55e07b36459552e1bebf154fe52cd SEM POM
+
+-https://github.com/apache/commons-digester.git -v 3.3 -c ec75748096c8639be7b4998d99c37bb2e3a9c206 OK
+-https://github.com/apache/commons-digester.git -v 3.2 -c ec75748096c8639be7b4998d99c37bb2e3a9c206 OK
+-https://github.com/apache/commons-digester.git -v 3.1 -c fad107b8d66556f915e75b4d0f704dad409b054a OK
+-https://github.com/apache/commons-digester.git -v 3.0 -c ea9f1e1e3bc9c934e70557e8423b2b2c77b4bbfe OK
+
+-https://github.com/apache/commons-email.git -v 1.5 -c 5516c487a5d03df520480d47f5c5ae5a3b3341d4 OK
+-https://github.com/apache/commons-email.git -v 1.4 -c 20ab7303a775342dc6ccfc8b0b7eb98b40738ec8 OK
+-https://github.com/apache/commons-email.git -v 1.3 -c 38233b1089a9c89211cea88eb9e144a061b0d60b OK
+-https://github.com/apache/commons-email.git -v 1.2 -c 34afe0dedc9d70783d5a846510e304fb3d92baa0 OK
+-https://github.com/apache/commons-email.git -v 1.1 -c 6589e50e43b5d3c98e13c29c750967d4402aa139 OK
+-https://github.com/apache/commons-email.git -v 1.0 -c c53b324083f7138f2f2b3329a45ffa1f143d6abc SEM POM
+
+-https://github.com/apache/commons-exec.git -v 1.3 -c 0b1c1ff0cba7145d396ace37805f0b59b3d52a9c OK
+-https://github.com/apache/commons-exec.git -v 1.2 -c 2ac140a30c2a4aef77893182a687239ec24c8028 OK
+-https://github.com/apache/commons-exec.git -v 1.1 -c d9f216768f796b5b26972fb3897c8ebfd6385a59 OK
+-https://github.com/apache/commons-exec.git -v 1.0 -c 76e870f38018b569b2c19d8c23d548469c26b48d OK
+
+-https://github.com/apache/commons-fileupload.git -v 1.4 -c 047f31576411beee69cf75584ae76531cc9ac753 OK
+-https://github.com/apache/commons-fileupload.git -v 1.3 -c 18734e9f77a267ebc82ff2ffce6d96e82a34260f OK
+-https://github.com/apache/commons-fileupload.git -v 1.2 -c 5767b589c53412b794aa09a00c87399bc1e3140e OK
+-https://github.com/apache/commons-fileupload.git -v 1.1 -c 3dd42308fc227070c08b63b515de27018b184584 SEM POM
+-https://github.com/apache/commons-fileupload.git -v 1.0 -c cdfbeaa120cba6a8f1527b91600317ee374450c2 SEM POM
+
+-https://github.com/apache/commons-functor.git -v 1 -c 62cd20998e706eafb48b35774aca7b6e1c657386 OK
+
+-https://github.com/apache/commons-io.git -v 2.7 -c 6efbccc88318d15c0f5fdcfa0b87e3dc980dca22 OK
+-https://github.com/apache/commons-io.git -v 2.6 -c 2ae025fe5c4a7d2046c53072b0898e37a079fe62 OK
+-https://github.com/apache/commons-io.git -v 2.5 -c c5ef3334e968c2492a10a00bbba4186ba864c37c OK
+-https://github.com/apache/commons-io.git -v 2.4 -c e36d53170875d26d59ca94bd376bf40bc5690ee6 OK
+-https://github.com/apache/commons-io.git -v 2.3 -c c07589baa429c2ab306466643cef3dec31d1788b OK
+-https://github.com/apache/commons-io.git -v 2.2 -c 5d4d09928e154d083f396a1555da72dfe9d877d1 OK
+-https://github.com/apache/commons-io.git -v 2.1 -c 0e68a33a9b8f27e592f79a563a5c9a9644c8b21d OK
+-https://github.com/apache/commons-io.git -v 2.0 -c d5ac035b851c687b11031e694c40318db09bc634 OK
+
+-https://github.com/apache/commons-lang.git -v 3.11 -c f62f0f59a33d2c42bd4236ea7122735de30d91fc OK
+-https://github.com/apache/commons-lang.git -v 3.10 -c e0b474c0d015f89a52c4cf8866fa157dd89e7d1c OK
+-https://github.com/apache/commons-lang.git -v 3.9 -c abb39c22c0e538fff03ea4e53d78ee60c6c08092 OK
+-https://github.com/apache/commons-lang.git -v 3.8 -c eb5b11a25c9e61f9b25a540682816ebb103b735c OK
+-https://github.com/apache/commons-lang.git -v 3.7 -c 425d8085cfcaab5a78bf0632f9ae77b7e9127cf8 OK
+-https://github.com/apache/commons-lang.git -v 3.6 -c 09043bfa6f1f9ebb946c7b159735c83259e3a89f OK
+-https://github.com/apache/commons-lang.git -v 3.5 -c 36f98d87b24c2f542b02abbf6ec1ee742f1b158b OK
+-https://github.com/apache/commons-lang.git -v 3.4 -c 4777c3a5e4291af2420db57d008152c70c4a8f24 OK
+-https://github.com/apache/commons-lang.git -v 3.3 -c e8f924f51be5bc8bcd583ea96e5ef25f9b2ca72a OK
+-https://github.com/apache/commons-lang.git -v 3.2 -c 92e7e569ca9a6c92f24cc88c05e182d18ad62847 OK
+--https://github.com/apache/commons-lang.git -v 3.1 -c 915946c9dcc80a6a16745b86540b82b2ddba1720 TESTS NÃO PASSARAM
+--https://github.com/apache/commons-lang.git -v 3.0 -c a7fcc5a44e243acd2ed820e9f059d7718776a9b4 TESTS NÃO PASSARAM
+
+-https://github.com/apache/commons-math.git -v 3.6 -c 16abfe5de688cc52fb0396e0609cb33044b15653 OK
+-https://github.com/apache/commons-math.git -v 3.5 -c b3c5dae8f253fcb4484e5cd3cc5662587803efc2 OK
+-https://github.com/apache/commons-math.git -v 3.4 -c ef6e0f882819e7c5230aece1610297e67775cca2 OK
+-https://github.com/apache/commons-math.git -v 3.3 -c 38a48e20867f4cd91b7540be4bbba1e9dc7a8b02 OK
+-https://github.com/apache/commons-math.git -v 3.2 -c 7ec508828f62c2a3df31cde2a2f3aa32c5135fdb OK
+-https://github.com/apache/commons-math.git -v 3.1 -c 6c63f441a7da0d22f69ba557721474dc9b9b1ba5 OK
+-https://github.com/apache/commons-math.git -v 3.0 -c 174f17d5d4b8251c4ed2600947e69b736ace5877 OK
+
+-https://github.com/apache/commons-net.git -v 3.7 -c 5e5b43f747e06beed90c84cdc40b373b8110090b OK
+-https://github.com/apache/commons-net.git -v 3.6 -c 163fe46c019f5184016207c247cdff30ee740ecc OK
+-https://github.com/apache/commons-net.git -v 3.5 -c 943a587727079179b1c42af26b788f1cb5d76643 OK
+-https://github.com/apache/commons-net.git -v 3.4 -c 74a2282b7e4c6905581f4f1b5a2ec412310cd5e7 OK
+-https://github.com/apache/commons-net.git -v 3.3 -c f8c2dabb0e8cb62c86912dc61fe2f68106d8b917 OK
+-https://github.com/apache/commons-net.git -v 3.2 -c 9f139947e62438f408eb45fcbf8543eaf0d2b922 OK
+-https://github.com/apache/commons-net.git -v 3.1 -c e2fa6168cdbe958e56d54456e7aa1ecc4b13e4df OK
+-https://github.com/apache/commons-net.git -v 3.0 -c 70a1ff4261f239feb2cecc207cdb1e7fa656ecfa OK
+
+-https://github.com/apache/commons-pool.git -v 2.8 -c 3fb7df661d521d57297d6aafa2d2d57356ae4adf OK
+-https://github.com/apache/commons-pool.git -v 2.7 -c f4455dcb8afaf9ae7054589110f1082a7a8a282c OK
+-https://github.com/apache/commons-pool.git -v 2.6 -c 06de412e2ce72007a6e43112164c371de4a66d3b OK
+-https://github.com/apache/commons-pool.git -v 2.5 -c 07f1173074fdbce74cbc4dad743d7ddb9c04141c OK
+-https://github.com/apache/commons-pool.git -v 2.4 -c 2bc516e96ef847dbac5d87b023a16770e0880bac OK
+-https://github.com/apache/commons-pool.git -v 2.3 -c 7ecfff80b3d7e43a165556e67e1579f2af0dc7d2 OK
+-https://github.com/apache/commons-pool.git -v 2.2 -c f50e3a0e0cf7fddcce8154db5799437ed9a8408a OK
+-https://github.com/apache/commons-pool.git -v 2.1 -c a28d908dd2087d47137953952dbae83c0f48e3b7 OK
+-https://github.com/apache/commons-pool.git -v 2.0 -c b0e4868e40511e7aad229152abd6a1c15def6218 OK
+
+-https://github.com/apache/commons-proxy.git -v 1.0 -c f6e58dbc601f0e6d522a4f4cad5d7c8f9259c83e OK
+
+-https://github.com/apache/commons-validator.git -v 1.7 -c 5b75344ace5a8864e3936010524684272145bbcd OK
+-https://github.com/apache/commons-validator.git -v 1.6 -c c4b93a7275b1172f69e53cd8cec7fc27c954a5be OK
+-https://github.com/apache/commons-validator.git -v 1.5 -c 9c52f372b4c178d220e164e958210408d98c25d6 OK
+-https://github.com/apache/commons-validator.git -v 1.4 -c 17570d4402c44bebc9c9abfe83d690ef5d537d04 OK
+-https://github.com/apache/commons-validator.git -v 1.3 -c 2e2ac812982397fd4ed146957cd737d540ccd6cb SEM POM
+-https://github.com/apache/commons-validator.git -v 1.2 -c 36a87d519e46909fdff01c9febe4f569f0a086b1 SEM POM
+-https://github.com/apache/commons-validator.git -v 1.1 -c fc338a2b72ce216ef3e9b2c764182713348c7b2c SEM POM
+-https://github.com/apache/commons-validator.git -v 1.0 -c e54326fddbfec321228d7707274d2ac97a4cbacd SEM POM
+
+-https://github.com/google/gson.git -v 2.8 -c f649e051411e092f0123878e16c5132500a2d01e -m gson OK
+-https://github.com/google/gson.git -v 2.7 -c 9722b00372672214794edea844a236d83e72b273 -m gson OK
+-https://github.com/google/gson.git -v 2.6 -c fe62b04148a0fe09cb38dcb667a5053b89e6c76d -m gson OK
+-https://github.com/google/gson.git -v 2.5 -c d7d064feb8d53b426c77035f3cb659d797402b98 -m gson OK
+-https://github.com/google/gson.git -v 2.4 -c 80c13447ed09f774c879b06e40f288e881b75e4e -m gson OK
+-https://github.com/google/gson.git -v 2.3 -c 0eaa8d198cb756bce72cb9f15819193eea64df4a OK
+-https://github.com/google/gson.git -v 2.2 -c ca40a338de56871027f6c31b62f47f810f092bef OK
+-https://github.com/google/gson.git -v 2.1 -c 30245b8cc43fbb90f64cb6b42d926ce40f22515d OK
+-https://github.com/google/gson.git -v 2.0 -c 22ee5630f4cd6b34e4af8c6186c005df50088c76 OK
+
+-https://github.com/hamcrest/JavaHamcrest.git -v 2.2 -c 60454d3c3e2eac8f3049dfbef2900a989a8b8624 -p g -m hamcrest ERRO
+-https://github.com/hamcrest/JavaHamcrest.git -v 2.1 -c 8cf0846f96b2090ef2cf6972f4890c82f427cb19 -p g -m hamcrest SEM POM
+
+-https://github.com/jhy/jsoup.git -v 1.13 -c dcf3c8ba5a0963260999f463ee80b6a787928bb9 OK
+-https://github.com/jhy/jsoup.git -v 1.12 -c 6ef89226deae4683ccc0f2367db048278e94d5b0 OK
+-https://github.com/jhy/jsoup.git -v 1.11 -c 2b1ea0633ff5d4cba5db0e202a4ce0fbdccc19db OK
+-https://github.com/jhy/jsoup.git -v 1.10 -c 2a5f524d57545becc11c92a6a50b80283d22e594 OK
+-https://github.com/jhy/jsoup.git -v 1.9 -c 5dc4c487d42705f60ff6e5b95d03c71a3326d6cd OK
+-https://github.com/jhy/jsoup.git -v 1.8 -c 99ef54acdea15d339f3616d1a5aa70dca29e65bb OK
+-https://github.com/jhy/jsoup.git -v 1.7 -c d599990c331989230a6e1d0e4fea9e577022cc9c OK
+-https://github.com/jhy/jsoup.git -v 1.6 -c 13d0bee275b1e61ee68dea02530b6e7b0ec9ac3a OK
+-https://github.com/jhy/jsoup.git -v 1.5 -c 7c5a3bf33d92059bd95cc983568bedc86a3f1454 OK
+-https://github.com/jhy/jsoup.git -v 1.4 -c b2229d63f6ff2af8f67b976f90a525f25361f187 OK
+-https://github.com/jhy/jsoup.git -v 1.3 -c 88c822e8e4443a3bb42600f861011266a0b4a569 OK
+-https://github.com/jhy/jsoup.git -v 1.2 -c 145d783a19d6d4b33670a5325cc6edf282999d66 OK
+-https://github.com/jhy/jsoup.git -v 1.1 -c 739436d949db10708d4de829e5097ba86a80bbd8 OK
+
+-https://github.com/junit-team/junit4.git -v 4.13 -c 038f7518fc1018b26df608e3e5dce6db4611be29 OK
+-https://github.com/junit-team/junit4.git -v 4.12 -c 64155f8a9babcfcf4263cf4d08253a1556e75481 OK
+-https://github.com/junit-team/junit4.git -v 4.11 -c c2e4d911fadfbd64444fb285342a8f1b72336169 SEM POM
+-https://github.com/junit-team/junit4.git -v 4.10 -c 45a44647e7306262162e1346b750c3209019f2e1 SEM POM
+-https://github.com/junit-team/junit4.git -v 4.9 -c 61f06547599bb6b98bca99d5bc457eb20bc17cab SEM POM
+-https://github.com/junit-team/junit4.git -v 4.8 -c a30e87b6ac67f14a42b97d427bb1c8c6ba18cd87 SEM POM
+-https://github.com/junit-team/junit4.git -v 4.7 -c a8629da96207e1ce71ead9ba9f85bc324f09bcab SEM POM
+-https://github.com/junit-team/junit4.git -v 4.6 -c b5e9885854a0d594451800b9127eb50afb645433 SEM POM
+
+-https://github.com/mockito/mockito.git -v 3.4 -c 019830665f97c8ba6159148e3b10086cfb894900 -p g OK
+-https://github.com/mockito/mockito.git -v 3.3 -c 0fec6d70c8364cb8717c3ca48477530cd9fa94f5 -p g OK
+-https://github.com/mockito/mockito.git -v 3.2 -c 2c5a2e8d244734e93f22749a22183d0fec641212 -p g OK
+-https://github.com/mockito/mockito.git -v 3.1 -c dc6eadc079a3fce66354b6cdf17b839229dc4246 -p g OK
+-https://github.com/mockito/mockito.git -v 3.0 -c 6dfd5294b2032dea7f77bfae16c8735bf1192ea2 -p g OK
+
+-https://github.com/x-stream/xstream.git -v 1.4 -c 6ec37c8d0129ce73d3264958d1deb38eeb08eea5 -m xstream -pp src/java OK
+-https://github.com/x-stream/xstream.git -v 1.3 -c ff23674bfa2d25b56c826e488df9e41a3fa99cec -m xstream -pp src/java FAIL
+-https://github.com/x-stream/xstream.git -v 1.2 -c 2c2109f23be2c7094cb20da06d1cf8ae767ca1b3 -m xstream -pp src/java FAIL
+-https://github.com/x-stream/xstream.git -v 1.1 -c 92acd5f00520a1885e5b6f627102ab0a455daa1f -m xstream -pp src/java SEM POM
+-https://github.com/x-stream/xstream.git -v 1.0 -c 8e0dbbdbc462da0bd459e28381ac76bf7c6bc8ee -m xstream -pp src/java SEM POM
+
+-https://github.com/google/guava.git -v 28.2 -c a1b3c06876803a0b0e5d2f16708e1328da1bac09 -m guava OK
+-https://github.com/google/guava.git -v 28.1 -c e30495f4e09e2511b4f2bb95d2b9e1b262c4215d -m guava OK
+-https://github.com/google/guava.git -v 28.0 -c 9957203c956016b485696ce9d1a4d60f1019c5fd -m guava OK
+
+-https://github.com/grpc/grpc-java.git -v 1.31 -c f96f8459e22aca89787430b35034012d5fe928bf FAIL
+-https://github.com/grpc/grpc-java.git -v 1.30 -c 9071c1ad7c842f4e73b6ae95b71f11c517b177a4 FAIL
+
+-https://github.com/spring-projects/spring-framework.git -v 5.3 -c a4dc13a0435484d5704e72a94a4e41c690afb381 -m spring-core -p g FAIL
+-https://github.com/spring-projects/spring-framework.git -v 5.2 -c c23b1bd6afb529125ee8ad8df64e172cf4c65f31 -m spring-core -p g FAIL
+-https://github.com/spring-projects/spring-framework.git -v 5.1 -c aa0d4a253074f478824969fb1e3d34ad0b12167a -m spring-core -p g FAIL
+-https://github.com/spring-projects/spring-framework.git -v 5.0 -c 6c6fb007b8d3cb202b162a5ecc3259b621b11f6e -m spring-core -p g FAIL
+
+-https://github.com/apache/httpcomponents-client.git -v 4.5 -c ee13624c12129ba91b522e7111c79e1b6872b07e -m httpclient OK
+-https://github.com/apache/httpcomponents-client.git -v 4.4 -c 6ab2e3482316314e377274463a0bcd611acf6f2b -m httpclient OK
+-https://github.com/apache/httpcomponents-client.git -v 4.3 -c 68d09e9d2b689e45e55980203ade4e7990ac1427 -m httpclient OK
+-https://github.com/apache/httpcomponents-client.git -v 4.2 -c 576fcb56d1ec31d151d85e2cbc80371fd319d506 -m httpclient OK
+-https://github.com/apache/httpcomponents-client.git -v 4.1 -c fb0256e83390072b80da749241be3134d69ce536 -m httpclient OK
+-https://github.com/apache/httpcomponents-client.git -v 4.0 -c b344fee31e780f32211624bb56f2d1ad5fa1dba2 -m httpclient OK
+
+-https://github.com/qos-ch/slf4j.git -v 1.7 -c 0b97c416e42a184ff9728877b461c616187c58f7 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v 1.6 -c fbe2e679da6a59188a5c10696682a5e801b887cb -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v 1.5 -c 00fe6c619057d7791180edc6c38d9151ed6f3d28 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v 1.4 -c 04a8c2c2cf42307e655ce14872c6bcecefc3babc -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v 1.3 -c 260b5f6f9d0f149274a803a01dd28351590ef15e -m slf4j-log4j12 OK
+
+-https://github.com/apache/hadoop.git -v 3.3 -c aa96f1871bfd858f9bac59cf2a81ec470da649af ANALISANDO

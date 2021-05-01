@@ -19,6 +19,7 @@ public class CoverageResult {
 	private String type;
 	private boolean coveraged;
 	private String typeCode;
+	private String idBlock;
 	
 	public String getType() {
 		return type;
@@ -68,7 +69,13 @@ public class CoverageResult {
 	public void setCoverageLine(ClassXMLCoverageLine coverageLine) {
 		this.coverageLine = coverageLine;
 	}
-	
+	public String getIdBlock() {
+		return idBlock;
+	}
+
+	public void setIdBlock(String idBlock) {
+		this.idBlock = idBlock;
+	}
 	@Override
 	public String toString() {
 		return "CoverageResult [project=" + project + ", className=" + className + ", coverageLine=" + coverageLine
@@ -77,6 +84,10 @@ public class CoverageResult {
 	}
 	
 	public String toStringCSV() {
-		return project + "," + className + "," + lineCode + "," + type +  "," + typeCode + "," + coveraged + "," + coverageLine.toStringCSV();
+		return project + "," + className + "," + lineCode + "," + type + "," + coveraged + "," + coverageLine.toStringCSV() + "," + (idBlock != null ? idBlock : "") ;
+	}
+
+	public String toStringCSV3() {
+		return project + "," + className + "," + lineCode + "," + type + "," + coveraged + "," + "," + (idBlock != null ? idBlock : "") ;
 	}
 }

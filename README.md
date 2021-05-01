@@ -94,3 +94,62 @@
     - **THROWS_MM**: Missed Method Throws
     - **THROWS_CM**: Covered Method Throws
   - **ExecuteCloneAndRunTestsWithJaCoCo**: Make only tests and JaCoCo report of projects.
+
+
+- Como rodar JaCoCo Tests com Gradlew
+
+####Adicionar no `build.gradle` Versões antigas -> 
+```
+plugins {
+    ...
+    id 'jacoco'
+}
+
+...
+jacocoTestReport {
+    group = "Reporting"
+    reports {
+        xml.enabled true
+        csv.enabled true
+	xml.destination "${buildDir}/../target/site/jacoco/jacoco.xml"
+	csv.destination "${buildDir}/../target/site/jacoco/jacoco.csv"
+        html.destination "${buildDir}/../target/site/jacoco"
+    }
+}
+...
+apply plugin: "java"
+apply plugin: "jacoco"
+
+```
+
+
+#### Versões mais recentes
+
+```
+
+plugins {
+    ...
+    id 'jacoco'
+}
+...
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacoco {
+    toolVersion = "0.8.5"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.enabled true
+        csv.enabled true
+        html.enabled true
+        xml.destination file("${buildDir}/../target/site/jacoco/jacoco.xml")
+        csv.destination file("${buildDir}/../target/site/jacoco/jacoco.csv")
+        html.destination file("${buildDir}/../target/site/jacoco")
+    }
+}
+```

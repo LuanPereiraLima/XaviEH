@@ -91,12 +91,13 @@ public class Util {
 					public void consumeLine(String arg0) {
 					}
 				});
-			
-			final InvocationRequest request = new DefaultInvocationRequest();
+			//"-Dcheckstyle.skip", "-Drat.skip=true"
+
+		final InvocationRequest request = new DefaultInvocationRequest();
 			request.setBaseDirectory( new File( copyProjectPath ) );
 			request.setGoals( Maven.GOALS_PROJECT_DISABLE_CHECK );
 			request.setDebug(false);
-			
+
 			if(submodules!=null) {
 				request.setProjects(submodules);
 				System.out.println("Realizando os testes dentro dos submodulos: "+submodules);
@@ -600,9 +601,12 @@ public class Util {
 	public static Map<String, List<FinalResultSavedByProject>> getListSaveMutantResultTypeFromXml(String projectPath) {
 		XStream xs = new XStream();
 		try {
-			return (Map<String, List<FinalResultSavedByProject>>) xs.fromXML(new FileInputStream(projectPath+"filesResultsMutants.xml"));
+			Map<String, List<FinalResultSavedByProject>> teste = (Map<String, List<FinalResultSavedByProject>>) xs.fromXML(new FileInputStream(projectPath+"filesResultsMutants.xml"));
+			System.out.println("Teste: " + teste);
+			return teste;
 		} catch (FileNotFoundException e) {
-			//e.printStackTrace();
+			System.out.println("EIAAAAAAAAAAAAAAAa");
+			e.printStackTrace();
 			return null;
 		}
 	}

@@ -33,13 +33,18 @@ public class ExecuterCloneAndRunTestsWithJaCoCo extends Execute {
 				System.out.println("Jumping URL: "+list.get(i)+" By signal - .");
 				continue;
 			}
-			
+
 			String[] linha = list.get(i).split(" ");
 			
 			String version = getItemByUrl(linha, VERSION_URL);
 			String commit = getItemByUrl(linha, COMMIT_URL);
 			String submodule = getItemByUrl(linha, MODULE_URL);
-			
+			String build = getItemByUrl(linha, BUILD_URL);
+			String pathProject = getItemByUrl(linha, PATH_PROJECT_URL);
+
+			if(build != null && build.equals("g"))
+				this.isProjectMaven = false;
+
 			path = Util.validateAndGetNameRepository(linha[0]);
 			
 			if(version!=null)

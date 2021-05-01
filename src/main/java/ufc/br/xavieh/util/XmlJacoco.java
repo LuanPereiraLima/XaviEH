@@ -220,8 +220,6 @@ public class XmlJacoco {
 						List<ClassXMLCoverageLine> listaLines = new ArrayList<ClassXMLCoverageLine>();
 						//PERCORRENDO OS ITENS DA CLASSE
 						for(int k=0; k < lista.item(i).getChildNodes().item(j).getChildNodes().getLength(); k++) {
-
-						
 							//System.out.println("OPA: "+lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getNodeName());
 							//OBTENDO APENANS OS MÉTODOS
 							if(lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getNodeName().equals("method")) {
@@ -243,6 +241,21 @@ public class XmlJacoco {
 								}
 								
 								//System.out.println(cc);
+							}
+							if(lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getNodeName().equals("counter")) {
+								if(lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getAttributes().getNamedItem("type").getNodeValue().equals("INSTRUCTION")){
+									cc.setMI_MissedInstructions(Integer.parseInt(lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getAttributes().getNamedItem("missed").getNodeValue()));
+									cc.setCI_CoveredInstructions(Integer.parseInt(lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getAttributes().getNamedItem("covered").getNodeValue()));
+								}else if(lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getAttributes().getNamedItem("type").getNodeValue().equals("BRANCH")){
+									cc.setMB_MissedBraches(Integer.parseInt(lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getAttributes().getNamedItem("missed").getNodeValue()));
+									cc.setCB_CoveredBraches(Integer.parseInt(lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getAttributes().getNamedItem("covered").getNodeValue()));
+								}else if(lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getAttributes().getNamedItem("type").getNodeValue().equals("METHOD")){
+									cc.setMM_MissedMethods(Integer.parseInt(lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getAttributes().getNamedItem("missed").getNodeValue()));
+									cc.setCM_CoveredMethods(Integer.parseInt(lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getAttributes().getNamedItem("covered").getNodeValue()));
+								}else if(lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getAttributes().getNamedItem("type").getNodeValue().equals("CLASS")){
+									cc.setMC_MissedClasses(Integer.parseInt(lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getAttributes().getNamedItem("missed").getNodeValue()));
+									cc.setCC_CoveredClasses(Integer.parseInt(lista.item(i).getChildNodes().item(j).getChildNodes().item(k).getAttributes().getNamedItem("covered").getNodeValue()));
+								}
 							}
 						}
 						cc.setLineDetails(listaLines);

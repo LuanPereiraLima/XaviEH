@@ -268,6 +268,46 @@ public class TotalCoveredStatus {
 			int tHROW_E_CI_TotalCoveredInstructionsThrowStatements) {
 		THROW_E_CI_TotalCoveredInstructionsThrowStatements = tHROW_E_CI_TotalCoveredInstructionsThrowStatements;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "TotalCoveredStatus{" +
+				"MI_TotalMissedInstructions=" + MI_TotalMissedInstructions +
+				", CI_TotalCoveredInstructions=" + CI_TotalCoveredInstructions +
+				", MB_TotalMissedBraches=" + MB_TotalMissedBraches +
+				", CB_TotalCoveredBraches=" + CB_TotalCoveredBraches +
+				", MM_TotalMissedMethods=" + MM_TotalMissedMethods +
+				", CM_TotalCoveredMethods=" + CM_TotalCoveredMethods +
+				", MC_TotalMissedClasses=" + MC_TotalMissedClasses +
+				", CC_TotalCoveredClasses=" + CC_TotalCoveredClasses +
+				", TRY_MI_TotalMissedInstructionsTryBlocks=" + TRY_MI_TotalMissedInstructionsTryBlocks +
+				", TRY_CI_TotalCoveredInstructionsTryBlocks=" + TRY_CI_TotalCoveredInstructionsTryBlocks +
+				", TRY_MB_TotalMissedBrachesTryBlocks=" + TRY_MB_TotalMissedBrachesTryBlocks +
+				", TRY_CB_TotalCoveredBrachesTryBlocks=" + TRY_CB_TotalCoveredBrachesTryBlocks +
+				", CATCH_MI_TotalMissedInstructionsCatchBlocks=" + CATCH_MI_TotalMissedInstructionsCatchBlocks +
+				", CATCH_CI_TotalCoveredInstructionsCatchBlocks=" + CATCH_CI_TotalCoveredInstructionsCatchBlocks +
+				", CATCH_MB_TotalMissedBrachesCatchBlocks=" + CATCH_MB_TotalMissedBrachesCatchBlocks +
+				", CATCH_CB_TotalCoveredBrachesCatchBlocks=" + CATCH_CB_TotalCoveredBrachesCatchBlocks +
+				", CATCH_I_MI_TotalMissedInstructionsCatchBlocks=" + CATCH_I_MI_TotalMissedInstructionsCatchBlocks +
+				", CATCH_I_CI_TotalCoveredInstructionsCatchBlocks=" + CATCH_I_CI_TotalCoveredInstructionsCatchBlocks +
+				", CATCH_I_MB_TotalMissedBrachesCatchBlocks=" + CATCH_I_MB_TotalMissedBrachesCatchBlocks +
+				", CATCH_I_CB_TotalCoveredBrachesCatchBlocks=" + CATCH_I_CB_TotalCoveredBrachesCatchBlocks +
+				", CATCH_E_MI_TotalMissedInstructionsCatchBlocks=" + CATCH_E_MI_TotalMissedInstructionsCatchBlocks +
+				", CATCH_E_CI_TotalCoveredInstructionsCatchBlocks=" + CATCH_E_CI_TotalCoveredInstructionsCatchBlocks +
+				", CATCH_E_MB_TotalMissedBrachesCatchBlocks=" + CATCH_E_MB_TotalMissedBrachesCatchBlocks +
+				", CATCH_E_CB_TotalCoveredBrachesCatchBlocks=" + CATCH_E_CB_TotalCoveredBrachesCatchBlocks +
+				", FINALLY_MI_TotalMissedInstructionsFinallyBlocks=" + FINALLY_MI_TotalMissedInstructionsFinallyBlocks +
+				", FINALLY_CI_TotalCoveredInstructionsFinallyBlocks=" + FINALLY_CI_TotalCoveredInstructionsFinallyBlocks +
+				", FINALLY_MB_TotalMissedBrachesFinallyBlocks=" + FINALLY_MB_TotalMissedBrachesFinallyBlocks +
+				", FINALLY_CB_TotalCoveredBrachesFinallyBlocks=" + FINALLY_CB_TotalCoveredBrachesFinallyBlocks +
+				", THROW_MI_TotalMissedInstructionsThrowStatements=" + THROW_MI_TotalMissedInstructionsThrowStatements +
+				", THROW_CI_TotalCoveredInstructionsThrowStatements=" + THROW_CI_TotalCoveredInstructionsThrowStatements +
+				", THROW_I_MI_TotalMissedInstructionsThrowStatements=" + THROW_I_MI_TotalMissedInstructionsThrowStatements +
+				", THROW_I_CI_TotalCoveredInstructionsThrowStatements=" + THROW_I_CI_TotalCoveredInstructionsThrowStatements +
+				", THROW_E_MI_TotalMissedInstructionsThrowStatements=" + THROW_E_MI_TotalMissedInstructionsThrowStatements +
+				", THROW_E_CI_TotalCoveredInstructionsThrowStatements=" + THROW_E_CI_TotalCoveredInstructionsThrowStatements +
+				", THROWS_MM_TotalMissedMethodsWithThrows=" + THROWS_MM_TotalMissedMethodsWithThrows +
+				", THROWS_CM_TotalCoveredMethodsWithThrows=" + THROWS_CM_TotalCoveredMethodsWithThrows +
+				'}';
+	}
 }

@@ -1,30 +1,27 @@
---=https://github.com/apache/commons-bcel.git -v 6.2 -c 893d9bbcdbd5ce764db1a38eccd73af150e5d34d
---=https://github.com/apache/commons-beanutils.git -v 1.9.3 -c a83c1eae04c9c99360c3ba4e6a46fd89dc5407ef
---=https://github.com/apache/commons-exec.git -v 1.3 -c 0b1c1ff0cba7145d396ace37805f0b59b3d52a9c
---=https://github.com/apache/commons-codec.git -v 1.11 -c 9ceef2231549e95f7868266f38b0c7e1a0a40ed4
---=https://github.com/apache/commons-collections.git -v 4.2 -c 483cbbbf5a8b3c14edf3e6563e8f8ba380966d47
---=https://github.com/apache/commons-compress.git -v 1.18 -c b95d5cde4c68640f886e3c6802384fae47408a37
---=https://github.com/apache/commons-configuration.git -v 2.4 -c 6543cb0b6c283c0d4331dc0baee269b01db00622
---=https://github.com/apache/commons-email.git -v 1.5 -c 5516c487a5d03df520480d47f5c5ae5a3b3341d4
---=https://github.com/apache/commons-fileupload.git -v 1.3.3 -c 18734e9f77a267ebc82ff2ffce6d96e82a34260f
---=https://github.com/apache/commons-math.git -v 3.6.1 -c 16abfe5de688cc52fb0396e0609cb33044b15653
---=https://github.com/apache/commons-net.git -v 3.6 -c 163fe46c019f5184016207c247cdff30ee740ecc
---=https://github.com/apache/commons-pool.git -v 2.6.1 -c 87c5dc14a967a70dd6e640395d4e842b021cdb8f
---=https://github.com/apache/commons-validator.git -v 1.6 -c c4b93a7275b1172f69e53cd8cec7fc27c954a5be
---=https://github.com/apache/commons-io.git -v 2.6 -c 2ae025fe5c4a7d2046c53072b0898e37a079fe62
---=https://github.com/apache/commons-lang.git -v 3.8.1 -c eb5b11a25c9e61f9b25a540682816ebb103b735c
---=https://github.com/apache/commons-cli.git -v 1.4 -c f7153c3c10cc8060d3858a6a90d7ddccd0b3533e
---=https://github.com/apache/commons-functor.git -v 1 -c 62cd20998e706eafb48b35774aca7b6e1c657386
---=https://github.com/apache/commons-proxy.git -v 1.0 -c f6e58dbc601f0e6d522a4f4cad5d7c8f9259c83e
---=https://github.com/apache/commons-digester.git -v 3.3.2 -c ec75748096c8639be7b4998d99c37bb2e3a9c206
---=https://github.com/apache/commons-dbcp.git -v 2.5 -c 334784e3043cadaeaa626f792c3f62ac7b697927
---=https://github.com/apache/commons-dbutils.git -v 1.7 -c 77faa3caefc24697b00bf370111f7307dae339b0
---=https://github.com/google/gson.git -v 2.8.5 -c f649e051411e092f0123878e16c5132500a2d01e -m gson
---=https://github.com/jhy/jsoup.git -v 1.11.3 -c 2b1ea0633ff5d4cba5db0e202a4ce0fbdccc19db
---=https://github.com/junit-team/junit4.git -v 4.12 -c 64155f8a9babcfcf4263cf4d08253a1556e75481
---=https://github.com/x-stream/xstream.git -v 1.4.11.1 -c 54529d8561c7fc959c8c394c0526bf45cc0c1528 -m xstream -p g -pp src/java
---=https://github.com/mockito/mockito.git -v 2.23.11 -c 0c4e494a16141a65f22605a57382a222040f340b -p g
---=https://github.com/hamcrest/JavaHamcrest.git -v 2.1 -c cf6796e1b3745a188cf4548cb585482543ad1de6 -p g -m hamcrest
--
---https://github.com/google/guava.git -v 27.0.1 -c 777f0f939dda3feb36263315da5bc39516a076a1 -m guava [os testes são separados, então precisamos saber como testar]
-https://github.com/apache/hadoop.git -v 3.1.2-12 -c 1019dde65bcf12e05ef48ac71e84550d589e5d9a -m hadoop-mapreduce-project/hadoop-mapreduce-client/hadoop-mapreduce-client-shuffle
+--https://github.com/apache/commons-bcel.git -v 6.2 -c 893d9bbcdbd5ce764db1a38eccd73af150e5d34d
+--https://github.com/apache/commons-beanutils.git -v 1.9.3 -c a83c1eae04c9c99360c3ba4e6a46fd89dc5407ef
+--https://github.com/apache/commons-exec.git -v 1.3 -c 0b1c1ff0cba7145d396ace37805f0b59b3d52a9c
+--https://github.com/apache/commons-codec.git -v 1.11 -c 9ceef2231549e95f7868266f38b0c7e1a0a40ed4
+--https://github.com/apache/commons-collections.git -v 4.2 -c 483cbbbf5a8b3c14edf3e6563e8f8ba380966d47
+--https://github.com/apache/commons-compress.git -v 1.18 -c b95d5cde4c68640f886e3c6802384fae47408a37
+--https://github.com/apache/commons-configuration.git -v 2.4 -c 6543cb0b6c283c0d4331dc0baee269b01db00622
+--https://github.com/apache/commons-email.git -v 1.5 -c 5516c487a5d03df520480d47f5c5ae5a3b3341d4
+--https://github.com/apache/commons-fileupload.git -v 1.3.3 -c 18734e9f77a267ebc82ff2ffce6d96e82a34260f
+--https://github.com/apache/commons-math.git -v 3.6.1 -c 16abfe5de688cc52fb0396e0609cb33044b15653
+--https://github.com/apache/commons-net.git -v 3.6 -c 163fe46c019f5184016207c247cdff30ee740ecc
+--https://github.com/apache/commons-pool.git -v 2.6.1 -c 87c5dc14a967a70dd6e640395d4e842b021cdb8f
+--https://github.com/apache/commons-validator.git -v 1.6 -c c4b93a7275b1172f69e53cd8cec7fc27c954a5be
+--https://github.com/apache/commons-io.git -v 2.6 -c 2ae025fe5c4a7d2046c53072b0898e37a079fe62
+--https://github.com/apache/commons-lang.git -v 3.8.1 -c eb5b11a25c9e61f9b25a540682816ebb103b735c
+--https://github.com/apache/commons-cli.git -v 1.4 -c f7153c3c10cc8060d3858a6a90d7ddccd0b3533e
+--https://github.com/apache/commons-functor.git -v 1 -c 62cd20998e706eafb48b35774aca7b6e1c657386
+--https://github.com/apache/commons-proxy.git -v 1.0 -c f6e58dbc601f0e6d522a4f4cad5d7c8f9259c83e
+--https://github.com/apache/commons-digester.git -v 3.3.2 -c ec75748096c8639be7b4998d99c37bb2e3a9c206
+--https://github.com/apache/commons-dbcp.git -v 2.5 -c 334784e3043cadaeaa626f792c3f62ac7b697927
+--https://github.com/apache/commons-dbutils.git -v 1.7 -c 77faa3caefc24697b00bf370111f7307dae339b0
+--https://github.com/google/gson.git -v 2.8.5 -c f649e051411e092f0123878e16c5132500a2d01e -m gson
+--https://github.com/jhy/jsoup.git -v 1.11.3 -c 2b1ea0633ff5d4cba5db0e202a4ce0fbdccc19db
+--https://github.com/junit-team/junit4.git -v 4.12 -c 64155f8a9babcfcf4263cf4d08253a1556e75481
+--https://github.com/x-stream/xstream.git -v 1.4.11.1 -c 54529d8561c7fc959c8c394c0526bf45cc0c1528 -m xstream -p g -pp src/java
+--https://github.com/mockito/mockito.git -v 2.23.11 -c 0c4e494a16141a65f22605a57382a222040f340b -p g
+--https://github.com/hamcrest/JavaHamcrest.git -v 2.1 -c cf6796e1b3745a188cf4548cb585482543ad1de6 -p g -m hamcrest

@@ -1,0 +1,389 @@
+--https://github.com/qos-ch/slf4j.git -v jigsawOne -c 20570d8ebacca9978afbdbd936cc88db19d10b9a -m slf4j-log4j12 FAIL
+-https://github.com/qos-ch/slf4j.git -v v1.5.9-RC0 -c aec79d97acacb680a1a611aa134c50dd6a3014af -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v1.5.9.RC1 -c 58e6b11530ab61312326b4d5f4bf43900797d650 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v1.5.10 -c 70d3d276cb14f4792714c99d9660f1e69b4c3a93 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v1.5.11 -c 00fe6c619057d7791180edc6c38d9151ed6f3d28 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v1.6.0-RC0 -c 4e9748b4696e1ca6c80ce6be7fe2096e9639ba04 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.6.0 -c b1d03d5ce82626fbc2e4b5ad13f8e92128b18038 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.6.1 -c 990f24180a7fe18040a851a71f6fab06a4f18604 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.6.2 -c 1bb6ebb8f5b63569920101f79132f525437aa964 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.6.3 -c 20ef8743669eaba701967f735039033348b27efb -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.6.4 -c 38915dafe04496b42ec65732c9376aa26b3c81e9 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.6.5 -c b48ade9995a90fbd406b322080b99b10b303c320 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.6.6 -c fbe2e679da6a59188a5c10696682a5e801b887cb -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.0 -c 999956dd00ae500d998d2b17cea33e8b83617127 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.1 -c 88333f50effb1bb618847b0901b2a1e43e86d9c8 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.2 -c c06e41788dcd9ce06602d2709ce34261adff4ce9 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.3 -c 1c3e4c628ade20945818e320cd0e4f05a5e4ce77 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.4 -c a031ea22e9812026236336662e4e124bcacd8144 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.5 -c 916dcc44e8b490b4ded137455b6b050fd39a2ee5 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.6 -c 1784b3485cdc77ccd7b0ed318223dedb9bdf6dfd -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v1.7.7 -c 46cf4f7fedf92ebe69efb28d7032086094b47403 -m slf4j-log4j12 OK
+--https://github.com/qos-ch/slf4j.git -v v_1.7.8 -c 8a1702ba0f1ccd5dec8b4fca59829399313edeac -m slf4j-log4j12 FAIL
+-https://github.com/qos-ch/slf4j.git -v v_1.7.9 -c e4b7f60e244b0261f2d89b0b7bcb08091c745c85 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.10 -c d4c2cf5bd32b85a4172071e2b23d66800ab8aebd -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.11 -c 850c565e3a418833cd704c86174b8d6efa511b43 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.12 -c 0c189f9882f3167e2dadd9f2eeb115caa2ad9629 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.13 -c fc84778ffe721edafe6863ceb5407133fc2c285c -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.14 -c 6b7721b507e0d609d20cb4dfc7e7084b95cc231d -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.15 -c 31c509e9a6fdc6902b531b62ec556e3fa757228e -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.16 -c cdc7773e8e02d4cc34c3dc3461831bc280c5dbb9 -m slf4j-log4j12 OK
+--https://github.com/qos-ch/slf4j.git -v v_1.7.17 -c b732747165d93215358019e36d5598b4fb25d7c8 -m slf4j-log4j12 FAIL
+-https://github.com/qos-ch/slf4j.git -v v_1.7.18 -c c25881c13e4905a14817ce13a2a9a3819183f791 -m slf4j-log4j12 OK
+--https://github.com/qos-ch/slf4j.git -v v_1.7.19 -c 227f986525ce611069e7bf7f8cc300149002b9b2 -m slf4j-log4j12 FAIL
+-https://github.com/qos-ch/slf4j.git -v v_1.7.20 -c 0aa7c8c8c38e25405d3241235646a9cedeb80eb8 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.21 -c 25aba2ea4febeb35ba910c249826b5a62001a7e4 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.22 -c 3ec4456cd318a3091f2659e1dfcbbe813e6b9642 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.23 -c 5c822203c9c334d8e4e5451e716f38c2fd4202c5 -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.24 -c e49d591fc6f3e4f1517edb7ac56f2ca62b4660ce -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.7.25 -c a81440ea36676f3b090f5a4ccba70d17c7b80f6e -m slf4j-log4j12 OK
+-https://github.com/qos-ch/slf4j.git -v v_1.8.0-alpha1 -c ae16a03219821ec78e8dd456cb3e0c20e5adcda8 -m slf4j-log4j12 FAIL
+-https://github.com/qos-ch/slf4j.git -v v_1.8.0-alpha2 -c 70ec42263abf188950cd2a8f8eb4502c9c372ac1 -m slf4j-log4j12 FAIL
+-https://github.com/qos-ch/slf4j.git -v v_1.8.0-beta1 -c 287004f70bc1b238b41e69f2aa5d1db18a2b6a00 -m slf4j-log4j12 FAIL
+-https://github.com/qos-ch/slf4j.git -v v_1.8.0-beta3 -c 5e93462dd781677fb75aefc6cc7df65822970ca0 -m slf4j-log4j12 FAIL
+-https://github.com/qos-ch/slf4j.git -v v_1.8.0-beta4 -c c7e0311517153d72e6edcf0ab52be7fb42ea36a7 -m slf4j-log4j12 FAIL
+-https://github.com/qos-ch/slf4j.git -v v_1.8.0_beta2 -c 26731d281940483d8777a8a7a4146329a28496aa -m slf4j-log4j12 FAIL
+-https://github.com/qos-ch/slf4j.git -v v_2.0.0-alpha1 -c 0c1d72b602da6599e1637c92e9ecb3292afdc3b7 -m slf4j-log4j12 OK
+
+-https://github.com/apache/httpcomponents-client.git -v 5.0-alpha3-RC1 -c ea22019220e8a40815e10707486360a796012f26 -m httpclient5 OK
+-https://github.com/apache/httpcomponents-client.git -v 5.0-beta1-RC1 -c 67be267f99e904334f882b81fc9bb1b2ec14f9fd -m httpclient5 OK
+-https://github.com/apache/httpcomponents-client.git -v 5.0-beta2-RC1 -c 83f9ab8d1dbed37818b45a286996779930d2a2ae -m httpclient5 OK
+-https://github.com/apache/httpcomponents-client.git -v 5.0-beta3-RC1 -c 6a0dc585708e8c8c7ec4bb186f4159c8b03359b1 -m httpclient5 OK
+-https://github.com/apache/httpcomponents-client.git -v 5.0-beta4-RC1 -c 3fac3a4435189965fc098ad28e12a379fc98ba75 -m httpclient5 OK
+-https://github.com/apache/httpcomponents-client.git -v rel-v5.0-alpha3 -c ea22019220e8a40815e10707486360a796012f26 -m httpclient5 OK
+-https://github.com/apache/httpcomponents-client.git -v rel-v5.0-beta1 -c 67be267f99e904334f882b81fc9bb1b2ec14f9fd -m httpclient5 OK
+-https://github.com/apache/httpcomponents-client.git -v rel-v5.0-beta2 -c 83f9ab8d1dbed37818b45a286996779930d2a2ae -m httpclient5 OK
+-https://github.com/apache/httpcomponents-client.git -v rel-v5.0-beta3 -c 6a0dc585708e8c8c7ec4bb186f4159c8b03359b1 -m httpclient5 OK
+-https://github.com/apache/httpcomponents-client.git -v rel-v5.0-beta4 -c 3fac3a4435189965fc098ad28e12a379fc98ba75 -m httpclient5 OK
+
+-https://github.com/google/guava.git -v failureaccess-v1.0.1 -c b8d5ecd40b9cfbd9cafc08bf50bd2382369812e9 -m guava OK
+-https://github.com/google/guava.git -v jdk5-backport-branch-point -c 00caedba5f5f1a16be7b7b63fb6d833c8ea750e9 -m guava FAIL
+-https://github.com/google/guava.git -v released-all-futures -c b62d52926b904a8def90fd427acad53d79fa0e9f -m guava OK
+--https://github.com/google/guava.git -v v2.0 -c f5ad01f0326405c321a4d1a7bbafb01b7d4d5074 -m guava NO POM
+-https://github.com/google/guava.git -v v7.0 -c 13bc6c9bf52aa45fe4371357546b7ca66f317df2 FAIL
+
+https://github.com/mockito/mockito.git -v v2.24.7 -c 4a99af3fc920fa2dd8379da7f9a24dd61a7ee39e -p g
+https://github.com/mockito/mockito.git -v v2.24.8 -c b745b5d48e9c110fa419fd007b3159ff612b8643 -p g
+https://github.com/mockito/mockito.git -v v2.24.9 -c 0cf38225c58fcf7dfe49780c987516ff53048c6e -p g
+https://github.com/mockito/mockito.git -v v2.24.10 -c af2d33be7fbfecad172cef4da2127b8d9a6fbe31 -p g
+https://github.com/mockito/mockito.git -v v2.25.0 -c 70c6fa4a056e5bf6ce1c464d5e4c5bd6431a2828 -p g
+https://github.com/mockito/mockito.git -v v2.25.1 -c a323b8132de6f6e1c29d738de245469f8ce009b0 -p g
+https://github.com/mockito/mockito.git -v v2.25.2 -c 656d83730aca1ab66a938c68701ea4e18a4299ca -p g
+https://github.com/mockito/mockito.git -v v2.25.3 -c 7c8aae0055b082b4cffb2739e4145b023d1603e9 -p g
+https://github.com/mockito/mockito.git -v v2.25.4 -c d6098a6bbdfbafd966a2078627a90d9ffbedc7ea -p g
+https://github.com/mockito/mockito.git -v v2.25.5 -c b49666717d039cfaf6f00992b3196cd025345194 -p g
+https://github.com/mockito/mockito.git -v v2.25.6 -c 532b38fbe6cb445d88885c86ee767321844c2bc3 -p g
+https://github.com/mockito/mockito.git -v v2.25.7 -c 352daaaec1a49dffeb103dbf6afbf2529b526d28 -p g
+https://github.com/mockito/mockito.git -v v2.26.0 -c 49e07acc30fb486a8af773977e461cf4d1c876ec -p g
+https://github.com/mockito/mockito.git -v v2.26.1 -c 3be600fbed4830602ae36c3ef38e7ae7c9ee7d57 -p g
+https://github.com/mockito/mockito.git -v v2.26.2 -c bfc5ecb8494b00d8b5ed4e226ad8770b08d9474b -p g
+https://github.com/mockito/mockito.git -v v2.27.0 -c 881e09ebd33d78e9c226afa37548bf043fe82b4b -p g
+https://github.com/mockito/mockito.git -v v2.27.1 -c 340ef34084d67bc7b0c2c0f12effd169c98c3aa1 -p g
+https://github.com/mockito/mockito.git -v v2.27.2 -c 0ad4efbeedac050f416c48f22c9a561e31f3cb05 -p g
+https://github.com/mockito/mockito.git -v v2.27.3 -c a1a78ef7539a6b7527acbec6e2323413d0c2dfa3 -p g
+https://github.com/mockito/mockito.git -v v2.27.4 -c 7d9caf4f0332c0c5402de3e3123eb65f66588d44 -p g
+https://github.com/mockito/mockito.git -v v2.27.5 -c 99413819a63a5de6f2f8adaae23f581c780ab1c4 -p g
+https://github.com/mockito/mockito.git -v v2.28.0 -c 60c26c8fa6a2d3190aae4ead4ef293bbb1ea0612 -p g
+https://github.com/mockito/mockito.git -v v2.28.1 -c cd0e010ea91f98899aace65d57dcf8a8cbf38f46 -p g
+https://github.com/mockito/mockito.git -v v2.28.2 -c 1e3f69db0c6548c6d05d36b1e26893a07d7eab24 -p g
+https://github.com/mockito/mockito.git -v v3.0.0-beta.1 -c c9557954aa9dd3b877982abf244e33a62dd8b175 -p g
+https://github.com/mockito/mockito.git -v v3.0.0-beta.2 -c 1f27cb6cf415f0c00199efa30f8946b80b0acbb1 -p g
+https://github.com/mockito/mockito.git -v v3.0.0 -c 885e69420baa2a382f4394b85dc84cb6fe17fff6 -p g
+https://github.com/mockito/mockito.git -v v3.0.1 -c 660f60ae739fcb7c3a9630ee26e2266aa6cf3cdd -p g
+https://github.com/mockito/mockito.git -v v3.0.2 -c 2629096960474981558ce133c008410ee46fd529 -p g
+https://github.com/mockito/mockito.git -v v3.0.3 -c 1ec2bed8b1d901a51c6b14afc4b34374070a942d -p g
+https://github.com/mockito/mockito.git -v v3.0.4 -c 93051a8f5ffb9bb7ab5b6eead66bb1d35d0fc394 -p g
+https://github.com/mockito/mockito.git -v v3.0.5 -c 88117f29b8e6b385a478ff2afee9a8624bf957c8 -p g
+https://github.com/mockito/mockito.git -v v3.0.6 -c 65174e2cddc64a64cbe434299884d3c9cb579461 -p g
+https://github.com/mockito/mockito.git -v v3.0.7 -c 8215d0d2dbd6f612ed47244458b2523df2cab24d -p g
+https://github.com/mockito/mockito.git -v v3.0.8 -c 98e8743b6b5c0cca64cf3cb3c46a9b96b25fd9b6 -p g
+https://github.com/mockito/mockito.git -v v3.0.9 -c 16328dbe6562056d382cd5aa7cba0d6695de9665 -p g
+https://github.com/mockito/mockito.git -v v3.0.10 -c bcf41fdf9c977eca75b96f49a1567052851434a7 -p g
+https://github.com/mockito/mockito.git -v v3.0.11 -c 214d4652aa1971cb554c434b0ac13b376aea33a7 -p g
+https://github.com/mockito/mockito.git -v v3.0.12 -c 6dfd5294b2032dea7f77bfae16c8735bf1192ea2 -p g
+https://github.com/mockito/mockito.git -v v3.1.0 -c 892232611ef06a4c5861f50416819c9ca3d85ff4 -p g
+https://github.com/mockito/mockito.git -v v3.1.1 -c 51b8529d4f6385ddf47ab37fa01e841206a1ce13 -p g
+https://github.com/mockito/mockito.git -v v3.1.2 -c a738458aad1a0bbd48bead69f4697031289cf70c -p g
+https://github.com/mockito/mockito.git -v v3.1.3 -c d9857655b57b8d1f45613809ed78a4b2a1d62d01 -p g
+https://github.com/mockito/mockito.git -v v3.1.4 -c ec99f17d7d41ee7961095425f069168132101e40 -p g
+https://github.com/mockito/mockito.git -v v3.1.5 -c 6379ce9017e7f9d16883d4a08ae31d00d1216b9f -p g
+https://github.com/mockito/mockito.git -v v3.1.6 -c 68bc593ebb79efa515a211f8cdff77c7c3746a6a -p g
+https://github.com/mockito/mockito.git -v v3.1.7 -c 9a2160c8f5e97106959920c64f008771e1e5782c -p g
+https://github.com/mockito/mockito.git -v v3.1.8 -c 2ffc8aee826fe81ed8cee1e26da1f7f329b0b2b4 -p g
+https://github.com/mockito/mockito.git -v v3.1.9 -c 4e533432f2164fd45e8101e34591d7859f68e494 -p g
+https://github.com/mockito/mockito.git -v v3.1.10 -c c5f097f49eb40b09b2e25d5c507eb9109b359e6d -p g
+https://github.com/mockito/mockito.git -v v3.1.11 -c b89b4ec9d51802b639833b9a1b5bf614347ea3b6 -p g
+https://github.com/mockito/mockito.git -v v3.1.12 -c d6cec3963eb37db6eb025c490136e277b75cc269 -p g
+https://github.com/mockito/mockito.git -v v3.1.13 -c dc6eadc079a3fce66354b6cdf17b839229dc4246 -p g
+https://github.com/mockito/mockito.git -v v3.2.0 -c 186a966054aa933b5ea9463ae908aa963107ffa7 -p g
+https://github.com/mockito/mockito.git -v v3.2.2 -c 517faccdcf9f9d41f3664fc7955f387608a43a5e -p g
+https://github.com/mockito/mockito.git -v v3.2.3 -c f5bea9bcf42cf8b220242fa494f222de03a5672b -p g
+https://github.com/mockito/mockito.git -v v3.2.4 -c 204f9c169aa81f613334dc4301e0a062627565a5 -p g
+https://github.com/mockito/mockito.git -v v3.2.5 -c 87241c88a87a49476a96142e6e424d844ec6c7df -p g
+https://github.com/mockito/mockito.git -v v3.2.6 -c 11552b8f3da90eb5478db4c371031461d98da195 -p g
+https://github.com/mockito/mockito.git -v v3.2.7 -c 089e8170d92efbaf3fe854eb5268fa95eaac6635 -p g
+https://github.com/mockito/mockito.git -v v3.2.8 -c f5c1aff198ea400a0fda1a5f8b467b4d65ec2b8e -p g
+https://github.com/mockito/mockito.git -v v3.2.9 -c 0d2730c215128e54d7d5cd7ab21dda9f81903a36 -p g
+https://github.com/mockito/mockito.git -v v3.2.10 -c f66cdf21d35a1e6c2d3232fc6bb96d5fb76ebe34 -p g
+https://github.com/mockito/mockito.git -v v3.2.11 -c 2c5a2e8d244734e93f22749a22183d0fec641212 -p g
+https://github.com/mockito/mockito.git -v v3.3.0 -c bc2544019b9586aad264c02aa22853e1867f1162 -p g
+https://github.com/mockito/mockito.git -v v3.3.1 -c 434556a4bd4bb288bf7d12fd4d21ce3a244ce4ba -p g
+https://github.com/mockito/mockito.git -v v3.3.2 -c f61e187bc0aae4a220d3d41ef2eaa66c296e7b01 -p g
+https://github.com/mockito/mockito.git -v v3.3.3 -c 560adf377677a4a2c658a0b24e2f9c2e0b373c20 -p g
+https://github.com/mockito/mockito.git -v v3.3.4 -c fd6dfea618126e0555a12038e7071eae3ba3234d -p g
+https://github.com/mockito/mockito.git -v v3.3.5 -c 872358c810a7e750cccac6a6614b3191269732db -p g
+https://github.com/mockito/mockito.git -v v3.3.6 -c b2de4cce9d26470145135dde2cd51ac60f999fce -p g
+https://github.com/mockito/mockito.git -v v3.3.7 -c bd3c45a7e9004f75021e3dc002d199fd17ada6e0 -p g
+https://github.com/mockito/mockito.git -v v3.3.8 -c bbd19ea9108132778da1010513d1544f0c57e327 -p g
+https://github.com/mockito/mockito.git -v v3.3.9 -c f0e79e751fc4824d8e51473612063c11b0e56df8 -p g
+https://github.com/mockito/mockito.git -v v3.3.10 -c 121dafad02d64044184c983715bd69f3d208581c -p g
+https://github.com/mockito/mockito.git -v v3.3.11 -c 76a3ab89bec8222243f40b778457d13160cecad1 -p g
+https://github.com/mockito/mockito.git -v v3.3.12 -c 1983c75f4640a5dac56ddfd38cd205f213948bdb -p g
+https://github.com/mockito/mockito.git -v v3.4.0 -c 05b39bfc5e4558f4c1c6853d5b454f534bdfefe0 -p g
+https://github.com/mockito/mockito.git -v v3.4.1 -c b0aa37965d8432f77663e76d0f5698cb6ffb4d89 -p g
+https://github.com/mockito/mockito.git -v v3.4.2 -c 6635deec58a7931745874d5d8c6034a7375fa15a -p g
+https://github.com/mockito/mockito.git -v v3.4.3 -c cbabc53c2202a8ecc93dfa86f1405463181c2bdf -p g
+https://github.com/mockito/mockito.git -v v3.4.4 -c 4019d86b4fb4078c53c7522dd41e5486ad560d35 -p g
+https://github.com/mockito/mockito.git -v v3.4.5 -c c53f9b39243ac563cd40c774358fb0f7d4f2da83 -p g
+https://github.com/mockito/mockito.git -v v3.4.6 -c 019830665f97c8ba6159148e3b10086cfb894900 -p g
+https://github.com/mockito/mockito.git -v v3.4.7 -c b87fad310bf59b94035028dc478089ded2a9198a -p g
+https://github.com/mockito/mockito.git -v v3.4.8 -c ce8cc9847a4c2a9f51da935ac31b491fb8f2d9c1 -p g
+https://github.com/mockito/mockito.git -v v3.5.0 -c 70633c4876572343a57b5f718fae8967dae27108 -p g
+https://github.com/mockito/mockito.git -v v3.5.1 -c 2dd7ea1eca9861a881909df159f0aa376fd62e40 -p g
+https://github.com/mockito/mockito.git -v v3.5.2 -c 31bdc245a39fc22c4bb67bf4cf0bc0c3c5292238 -p g
+https://github.com/mockito/mockito.git -v v3.5.3 -c 5cb5a665840a84fa90a6f9aee9a4f4b982007cb3 -p g
+https://github.com/mockito/mockito.git -v v3.5.4 -c c0e48cdc9b0e90b791dc54d0cd88e38dac26f155 -p g
+https://github.com/mockito/mockito.git -v v3.5.5 -c 065dd127fdd34b6570ae78075c12d4d4026fbbcb -p g
+https://github.com/mockito/mockito.git -v v3.5.6 -c 929840ab691b2f502b9958ac9483104bfd88a9ee -p g
+https://github.com/mockito/mockito.git -v v3.5.7 -c 8007df7a25d6c59eb561c1f6023d724d3b3c167f -p g
+https://github.com/mockito/mockito.git -v v3.5.8 -c a8b156509fc8e35cf122e1abe8c36d1e196ed041 -p g
+https://github.com/mockito/mockito.git -v v3.5.9 -c fcd788cf20bdd2ead398706afeb6beb5411831b8 -p g
+https://github.com/mockito/mockito.git -v v3.5.10 -c b6ae6cf12b93ef9445e524224375aab1eb76129d -p g
+
+-https://github.com/junit-team/junit4.git -v r3.8.2 -c a0f0ee1b3f72d9361eb09b3a25156c69a748aa47
+-https://github.com/junit-team/junit4.git -v r4.6 -c b5e9885854a0d594451800b9127eb50afb645433
+-https://github.com/junit-team/junit4.git -v r4.7 -c a8629da96207e1ce71ead9ba9f85bc324f09bcab
+-https://github.com/junit-team/junit4.git -v r4.8b1 -c 7aac4b19d359285041ccb51d575235339a1a8be0
+-https://github.com/junit-team/junit4.git -v r4.8b2 -c 7aac4b19d359285041ccb51d575235339a1a8be0
+-https://github.com/junit-team/junit4.git -v r4.8b3 -c 0c45278e830fdd1fc752a0eb1a3b25a3395d3e0e
+-https://github.com/junit-team/junit4.git -v r4.8 -c 5a3a326096cf65a58272ee89a5ef1c164cfd9d33
+-https://github.com/junit-team/junit4.git -v r4.8.1 -c 832bb8322f2ca09af52769a0198b276269b53988
+-https://github.com/junit-team/junit4.git -v r4.8.2 -c a30e87b6ac67f14a42b97d427bb1c8c6ba18cd87
+-https://github.com/junit-team/junit4.git -v r4.9b1 -c 751f75986b11336ac8310d73c89003b0b09ecb92
+-https://github.com/junit-team/junit4.git -v r4.9b3 -c 5a9eb89e15ca86a3db6a4e21f5c9f94f9ab8fb60
+-https://github.com/junit-team/junit4.git -v r4.9b4 -c 7ec443add70809418d2bbe1314cd4744742d854d
+-https://github.com/junit-team/junit4.git -v r4.9 -c 61f06547599bb6b98bca99d5bc457eb20bc17cab
+-https://github.com/junit-team/junit4.git -v r4.10 -c 45a44647e7306262162e1346b750c3209019f2e1
+-https://github.com/junit-team/junit4.git -v r4.11-beta-1 -c 88c28a42a6fb7dc462c4bc504189a76a815fc265
+-https://github.com/junit-team/junit4.git -v r4.11 -c c2e4d911fadfbd64444fb285342a8f1b72336169
+-https://github.com/junit-team/junit4.git -v r4.12-beta-1 -c 0550afa689cc5c7860d4378b27ecd38d35c05570
+-https://github.com/junit-team/junit4.git -v r4.12-beta-2 -c 8d63bc65ace8c36eb3b189528c06e201f2caa535
+-https://github.com/junit-team/junit4.git -v r4.12-beta-3 -c ceaafcafc7d7ac8d80509ab046acc7a472ddb515
+-https://github.com/junit-team/junit4.git -v r4.12 -c 64155f8a9babcfcf4263cf4d08253a1556e75481
+-https://github.com/junit-team/junit4.git -v r4.13-beta-1 -c 6e1d2e6ebbc484af60c06bd26cc55349b352e49e
+-https://github.com/junit-team/junit4.git -v r4.13-beta-2 -c 69424956c3c0d1f983cc2d489bcd7bebbf8b67a9
+-https://github.com/junit-team/junit4.git -v r4.13-beta-3 -c fc3813fba9e2250ddd96877d01f2f694127edb80
+-https://github.com/junit-team/junit4.git -v r4.13-rc-1 -c 17d340a7d2661f0a0c7e284b49cd70f5a4495d6b
+-https://github.com/junit-team/junit4.git -v r4.13-rc-2 -c c0bdd7d4312862dbc6e1a8430cf75024a18158c9
+-https://github.com/junit-team/junit4.git -v r4.13 -c 038f7518fc1018b26df608e3e5dce6db4611be29
+
+-https://github.com/jhy/jsoup.git -v 1.12.2 -c 6ef89226deae4683ccc0f2367db048278e94d5b0
+-https://github.com/jhy/jsoup.git -v jsoup-1.6.2 -c bfd79c9819df429e03c7646a1faf05ecf408f4b9
+-https://github.com/jhy/jsoup.git -v jsoup-1.6.3 -c 13d0bee275b1e61ee68dea02530b6e7b0ec9ac3a
+-https://github.com/jhy/jsoup.git -v jsoup-1.7.1 -c 2cfb80261e6f61fa5b31627cecf832efc216a787
+-https://github.com/jhy/jsoup.git -v jsoup-1.7.2 -c b42fe0d5dfd882c5f544704b3dbe05c4301fe671
+-https://github.com/jhy/jsoup.git -v jsoup-1.7.3 -c d599990c331989230a6e1d0e4fea9e577022cc9c
+-https://github.com/jhy/jsoup.git -v jsoup-1.8.1.a -c 14678515d7e479bbf18466a38c04c65c43a0ecae
+-https://github.com/jhy/jsoup.git -v jsoup-1.8.2 -c 7210a179b036ae224d9e1d4dc5a8a6b4a3b84025
+-https://github.com/jhy/jsoup.git -v jsoup-1.8.3a -c f51e79822e60653ef1d47e6a28843421b5a677f0
+-https://github.com/jhy/jsoup.git -v jsoup-1.8.3 -c 99ef54acdea15d339f3616d1a5aa70dca29e65bb
+-https://github.com/jhy/jsoup.git -v jsoup-1.9.1a -c 2a2e8421c2aca89a21c786aa85af215dcbde02d7
+-https://github.com/jhy/jsoup.git -v jsoup-1.9.1 -c d2d06134df6883e8cad29e23beec5db9f6cee4b7
+-https://github.com/jhy/jsoup.git -v jsoup-1.9.2 -c 5dc4c487d42705f60ff6e5b95d03c71a3326d6cd
+-https://github.com/jhy/jsoup.git -v jsoup-1.10.1 -c 7f8010df0ca535e9edf02985f480fded267df47b
+-https://github.com/jhy/jsoup.git -v jsoup-1.10.2 -c d1ade46486a125742a05fa8e245ed5d0f3d572ad
+-https://github.com/jhy/jsoup.git -v jsoup-1.10.3 -c 2a5f524d57545becc11c92a6a50b80283d22e594
+-https://github.com/jhy/jsoup.git -v jsoup-1.11.1 -c 5dc4937611725462003f5cd87f41e56ee7829b65
+-https://github.com/jhy/jsoup.git -v jsoup-1.11.2 -c 429f2c7db2b60683be76d4a82fb28a561f941909
+-https://github.com/jhy/jsoup.git -v jsoup-1.11.3 -c 2b1ea0633ff5d4cba5db0e202a4ce0fbdccc19db
+-https://github.com/jhy/jsoup.git -v jsoup-1.12.1 -c 3f0256953a2938875dba33e58004037989985f7d
+-https://github.com/jhy/jsoup.git -v jsoup-1.12.2 -c 6ef89226deae4683ccc0f2367db048278e94d5b0
+-https://github.com/jhy/jsoup.git -v jsoup-1.13.1 -c dcf3c8ba5a0963260999f463ee80b6a787928bb9
+
+-https://github.com/hamcrest/JavaHamcrest.git -v hamcrest-java-1.0 -c e045030ef5f6fc8a5d0b1659636d4e57e1087d7b
+-https://github.com/hamcrest/JavaHamcrest.git -v hamcrest-java-1.1 -c 7fabb5cd0a17ec1a0f5112ace91e7a23ad79032a
+-https://github.com/hamcrest/JavaHamcrest.git -v hamcrest-java-1.2 -c 7d6a0ebe98cf44bf2f05d2d95ebdf4eaf40f31b1
+-https://github.com/hamcrest/JavaHamcrest.git -v hamcrest-java-1.3RC0 -c bd96ee413536c691ed631543ca8c4a9227fd6516
+-https://github.com/hamcrest/JavaHamcrest.git -v hamcrest-java-1.3RC1 -c 473f16ad866369731c261591a60adf1bf5d8c8c3
+-https://github.com/hamcrest/JavaHamcrest.git -v hamcrest-java-1.3RC2 -c 473f16ad866369731c261591a60adf1bf5d8c8c3
+-https://github.com/hamcrest/JavaHamcrest.git -v hamcrest-java-1.3RC3 -c 2f76c0f44331cb34ce5e193e99ab7d007614baf5
+-https://github.com/hamcrest/JavaHamcrest.git -v hamcrest-java-1.3RC4 -c 6557333cdf995cf85ee5075531fb2ce1d004dde3
+-https://github.com/hamcrest/JavaHamcrest.git -v hamcrest-java-1.3 -c 36d525e1e425006939a77aec5183aecd7c775b05
+-https://github.com/hamcrest/JavaHamcrest.git -v v2.1-rc1 -c 0ae04317dd5b3a44b6e7718cbeebdfb8fe0e37c4
+-https://github.com/hamcrest/JavaHamcrest.git -v v2.1-rc2 -c 8e9b901c5eb24a89793f70c0071a54367490f55a
+-https://github.com/hamcrest/JavaHamcrest.git -v v2.1-rc3 -c 4219e17c9a3d4a83d097d631e9bfafa21891122d
+-https://github.com/hamcrest/JavaHamcrest.git -v v2.1-rc4 -c cf6796e1b3745a188cf4548cb585482543ad1de6
+-https://github.com/hamcrest/JavaHamcrest.git -v v2.1 -c 8cf0846f96b2090ef2cf6972f4890c82f427cb19
+-https://github.com/hamcrest/JavaHamcrest.git -v v2.2-rc1 -c e049297f8e1ddf539d5625d6134cd8727f3e3267
+-https://github.com/hamcrest/JavaHamcrest.git -v v2.2 -c 60454d3c3e2eac8f3049dfbef2900a989a8b8624
+
+-https://github.com/google/gson.git -v gson-parent-2.4 -c 80c13447ed09f774c879b06e40f288e881b75e4e
+-https://github.com/google/gson.git -v gson-parent-2.5 -c d7d064feb8d53b426c77035f3cb659d797402b98
+-https://github.com/google/gson.git -v gson-parent-2.6 -c b8220eb19513fa908908b467b97ff8f823b34e1c
+-https://github.com/google/gson.git -v gson-parent-2.6.1 -c 3c9b9af0a1f2f5b40bec947bf216fa627697445f
+-https://github.com/google/gson.git -v gson-parent-2.6.2 -c fe62b04148a0fe09cb38dcb667a5053b89e6c76d
+-https://github.com/google/gson.git -v gson-parent-2.7 -c 9722b00372672214794edea844a236d83e72b273
+-https://github.com/google/gson.git -v gson-parent-2.8.0 -c e9ead40302b3466f557a82f924907de59462deb9
+-https://github.com/google/gson.git -v gson-parent-2.8.1 -c 3e74bb47d1a72f72873109e8f0407a34d25fe7e6
+-https://github.com/google/gson.git -v gson-parent-2.8.2 -c d90f63dc88ac08971cf088a3537e1b1108603574
+-https://github.com/google/gson.git -v gson-parent-2.8.3 -c 4ed639e88291228b384201ea60b9a0b433e8bfa8
+-https://github.com/google/gson.git -v gson-parent-2.8.4 -c 9fbebdf990ef40d3f59b02b5b5fccb2f447f8759
+-https://github.com/google/gson.git -v gson-parent-2.8.5 -c f649e051411e092f0123878e16c5132500a2d01e
+-https://github.com/google/gson.git -v gson-parent-2.8.6 -c 29c93895bbcaed02178abc9e3d47b73878aaca73
+
+-https://github.com/apache/commons-pool.git -v POOL_2.4.3-RC1 -c 2bc516e96ef847dbac5d87b023a16770e0880bac
+-https://github.com/apache/commons-pool.git -v POOL_2.4.3 -c 2bc516e96ef847dbac5d87b023a16770e0880bac
+-https://github.com/apache/commons-pool.git -v POOL_2_5_0_RC1 -c 07f1173074fdbce74cbc4dad743d7ddb9c04141c
+-https://github.com/apache/commons-pool.git -v POOL_2_5_0 -c 07f1173074fdbce74cbc4dad743d7ddb9c04141c
+-https://github.com/apache/commons-pool.git -v STRUTS_1_1_B1@139588 -c 90b9bfb40b90428572bb69a1a2a8b8d0b80280f4
+-https://github.com/apache/commons-pool.git -v STRUTS_1_1_B2@139633 -c efc6cc449e39844e28ad04b1b4d5b8ed261445fa
+-https://github.com/apache/commons-pool.git -v STRUTS_1_1_B3@139653 -c 3167401afa7d4ba46e9abb77c812a66e0820ea18
+-https://github.com/apache/commons-pool.git -v STRUTS_1_1_RC1@139653 -c 3167401afa7d4ba46e9abb77c812a66e0820ea18
+-https://github.com/apache/commons-pool.git -v USED_BY_SCARAB_0_16_20@139685 -c c1983f2bbe1892bc7c06d7641ddd8e9488145fa3
+-https://github.com/apache/commons-pool.git -v commons-pool-2.6.0-RC1 -c 281258e546f761a00e3379d7db4d6744e721d3c3
+-https://github.com/apache/commons-pool.git -v commons-pool-2.6.0 -c 3b3ea3df6281dcc9cae878774956a99fe20c2d75
+-https://github.com/apache/commons-pool.git -v commons-pool-2.6.1-RC1 -c 87c5dc14a967a70dd6e640395d4e842b021cdb8f
+-https://github.com/apache/commons-pool.git -v commons-pool-2.6.2-RC1 -c 06de412e2ce72007a6e43112164c371de4a66d3b
+-https://github.com/apache/commons-pool.git -v commons-pool-2.6.2 -c 06de412e2ce72007a6e43112164c371de4a66d3b
+-https://github.com/apache/commons-pool.git -v commons-pool-2.7.0-RC1 -c f4455dcb8afaf9ae7054589110f1082a7a8a282c
+-https://github.com/apache/commons-pool.git -v commons-pool-2.7.0 -c f4455dcb8afaf9ae7054589110f1082a7a8a282c
+-https://github.com/apache/commons-pool.git -v commons-pool-2.8.0-RC1 -c cfb886a6048071fb214fe00861438035f08f288b
+-https://github.com/apache/commons-pool.git -v commons-pool-2.8.0 -c cfb886a6048071fb214fe00861438035f08f288b
+-https://github.com/apache/commons-pool.git -v commons-pool-2.8.1-RC1 -c 3fb7df661d521d57297d6aafa2d2d57356ae4adf
+-https://github.com/apache/commons-pool.git -v jwsdp_10_ea2_01@139585 -c d4448df6f472ad77a32e3b4e01b98f8a1ec6f051
+-https://github.com/apache/commons-pool.git -v jwsp_10_01@139576 -c f325a76c8fd957a5aa0a07d5ff00eb28b414b8ca
+-https://github.com/apache/commons-pool.git -v rel/commons-pool-2.8.1 -c 3fb7df661d521d57297d6aafa2d2d57356ae4adf
+-https://github.com/apache/commons-pool.git -v start@139576 -c f325a76c8fd957a5aa0a07d5ff00eb28b414b8ca
+
+-https://github.com/apache/commons-math.git -v MATH_3_4_RC1 -c cf4a9d70c9ac24dd7196995390171150e4e56451
+-https://github.com/apache/commons-math.git -v MATH_3_4_RC2 -c fe08f0d3bd0309db15d27335757336a8ac6f32d0
+-https://github.com/apache/commons-math.git -v MATH_3_4_RC3 -c befd8ebd96b8ef5a06b59dccb22bd55064e31c34
+-https://github.com/apache/commons-math.git -v MATH_3_4 -c befd8ebd96b8ef5a06b59dccb22bd55064e31c34
+-https://github.com/apache/commons-math.git -v MATH_3_4_1_RC1 -c ef6e0f882819e7c5230aece1610297e67775cca2
+
+-https://github.com/apache/commons-io.git -v commons-io-2.6-RC3 -c 2ae025fe5c4a7d2046c53072b0898e37a079fe62
+-https://github.com/apache/commons-io.git -v commons-io-2.6 -c 2ae025fe5c4a7d2046c53072b0898e37a079fe62
+-https://github.com/apache/commons-io.git -v commons-io-2.7-RC1 -c 6efbccc88318d15c0f5fdcfa0b87e3dc980dca22
+-https://github.com/apache/commons-io.git -v commons-io-2.8.0-RC1 -c 2e6f1e306edd81f3d0c7d5d36f4e1de84710bd08
+-https://github.com/apache/commons-io.git -v commons-io-2.8.0-RC2 -c fa59009aaabcf8671a8d741993ef355f42b95ccd
+-https://github.com/apache/commons-io.git -v rel/commons-io-2.7 -c 6efbccc88318d15c0f5fdcfa0b87e3dc980dca22
+-https://github.com/apache/commons-io.git -v rel/commons-io-2.8.0 -c fa59009aaabcf8671a8d741993ef355f42b95ccd
+
+-https://github.com/apache/commons-fileupload.git -v commons-fileupload-1.4-RC1 -c 6cc28fd2bdcda327fccb63f779aed5964f59a9c7
+-https://github.com/apache/commons-fileupload.git -v commons-fileupload-1.4-RC2 -c 047f31576411beee69cf75584ae76531cc9ac753
+-https://github.com/apache/commons-fileupload.git -v commons-fileupload-1.4 -c 047f31576411beee69cf75584ae76531cc9ac753
+
+-https://github.com/apache/commons-email.git -v EMAIL_1_5_RC1 -c 6e7cc6eaf5f83cc9c45018699b644cd7db354b08
+
+-https://github.com/apache/commons-dbcp.git -v DBCP_2_2_0_RC3 -c c5b86d834a53b4891487e62671873d054a6f38d8
+-https://github.com/apache/commons-dbcp.git -v DBCP_2_2_0 -c c5b86d834a53b4891487e62671873d054a6f38d8
+-https://github.com/apache/commons-dbcp.git -v DBCP_2_3_0_RC1 -c 96466c6bf8057917db79fa2cc4333e2c3b8ca9d0
+-https://github.com/apache/commons-dbcp.git -v DBCP_2_3_0 -c 6040b67b78d96d05c282a75bb250fa6ea31623dc
+-https://github.com/apache/commons-dbcp.git -v commons-dbcp-2.4.0-RC1 -c d7aa662fbbb99e536ae28c47d0c4e1d51e39d5b9
+-https://github.com/apache/commons-dbcp.git -v commons-dbcp-2.4.0 -c d7aa662fbbb99e536ae28c47d0c4e1d51e39d5b9
+-https://github.com/apache/commons-dbcp.git -v commons-dbcp-2.5.0-RC1 -c 00fd9d9b69caffef91aabc4091a9fe2fda787c7e
+-https://github.com/apache/commons-dbcp.git -v commons-dbcp-2.5.0 -c 334784e3043cadaeaa626f792c3f62ac7b697927
+-https://github.com/apache/commons-dbcp.git -v commons-dbcp-2.6.0-RC1 -c 3e7fca08d3585aa7cf70045ee3ed607cbaf04baa
+-https://github.com/apache/commons-dbcp.git -v commons-dbcp-2.6.0 -c 3e7fca08d3585aa7cf70045ee3ed607cbaf04baa
+-https://github.com/apache/commons-dbcp.git -v commons-dbcp-2.7.0-RC1 -c 9b3f4f9bbff1be4afd992f68a388faf9b8cbf907
+-https://github.com/apache/commons-dbcp.git -v commons-dbcp-2.7.0 -c 9b3f4f9bbff1be4afd992f68a388faf9b8cbf907
+
+-https://github.com/apache/commons-configuration.git -v CONFIGURATION_2_4_RC2 -c 33a318106bd9c7dd90db13d4a5f69f56830ef226
+-https://github.com/apache/commons-configuration.git -v CONFIGURATION_2_4 -c 6543cb0b6c283c0d4331dc0baee269b01db00622
+-https://github.com/apache/commons-configuration.git -v commons-configuration-2.5-RC1 -c dc00a04783ea951280ba0cd8318f53e19acb707f
+-https://github.com/apache/commons-configuration.git -v commons-configuration-2.5 -c dc00a04783ea951280ba0cd8318f53e19acb707f
+-https://github.com/apache/commons-configuration.git -v commons-configuration-2.6-RC1 -c 32d6be96f6b101dfd18d21d79788980ee08e5965
+-https://github.com/apache/commons-configuration.git -v commons-configuration-2.7-RC1 -c 6bb7c21c14849169415b2afdfb2d2057bc2adb08
+-https://github.com/apache/commons-configuration.git -v commons-configuration-2.7-RC2 -c 03baa3bfbe123972da39c23e52fcd2d458e805fc
+-https://github.com/apache/commons-configuration.git -v rel/commons-configuration-2.6 -c 32d6be96f6b101dfd18d21d79788980ee08e5965
+-https://github.com/apache/commons-configuration.git -v rel/commons-configuration-2.7 -c 03baa3bfbe123972da39c23e52fcd2d458e805fc
+
+-https://github.com/apache/commons-compress.git -v 1.11-RC1 -c ff38bf57378c7cae8617b3c8df692a5ffbe7b83f
+-https://github.com/apache/commons-compress.git -v 1.14-RC1 -c dd7c7702bf51886aa8bd88b24d98619f310fbeda
+-https://github.com/apache/commons-compress.git -v 1.15-RC1 -c 01b06d5ef5c5ac3bd651bedcfec7433231cea371
+-https://github.com/apache/commons-compress.git -v 1.16-RC1 -c c6e38999260bfa486b3213208b809bd543ce18bf
+-https://github.com/apache/commons-compress.git -v 1.16.1-RC1 -c b5204113485bf5961c5b09a289c99995974895ff
+-https://github.com/apache/commons-compress.git -v 1.17-RC1 -c d9993f8ff119d4a3eb1259b460c53401f619d655
+-https://github.com/apache/commons-compress.git -v 1.18-RC1 -c b95d5cde4c68640f886e3c6802384fae47408a37
+-https://github.com/apache/commons-compress.git -v 1.20-RC2 -c f7503adfbad8b44eb079d564f2784aeaa034647c
+-https://github.com/apache/commons-compress.git -v COMPRESS-1.7-RC1 -c 57b38e76fe803774061bc3fd529fb6fa853517e8
+-https://github.com/apache/commons-compress.git -v COMPRESS-1.7-RC2 -c 692e7ee9948375f1f4a52b599e40c22960b7488e
+-https://github.com/apache/commons-compress.git -v COMPRESS-1.7 -c 4a4ba6bfdadc792c59a67935b6c4fe6ee8bfd325
+-https://github.com/apache/commons-compress.git -v COMPRESS-1.8-RC1 -c bf53dc8be9cfde23e23e3672073e1512ea00eda7
+-https://github.com/apache/commons-compress.git -v COMPRESS-1.8 -c 5048d93858a3a7d976ace35f83868215ce5dfe2c
+-https://github.com/apache/commons-compress.git -v COMPRESS-1.8.1-RC1 -c 03bf7ea43171c458d0ffbf3898224245f1fce122
+-https://github.com/apache/commons-compress.git -v COMPRESS-1.8.1 -c 3547741ac1f953e94b147ecec009a7460369c190
+-https://github.com/apache/commons-compress.git -v COMPRESS-1.10-RC3 -c dec258f502a92ce230567cb6271ac6f0cc9de8be
+-https://github.com/apache/commons-compress.git -v COMPRESS-1.11-RC2 -c ff38bf57378c7cae8617b3c8df692a5ffbe7b83f
+-https://github.com/apache/commons-compress.git -v COMPRESS-1.12-RC1 -c 3623ee7dad07c74722baeeffcec6770015f915cf
+-https://github.com/apache/commons-compress.git -v COMPRESS-1.13-RC1 -c 45438471726fc5005a41cefecbf62d4d26eb15b2
+-https://github.com/apache/commons-compress.git -v rel/1.7 -c 4a4ba6bfdadc792c59a67935b6c4fe6ee8bfd325
+-https://github.com/apache/commons-compress.git -v rel/1.8 -c 5048d93858a3a7d976ace35f83868215ce5dfe2c
+-https://github.com/apache/commons-compress.git -v rel/1.11 -c ff38bf57378c7cae8617b3c8df692a5ffbe7b83f
+-https://github.com/apache/commons-compress.git -v rel/1.12 -c 3623ee7dad07c74722baeeffcec6770015f915cf
+-https://github.com/apache/commons-compress.git -v rel/1.13 -c 45438471726fc5005a41cefecbf62d4d26eb15b2
+-https://github.com/apache/commons-compress.git -v rel/1.14 -c dd7c7702bf51886aa8bd88b24d98619f310fbeda
+-https://github.com/apache/commons-compress.git -v rel/1.15 -c 01b06d5ef5c5ac3bd651bedcfec7433231cea371
+-https://github.com/apache/commons-compress.git -v rel/1.16 -c c6e38999260bfa486b3213208b809bd543ce18bf
+-https://github.com/apache/commons-compress.git -v rel/1.16.1 -c b5204113485bf5961c5b09a289c99995974895ff
+-https://github.com/apache/commons-compress.git -v rel/1.17 -c d9993f8ff119d4a3eb1259b460c53401f619d655
+-https://github.com/apache/commons-compress.git -v rel/1.18 -c b95d5cde4c68640f886e3c6802384fae47408a37
+-https://github.com/apache/commons-compress.git -v rel/1.20 -c f7503adfbad8b44eb079d564f2784aeaa034647c
+
+-https://github.com/apache/commons-collections.git -v collections-4.3-RC1 -c 5f959fd8e77bf28f6286cfb4d1e1fff27167f803
+-https://github.com/apache/commons-collections.git -v collections-4.3-RC2 -c 77e37dbf238d26351edb29e95391e3df75095d01
+-https://github.com/apache/commons-collections.git -v collections-4.3 -c 77e37dbf238d26351edb29e95391e3df75095d01
+-https://github.com/apache/commons-collections.git -v commons-collections-4.2-RC1 -c 483cbbbf5a8b3c14edf3e6563e8f8ba380966d47
+-https://github.com/apache/commons-collections.git -v commons-collections-4.2 -c 483cbbbf5a8b3c14edf3e6563e8f8ba380966d47
+-https://github.com/apache/commons-collections.git -v commons-collections-4.4-RC1 -c cab58b3a8093a2f6b84f12783a3fb358747310f7
+-https://github.com/apache/commons-collections.git -v commons-commons-collections-4.4 -c cab58b3a8093a2f6b84f12783a3fb358747310f7
+
+-https://github.com/apache/commons-codec.git -v commons-codec-1.12-RC1 -c ab83ed53d64e10b627443b0e627c3b5bc1593be2
+-https://github.com/apache/commons-codec.git -v commons-codec-1.12-RC2 -c 1884dc028bce8094e8ddd7a9fc192a107a64527a
+-https://github.com/apache/commons-codec.git -v commons-codec-1.12-RC3 -c 0082c9e31747d6f0d5a66dc993d817a00e1451a4
+-https://github.com/apache/commons-codec.git -v commons-codec-1.12 -c 0082c9e31747d6f0d5a66dc993d817a00e1451a4
+-https://github.com/apache/commons-codec.git -v commons-codec-1.13-RC1 -c 20dc3ec2c6b41f9412ecf4a1cbe9bba10e1498ed
+-https://github.com/apache/commons-codec.git -v commons-codec-1.13 -c beafa49f88be397f89b78d125d2c7c52b0114006
+-https://github.com/apache/commons-codec.git -v commons-codec-1.14-RC1 -c af7b94750e2178b8437d9812b28e36ac87a455f2
+-https://github.com/apache/commons-codec.git -v commons-codec-1.14 -c af7b94750e2178b8437d9812b28e36ac87a455f2
+-https://github.com/apache/commons-codec.git -v commons-codec-1.15-RC1 -c c89d2af770f05457fbefa5fb4713c888bf177fb2
+-https://github.com/apache/commons-codec.git -v rel/commons-codec-1.15 -c c89d2af770f05457fbefa5fb4713c888bf177fb2
+
+-https://github.com/apache/commons-bcel.git -v commons-bcel-6.3.1-RC1 -c 9174edf0d530540c9f6df76b4d786c5a6ad78a5d
+-https://github.com/apache/commons-bcel.git -v commons-bcel-6.3.1 -c dce57b377d1ad6711ff613639303683e90f7bcc8
+-https://github.com/apache/commons-bcel.git -v commons-bcel-6.4.0-RC1 -c fa271c5d7ed94dd1d9ef31c52f32d1746d5636dc
+-https://github.com/apache/commons-bcel.git -v commons-bcel-6.4.0-RC2 -c bbaf623d750f030d186ed026dc201995145c63ec
+-https://github.com/apache/commons-bcel.git -v commons-bcel-6.4.1-RC1 -c bebe70de81f2f8912857ddb33e82d3ccc146a24e
+-https://github.com/apache/commons-bcel.git -v commons-bcel-6.5.0-RC1 -c a9c13ede0e565fae0593c1fde3b774d93abf3f71
+-https://github.com/apache/commons-bcel.git -v rel/commons-bcel-6.4.0 -c bbaf623d750f030d186ed026dc201995145c63ec
+-https://github.com/apache/commons-bcel.git -v rel/commons-bcel-6.4.1 -c bebe70de81f2f8912857ddb33e82d3ccc146a24e
+-https://github.com/apache/commons-bcel.git -v rel/commons-bcel-6.5.0 -c a9c13ede0e565fae0593c1fde3b774d93abf3f71
+
+-https://github.com/apache/commons-lang.git -v LANG_3_5_RC2 -c 36f98d87b24c2f542b02abbf6ec1ee742f1b158b
+-https://github.com/apache/commons-lang.git -v LANG_3_5 -c 36f98d87b24c2f542b02abbf6ec1ee742f1b158b
+-https://github.com/apache/commons-lang.git -v LANG_3_6_RC4 -c 09043bfa6f1f9ebb946c7b159735c83259e3a89f
+-https://github.com/apache/commons-lang.git -v LANG_3_6 -c 09043bfa6f1f9ebb946c7b159735c83259e3a89f
+-https://github.com/apache/commons-lang.git -v LANG_3_7_RC1 -c 425d8085cfcaab5a78bf0632f9ae77b7e9127cf8
+-https://github.com/apache/commons-lang.git -v LANG_3_7 -c 425d8085cfcaab5a78bf0632f9ae77b7e9127cf8
+-https://github.com/apache/commons-lang.git -v LANG_3_8_RC1 -c 9801e2fb9fcbf7ddd19221e9342608940d778f8c
+-https://github.com/apache/commons-lang.git -v LANG_3_8 -c 9801e2fb9fcbf7ddd19221e9342608940d778f8c
+-https://github.com/apache/commons-lang.git -v LANG_3_8_1_RC1 -c eb5b11a25c9e61f9b25a540682816ebb103b735c
+-https://github.com/apache/commons-lang.git -v LANG_3_8_1 -c eb5b11a25c9e61f9b25a540682816ebb103b735c
+-https://github.com/apache/commons-lang.git -v commons-lang-3.9-RC1 -c 8b378885152075b44c5710d6dbcb8df4a5fb3223
+-https://github.com/apache/commons-lang.git -v commons-lang-3.9-RC2 -c abb39c22c0e538fff03ea4e53d78ee60c6c08092
+-https://github.com/apache/commons-lang.git -v commons-lang-3.9 -c abb39c22c0e538fff03ea4e53d78ee60c6c08092
+-https://github.com/apache/commons-lang.git -v commons-lang-3.10-RC1 -c e0b474c0d015f89a52c4cf8866fa157dd89e7d1c
+-https://github.com/apache/commons-lang.git -v commons-lang-3.11-RC1 -c ac1070e84e42acf3c2ada36e4727c2d99b0fc48e
+-https://github.com/apache/commons-lang.git -v commons-lang-3.11-RC2 -c f62f0f59a33d2c42bd4236ea7122735de30d91fc
+-https://github.com/apache/commons-lang.git -v rel/commons-lang-3.10 -c e0b474c0d015f89a52c4cf8866fa157dd89e7d1c
+-https://github.com/apache/commons-lang.git -v rel/commons-lang-3.11 -c f62f0f59a33d2c42bd4236ea7122735de30d91fc
